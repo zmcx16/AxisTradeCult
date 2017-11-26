@@ -1,8 +1,19 @@
 import os
+import sys
 
 import Program.GlobalVar as gv
 from AxisWeb.DownloadData import *
+from AxisForm.AxisTradeCultForm import AxisTradeCultForm
+from PyQt5.QtWidgets import QMainWindow, QApplication
 
 
-gv.ReadStockGroups()
-DownloadAllStockGroupsFromQuandl(gv.StockDataPoolPath)    
+if __name__ == "__main__":
+    gv.ReadStockGroups()
+    
+    app = QApplication(sys.argv)
+    window = AxisTradeCultForm()
+    window.show()
+    sys.exit(app.exec_())
+
+#gv.ReadStockGroups()
+#DownloadAllStockGroupsFromQuandl(gv.StockDataPoolPath)    
