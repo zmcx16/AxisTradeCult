@@ -20,6 +20,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
@@ -38,6 +39,7 @@ public:
     QComboBox *StockGroupsComboBox;
     QPushButton *UpdateButton;
     QListView *listView;
+    QProgressBar *UpdateProgressBar;
     QWidget *tab_2;
     QMenuBar *menuBar;
     QMenu *menuSetting;
@@ -65,10 +67,14 @@ public:
         StockGroupsComboBox->setGeometry(QRect(140, 10, 141, 31));
         UpdateButton = new QPushButton(tabOverview);
         UpdateButton->setObjectName(QStringLiteral("UpdateButton"));
-        UpdateButton->setGeometry(QRect(770, 10, 101, 31));
+        UpdateButton->setGeometry(QRect(490, 10, 101, 31));
         listView = new QListView(tabOverview);
         listView->setObjectName(QStringLiteral("listView"));
         listView->setGeometry(QRect(5, 50, 871, 381));
+        UpdateProgressBar = new QProgressBar(tabOverview);
+        UpdateProgressBar->setObjectName(QStringLiteral("UpdateProgressBar"));
+        UpdateProgressBar->setGeometry(QRect(300, 10, 181, 31));
+        UpdateProgressBar->setValue(0);
         tabWidget->addTab(tabOverview, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));

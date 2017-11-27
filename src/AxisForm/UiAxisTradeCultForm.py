@@ -10,7 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_AxisTradeCultForm(object):
     def setupUi(self, AxisTradeCultForm):
-        AxisTradeCultForm.setObjectName("AxisForm")
+        AxisTradeCultForm.setObjectName("AxisTradeCultForm")
         AxisTradeCultForm.resize(908, 533)
         self.centralWidget = QtWidgets.QWidget(AxisTradeCultForm)
         self.centralWidget.setObjectName("centralWidget")
@@ -26,11 +26,15 @@ class Ui_AxisTradeCultForm(object):
         self.StockGroupsComboBox.setGeometry(QtCore.QRect(140, 10, 141, 31))
         self.StockGroupsComboBox.setObjectName("StockGroupsComboBox")
         self.UpdateButton = QtWidgets.QPushButton(self.tabOverview)
-        self.UpdateButton.setGeometry(QtCore.QRect(770, 10, 101, 31))
+        self.UpdateButton.setGeometry(QtCore.QRect(490, 10, 101, 31))
         self.UpdateButton.setObjectName("UpdateButton")
         self.listView = QtWidgets.QListView(self.tabOverview)
         self.listView.setGeometry(QtCore.QRect(5, 50, 871, 381))
         self.listView.setObjectName("listView")
+        self.UpdateProgressBar = QtWidgets.QProgressBar(self.tabOverview)
+        self.UpdateProgressBar.setGeometry(QtCore.QRect(300, 10, 181, 31))
+        self.UpdateProgressBar.setProperty("value", 0)
+        self.UpdateProgressBar.setObjectName("UpdateProgressBar")
         self.tabWidget.addTab(self.tabOverview, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
@@ -49,17 +53,17 @@ class Ui_AxisTradeCultForm(object):
         self.actionDataManager.setObjectName("actionDataManager")
         self.menuSetting.addAction(self.actionDataManager)
         self.menuBar.addAction(self.menuSetting.menuAction())
-
+        
         self.retranslateUi(AxisTradeCultForm)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(AxisTradeCultForm)
 
     def retranslateUi(self, AxisTradeCultForm):
         _translate = QtCore.QCoreApplication.translate
-        AxisTradeCultForm.setWindowTitle(_translate("AxisForm", "AxisForm"))
-        self.UpdateButton.setText(_translate("AxisForm", "Update"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabOverview), _translate("AxisForm", "Overview"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("AxisForm", "Tab 2"))
-        self.menuSetting.setTitle(_translate("AxisForm", "Setting"))
-        self.actionDataManager.setText(_translate("AxisForm", "DataManager"))
+        AxisTradeCultForm.setWindowTitle(_translate("AxisTradeCultForm", "AxisTradeCultForm"))
+        self.UpdateButton.setText(_translate("AxisTradeCultForm", "Update"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabOverview), _translate("AxisTradeCultForm", "Overview"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("AxisTradeCultForm", "Tab 2"))
+        self.menuSetting.setTitle(_translate("AxisTradeCultForm", "Setting"))
+        self.actionDataManager.setText(_translate("AxisTradeCultForm", "DataManager"))
 
