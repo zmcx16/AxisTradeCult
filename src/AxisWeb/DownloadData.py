@@ -10,11 +10,14 @@ def DownloadStockDataFromQuandl(symbol, save_dir):
     f = open(SymbolToPath(symbol, save_dir),'w')
     f.write(res.text)
     f.closed
+    return True
 
 def DownloadStockDataListFromQuandl(symbols, save_dir):
     for symbol in symbols:
         DownloadStockDataFromQuandl(symbol, save_dir)
+    return True
 
 def DownloadAllStockGroupsFromQuandl(save_dir):
     for key in gv.StockGroups:
         DownloadStockDataListFromQuandl(gv.StockGroups[key], save_dir)
+    return True

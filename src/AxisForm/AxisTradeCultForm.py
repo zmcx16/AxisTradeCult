@@ -21,28 +21,64 @@ class AxisTradeCultForm(QMainWindow, Ui_AxisTradeCultForm):
     def setupUIEvent(self,AxisTradeCultForm):
         self.UpdateButton.clicked.connect(self.DoUpdateButton)
         
-
-    
-    @pyqtSlot()  
+        
     def DoUpdateButton(self):
         self.UpdateButton.setEnabled(False)
-        self.update_stocks_thread = UpdateStocksThread()       
+        
+        stocksSet = set() 
+        for key in gv.StockGroups:
+            for symbol in gv.StockGroups[key]:
+                if symbol not in stocksSet:
+                    stocksSet.add(symbol)
+                        
+        self.UpdateProgressBar.setRange(0,100)
+        
+        self.update_stocks_thread = UpdateStocksThread(stocksSet)       
         self.update_stocks_thread.FinishUpdateStocksSignal.connect(self.FinishUpdateStocks)     
+        self.update_stocks_thread.UpdateProgressBarCountSignal.connect(self.UpdateProgressBarCount)
         self.update_stocks_thread.start()     
     
-    def FinishUpdateStocks(self):
-        self.UpdateButton.setEnabled(True)   
 
+    def FinishUpdateStocks(self):
+        self.UpdateButton.setEnabled(True)  
+        print ("finish!!")
+      
+    def UpdateProgressBarCount(self,val):
+        self.UpdateProgressBar.setValue(val)
+        
+    @pyqtSlot()
+    def on_UpdateButton_clicked(self):
+        print ("test pyqtSlot!!")
+    
 class UpdateStocksThread(QThread):
     
     FinishUpdateStocksSignal = pyqtSignal(str)
-    def __init__(self):
+    UpdateProgressBarCountSignal = pyqtSignal(int)
+    
+    FinishNum = 0  
+    def __init__(self,stocksSet):
         QThread.__init__(self)
-
+        self.stocksSet = stocksSet
+        
     def __del__(self):
         self.wait()
-
+        
     def run(self):
-        DownloadAllStockGroupsFromQuandl(gv.StockDataPoolPath)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+            future_to_download = {executor.submit(DownloadStockDataFromQuandl, symbol,gv.StockDataPoolPath): symbol for symbol in self.stocksSet}
+            for future in concurrent.futures.as_completed(future_to_download):
+                try:
+                    data = future.result()
+                except Exception as exc:
+                    print('Generated an exception: %s' % exc)
+                else:
+                    if data:
+                        previous_progress   = self.FinishNum / len(self.stocksSet) * 100
+                        self.FinishNum      += 1
+                        now_progress        = self.FinishNum / len(self.stocksSet) * 100
+                        if int(now_progress) != int(previous_progress):
+                            self.UpdateProgressBarCountSignal.emit(int(now_progress))
+
         self.FinishUpdateStocksSignal.emit("FinishUpdateStocksSignal")
+        
         
