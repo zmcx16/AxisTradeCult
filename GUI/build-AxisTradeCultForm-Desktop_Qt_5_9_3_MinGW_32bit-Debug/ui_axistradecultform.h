@@ -15,7 +15,9 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDateEdit>
+#include <QtWidgets/QFrame>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -40,6 +42,19 @@ public:
     QPushButton *UpdateButton;
     QListView *listView;
     QProgressBar *UpdateProgressBar;
+    QLabel *SymbolLabel;
+    QLabel *OpenLabel;
+    QLabel *HightLabel;
+    QLabel *LowLabel;
+    QLabel *CloseLabel;
+    QLabel *VolumeLabel;
+    QLabel *ChangeCLabel;
+    QLabel *ChangeVLabel;
+    QLabel *AvgCLabel;
+    QLabel *AvgVLabel;
+    QLabel *StrikePrice1YLabel;
+    QPushButton *GraphSampleButton;
+    QFrame *line;
     QWidget *tab_2;
     QMenuBar *menuBar;
     QMenu *menuSetting;
@@ -75,6 +90,59 @@ public:
         UpdateProgressBar->setObjectName(QStringLiteral("UpdateProgressBar"));
         UpdateProgressBar->setGeometry(QRect(300, 10, 181, 31));
         UpdateProgressBar->setValue(0);
+        SymbolLabel = new QLabel(tabOverview);
+        SymbolLabel->setObjectName(QStringLiteral("SymbolLabel"));
+        SymbolLabel->setGeometry(QRect(10, 50, 60, 31));
+        SymbolLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        OpenLabel = new QLabel(tabOverview);
+        OpenLabel->setObjectName(QStringLiteral("OpenLabel"));
+        OpenLabel->setGeometry(QRect(80, 50, 60, 31));
+        OpenLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        HightLabel = new QLabel(tabOverview);
+        HightLabel->setObjectName(QStringLiteral("HightLabel"));
+        HightLabel->setGeometry(QRect(150, 50, 60, 31));
+        HightLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        LowLabel = new QLabel(tabOverview);
+        LowLabel->setObjectName(QStringLiteral("LowLabel"));
+        LowLabel->setGeometry(QRect(220, 50, 60, 31));
+        LowLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        CloseLabel = new QLabel(tabOverview);
+        CloseLabel->setObjectName(QStringLiteral("CloseLabel"));
+        CloseLabel->setGeometry(QRect(290, 50, 60, 31));
+        CloseLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        VolumeLabel = new QLabel(tabOverview);
+        VolumeLabel->setObjectName(QStringLiteral("VolumeLabel"));
+        VolumeLabel->setGeometry(QRect(500, 50, 60, 31));
+        VolumeLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        ChangeCLabel = new QLabel(tabOverview);
+        ChangeCLabel->setObjectName(QStringLiteral("ChangeCLabel"));
+        ChangeCLabel->setGeometry(QRect(360, 50, 60, 31));
+        ChangeCLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        ChangeVLabel = new QLabel(tabOverview);
+        ChangeVLabel->setObjectName(QStringLiteral("ChangeVLabel"));
+        ChangeVLabel->setGeometry(QRect(570, 50, 60, 31));
+        ChangeVLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        AvgCLabel = new QLabel(tabOverview);
+        AvgCLabel->setObjectName(QStringLiteral("AvgCLabel"));
+        AvgCLabel->setGeometry(QRect(430, 50, 60, 31));
+        AvgCLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        AvgVLabel = new QLabel(tabOverview);
+        AvgVLabel->setObjectName(QStringLiteral("AvgVLabel"));
+        AvgVLabel->setGeometry(QRect(640, 50, 60, 31));
+        AvgVLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        StrikePrice1YLabel = new QLabel(tabOverview);
+        StrikePrice1YLabel->setObjectName(QStringLiteral("StrikePrice1YLabel"));
+        StrikePrice1YLabel->setGeometry(QRect(690, 50, 120, 31));
+        StrikePrice1YLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        GraphSampleButton = new QPushButton(tabOverview);
+        GraphSampleButton->setObjectName(QStringLiteral("GraphSampleButton"));
+        GraphSampleButton->setEnabled(true);
+        GraphSampleButton->setGeometry(QRect(820, 50, 51, 31));
+        line = new QFrame(tabOverview);
+        line->setObjectName(QStringLiteral("line"));
+        line->setGeometry(QRect(20, 70, 791, 20));
+        line->setFrameShape(QFrame::HLine);
+        line->setFrameShadow(QFrame::Sunken);
         tabWidget->addTab(tabOverview, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
@@ -106,6 +174,18 @@ public:
         AxisTradeCultForm->setWindowTitle(QApplication::translate("AxisTradeCultForm", "AxisTradeCultForm", Q_NULLPTR));
         actionDataManager->setText(QApplication::translate("AxisTradeCultForm", "DataManager", Q_NULLPTR));
         UpdateButton->setText(QApplication::translate("AxisTradeCultForm", "Update", Q_NULLPTR));
+        SymbolLabel->setText(QApplication::translate("AxisTradeCultForm", "Symbol", Q_NULLPTR));
+        OpenLabel->setText(QApplication::translate("AxisTradeCultForm", "Open", Q_NULLPTR));
+        HightLabel->setText(QApplication::translate("AxisTradeCultForm", "High", Q_NULLPTR));
+        LowLabel->setText(QApplication::translate("AxisTradeCultForm", "Low", Q_NULLPTR));
+        CloseLabel->setText(QApplication::translate("AxisTradeCultForm", "Close", Q_NULLPTR));
+        VolumeLabel->setText(QApplication::translate("AxisTradeCultForm", "Volume", Q_NULLPTR));
+        ChangeCLabel->setText(QApplication::translate("AxisTradeCultForm", "Change", Q_NULLPTR));
+        ChangeVLabel->setText(QApplication::translate("AxisTradeCultForm", "Change", Q_NULLPTR));
+        AvgCLabel->setText(QApplication::translate("AxisTradeCultForm", "Avg(3M)", Q_NULLPTR));
+        AvgVLabel->setText(QApplication::translate("AxisTradeCultForm", "Avg(3M)", Q_NULLPTR));
+        StrikePrice1YLabel->setText(QApplication::translate("AxisTradeCultForm", "Strike Price(1Y)", Q_NULLPTR));
+        GraphSampleButton->setText(QApplication::translate("AxisTradeCultForm", "Graph", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabOverview), QApplication::translate("AxisTradeCultForm", "Overview", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("AxisTradeCultForm", "Tab 2", Q_NULLPTR));
         menuSetting->setTitle(QApplication::translate("AxisTradeCultForm", "Setting", Q_NULLPTR));
