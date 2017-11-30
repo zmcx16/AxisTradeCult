@@ -214,7 +214,7 @@
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="AvgCLabel">
+     <widget class="QLabel" name="AvgC3MLabel">
       <property name="geometry">
        <rect>
         <x>430</x>
@@ -230,7 +230,7 @@
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="AvgVLabel">
+     <widget class="QLabel" name="AvgV3MLabel">
       <property name="geometry">
        <rect>
         <x>640</x>
@@ -246,22 +246,6 @@
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
-     <widget class="QLabel" name="StrikePrice1YLabel">
-      <property name="geometry">
-       <rect>
-        <x>690</x>
-        <y>50</y>
-        <width>120</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Strike Price(1Y)</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
      <widget class="QPushButton" name="GraphSampleButton">
       <property name="enabled">
        <bool>true</bool>
@@ -269,9 +253,9 @@
       <property name="geometry">
        <rect>
         <x>820</x>
-        <y>50</y>
+        <y>53</y>
         <width>51</width>
-        <height>31</height>
+        <height>25</height>
        </rect>
       </property>
       <property name="text">
@@ -289,6 +273,22 @@
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="StrikePrice1YLabel">
+      <property name="geometry">
+       <rect>
+        <x>690</x>
+        <y>50</y>
+        <width>120</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Strike Price(1Y)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </widget>
