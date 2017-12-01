@@ -53,7 +53,7 @@
      <widget class="QPushButton" name="UpdateButton">
       <property name="geometry">
        <rect>
-        <x>490</x>
+        <x>770</x>
         <y>10</y>
         <width>101</width>
         <height>31</height>
@@ -289,6 +289,29 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="Stockline">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>10</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="AddButton">
+      <property name="geometry">
+       <rect>
+        <x>590</x>
+        <y>10</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Add</string>
       </property>
      </widget>
     </widget>

@@ -18,6 +18,7 @@
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -52,9 +53,11 @@ public:
     QLabel *ChangeVLabel;
     QLabel *AvgC3MLabel;
     QLabel *AvgV3MLabel;
-    QLabel *StrikePrice1YLabel;
     QPushButton *GraphSampleButton;
     QFrame *line;
+    QLabel *StrikePrice1YLabel;
+    QLineEdit *Stockline;
+    QPushButton *AddButton;
     QWidget *tab_2;
     QMenuBar *menuBar;
     QMenu *menuSetting;
@@ -82,7 +85,7 @@ public:
         StockGroupsComboBox->setGeometry(QRect(140, 10, 141, 31));
         UpdateButton = new QPushButton(tabOverview);
         UpdateButton->setObjectName(QStringLiteral("UpdateButton"));
-        UpdateButton->setGeometry(QRect(490, 10, 101, 31));
+        UpdateButton->setGeometry(QRect(770, 10, 101, 31));
         listView = new QListView(tabOverview);
         listView->setObjectName(QStringLiteral("listView"));
         listView->setGeometry(QRect(5, 50, 871, 381));
@@ -130,13 +133,6 @@ public:
         AvgV3MLabel->setObjectName(QStringLiteral("AvgV3MLabel"));
         AvgV3MLabel->setGeometry(QRect(640, 50, 60, 31));
         AvgV3MLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
-        StrikePrice1YLabel = new QLabel(tabOverview);
-        StrikePrice1YLabel->setObjectName(QStringLiteral("StrikePrice1YLabel"));
-        StrikePrice1YLabel->setGeometry(QRect(690, 50, 120, 31));
-        QFont font;
-        font.setPointSize(9);
-        StrikePrice1YLabel->setFont(font);
-        StrikePrice1YLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         GraphSampleButton = new QPushButton(tabOverview);
         GraphSampleButton->setObjectName(QStringLiteral("GraphSampleButton"));
         GraphSampleButton->setEnabled(true);
@@ -146,6 +142,16 @@ public:
         line->setGeometry(QRect(20, 70, 791, 20));
         line->setFrameShape(QFrame::HLine);
         line->setFrameShadow(QFrame::Sunken);
+        StrikePrice1YLabel = new QLabel(tabOverview);
+        StrikePrice1YLabel->setObjectName(QStringLiteral("StrikePrice1YLabel"));
+        StrikePrice1YLabel->setGeometry(QRect(690, 50, 120, 31));
+        StrikePrice1YLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        Stockline = new QLineEdit(tabOverview);
+        Stockline->setObjectName(QStringLiteral("Stockline"));
+        Stockline->setGeometry(QRect(500, 10, 71, 31));
+        AddButton = new QPushButton(tabOverview);
+        AddButton->setObjectName(QStringLiteral("AddButton"));
+        AddButton->setGeometry(QRect(590, 10, 71, 31));
         tabWidget->addTab(tabOverview, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
@@ -187,8 +193,9 @@ public:
         ChangeVLabel->setText(QApplication::translate("AxisTradeCultForm", "Change", Q_NULLPTR));
         AvgC3MLabel->setText(QApplication::translate("AxisTradeCultForm", "Avg(3M)", Q_NULLPTR));
         AvgV3MLabel->setText(QApplication::translate("AxisTradeCultForm", "Avg(3M)", Q_NULLPTR));
-        StrikePrice1YLabel->setText(QApplication::translate("AxisTradeCultForm", "Strike Price(1Y)", Q_NULLPTR));
         GraphSampleButton->setText(QApplication::translate("AxisTradeCultForm", "Graph", Q_NULLPTR));
+        StrikePrice1YLabel->setText(QApplication::translate("AxisTradeCultForm", "Strike Price(1Y)", Q_NULLPTR));
+        AddButton->setText(QApplication::translate("AxisTradeCultForm", "Add", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabOverview), QApplication::translate("AxisTradeCultForm", "Overview", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("AxisTradeCultForm", "Tab 2", Q_NULLPTR));
         menuSetting->setTitle(QApplication::translate("AxisTradeCultForm", "Setting", Q_NULLPTR));

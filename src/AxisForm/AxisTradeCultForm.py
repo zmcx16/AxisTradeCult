@@ -12,7 +12,9 @@ import concurrent.futures
 import time
 
 import Program.GlobalVar as gv
+from Program.Common import *
 from AxisWeb.DownloadData import *
+
 
 def ClearAllWidgetInLayout(layout):
     for i in reversed(range(layout.count())): 
@@ -43,28 +45,30 @@ class AxisTradeCultForm(QMainWindow, Ui_AxisTradeCultForm):
         ClearAllWidgetInLayout(self.OverviewStocklayout)
         SelectGroupName = self.StockGroupsComboBox.currentText()
         Stocks = gv.StockGroups[SelectGroupName]
-                
-        for i in range(len(Stocks)):
-            stock_data = {'Symbol':'T','Open':'10','High':'15','Low':'8','Close':'12','Volume':'11','ChangeC':'3%','ChangeV':'10%','AvgC3M':'15','AvgV3M':'13','StrikePrice1Y':'10.5 ~ 20.4'}        
-            self.OverviewStock = OverviewStock(self,str(i),stock_data,30*(i+1))    
         
+        OverviewStocks = ReadOverviewStockData(Stocks, gv.StockDataPoolPath)
+        FormatOverviewStockData(OverviewStocks);        
+        
+        objectID = 1
+        for stock in OverviewStocks: 
+            self.OverviewStock = OverviewStock(self,str(objectID),OverviewStocks[stock],30*(objectID)) 
+            objectID+=1         
          
     def DoUpdateButton(self):
         self.UpdateButton.setEnabled(False)
         
-        stocksSet = set() 
-        for key in gv.StockGroups:
-            for symbol in gv.StockGroups[key]:
-                if symbol not in stocksSet:
-                    stocksSet.add(symbol)
-                        
+                    
+        stocksSet = {symbol for key in gv.StockGroups for symbol in gv.StockGroups[key]}
+        
+        print(stocksSet)
+                  
         self.UpdateProgressBar.setRange(0,100)
         
         self.update_stocks_thread = UpdateStocksThread(stocksSet)       
         self.update_stocks_thread.FinishUpdateStocksSignal.connect(self.FinishUpdateStocks)     
         self.update_stocks_thread.UpdateProgressBarCountSignal.connect(self.UpdateProgressBarCount)
         self.update_stocks_thread.start()     
-    
+        
 
     def FinishUpdateStocks(self):
         self.UpdateButton.setEnabled(True)  
@@ -111,7 +115,7 @@ class UpdateStocksThread(QThread):
 
 class OverviewStock(Ui_AxisTradeCultForm):
     def __init__(self,parent,id,data,offset):
-                
+                        
         font = QFont()
         font.setPointSize(10)
                 
@@ -174,7 +178,6 @@ class OverviewStock(Ui_AxisTradeCultForm):
         GraphSampleButton.setEnabled(True)
         GraphSampleButton.setGeometry(QRect(parent.GraphSampleButton.x(),parent.GraphSampleButton.y()+offset, parent.GraphSampleButton.width(), parent.GraphSampleButton.height()))
         GraphSampleButton.setObjectName(parent.GraphSampleButton.objectName()+id)
-        
         
         _translate = QCoreApplication.translate
         SymbolLabel.setText(_translate("AxisTradeCultForm", data["Symbol"]))
