@@ -29,6 +29,7 @@ class AxisTradeCultForm(QMainWindow, Ui_AxisTradeCultForm):
     def setupUIEvent(self,AxisTradeCultForm):
         self.UpdateButton.clicked.connect(self.DoUpdateButton)
         self.GraphSampleButton.setVisible(False)
+        self.StockCheckBox.setVisible(False)
         self.OverviewStocklayout = QHBoxLayout()
         self.SetStockGroupsComboBoxItem()
         
@@ -119,11 +120,10 @@ class OverviewStock(Ui_AxisTradeCultForm):
         font = QFont()
         font.setPointSize(10)
                 
-        SymbolLabel = QLabel(parent.tabOverview)
-        SymbolLabel.setGeometry(QRect(parent.SymbolLabel.x(),parent.SymbolLabel.y()+offset, parent.SymbolLabel.width(), parent.SymbolLabel.height()))
-        SymbolLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-        SymbolLabel.setObjectName(parent.SymbolLabel.objectName()+id)
-        SymbolLabel.setFont(font)
+        StockCheckBox = QCheckBox(parent.tabOverview)
+        StockCheckBox.setGeometry(QRect(parent.StockCheckBox.x(),parent.StockCheckBox.y()+offset, parent.StockCheckBox.width(), parent.StockCheckBox.height()))
+        StockCheckBox.setObjectName(parent.StockCheckBox.objectName()+id)
+        StockCheckBox.setFont(font)
         OpenLabel = QLabel(parent.tabOverview)
         OpenLabel.setGeometry(QRect(parent.OpenLabel.x(),parent.OpenLabel.y()+offset, parent.OpenLabel.width(), parent.OpenLabel.height()))
         OpenLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
@@ -180,7 +180,7 @@ class OverviewStock(Ui_AxisTradeCultForm):
         GraphSampleButton.setObjectName(parent.GraphSampleButton.objectName()+id)
         
         _translate = QCoreApplication.translate
-        SymbolLabel.setText(_translate("AxisTradeCultForm", data["Symbol"]))
+        StockCheckBox.setText(_translate("AxisTradeCultForm", data["Symbol"]))        
         OpenLabel.setText(_translate("AxisTradeCultForm", data["Open"]))
         HightLabel.setText(_translate("AxisTradeCultForm", data["High"]))
         LowLabel.setText(_translate("AxisTradeCultForm", data["Low"]))
@@ -193,7 +193,7 @@ class OverviewStock(Ui_AxisTradeCultForm):
         StrikePrice1YLabel.setText(_translate("AxisTradeCultForm", data["StrikePrice1Y"]))
         GraphSampleButton.setText(_translate("AxisTradeCultForm", "Graph"))   
         
-        parent.OverviewStocklayout.addWidget(SymbolLabel) 
+        parent.OverviewStocklayout.addWidget(StockCheckBox) 
         parent.OverviewStocklayout.addWidget(OpenLabel) 
         parent.OverviewStocklayout.addWidget(HightLabel) 
         parent.OverviewStocklayout.addWidget(LowLabel) 

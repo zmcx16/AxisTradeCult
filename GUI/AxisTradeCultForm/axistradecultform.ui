@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>908</width>
+    <width>930</width>
     <height>533</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>891</width>
+      <width>911</width>
       <height>471</height>
      </rect>
     </property>
@@ -33,7 +33,7 @@
      <widget class="QDateEdit" name="DisplayDate">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>70</x>
         <y>10</y>
         <width>110</width>
         <height>31</height>
@@ -43,7 +43,7 @@
      <widget class="QComboBox" name="StockGroupsComboBox">
       <property name="geometry">
        <rect>
-        <x>140</x>
+        <x>200</x>
         <y>10</y>
         <width>141</width>
         <height>31</height>
@@ -53,9 +53,9 @@
      <widget class="QPushButton" name="UpdateButton">
       <property name="geometry">
        <rect>
-        <x>770</x>
+        <x>800</x>
         <y>10</y>
-        <width>101</width>
+        <width>91</width>
         <height>31</height>
        </rect>
       </property>
@@ -68,7 +68,7 @@
        <rect>
         <x>5</x>
         <y>50</y>
-        <width>871</width>
+        <width>891</width>
         <height>381</height>
        </rect>
       </property>
@@ -76,7 +76,7 @@
      <widget class="QProgressBar" name="UpdateProgressBar">
       <property name="geometry">
        <rect>
-        <x>300</x>
+        <x>360</x>
         <y>10</y>
         <width>181</width>
         <height>31</height>
@@ -89,7 +89,7 @@
      <widget class="QLabel" name="SymbolLabel">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>20</x>
         <y>50</y>
         <width>60</width>
         <height>31</height>
@@ -105,7 +105,7 @@
      <widget class="QLabel" name="OpenLabel">
       <property name="geometry">
        <rect>
-        <x>80</x>
+        <x>90</x>
         <y>50</y>
         <width>60</width>
         <height>31</height>
@@ -121,7 +121,7 @@
      <widget class="QLabel" name="HightLabel">
       <property name="geometry">
        <rect>
-        <x>150</x>
+        <x>160</x>
         <y>50</y>
         <width>60</width>
         <height>31</height>
@@ -137,7 +137,7 @@
      <widget class="QLabel" name="LowLabel">
       <property name="geometry">
        <rect>
-        <x>220</x>
+        <x>230</x>
         <y>50</y>
         <width>60</width>
         <height>31</height>
@@ -153,7 +153,7 @@
      <widget class="QLabel" name="CloseLabel">
       <property name="geometry">
        <rect>
-        <x>290</x>
+        <x>300</x>
         <y>50</y>
         <width>60</width>
         <height>31</height>
@@ -169,7 +169,7 @@
      <widget class="QLabel" name="VolumeLabel">
       <property name="geometry">
        <rect>
-        <x>500</x>
+        <x>510</x>
         <y>50</y>
         <width>60</width>
         <height>31</height>
@@ -185,7 +185,7 @@
      <widget class="QLabel" name="ChangeCLabel">
       <property name="geometry">
        <rect>
-        <x>360</x>
+        <x>370</x>
         <y>50</y>
         <width>60</width>
         <height>31</height>
@@ -201,7 +201,7 @@
      <widget class="QLabel" name="ChangeVLabel">
       <property name="geometry">
        <rect>
-        <x>570</x>
+        <x>580</x>
         <y>50</y>
         <width>60</width>
         <height>31</height>
@@ -217,7 +217,7 @@
      <widget class="QLabel" name="AvgC3MLabel">
       <property name="geometry">
        <rect>
-        <x>430</x>
+        <x>440</x>
         <y>50</y>
         <width>60</width>
         <height>31</height>
@@ -233,7 +233,7 @@
      <widget class="QLabel" name="AvgV3MLabel">
       <property name="geometry">
        <rect>
-        <x>640</x>
+        <x>650</x>
         <y>50</y>
         <width>60</width>
         <height>31</height>
@@ -252,7 +252,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>820</x>
+        <x>830</x>
         <y>53</y>
         <width>51</width>
         <height>25</height>
@@ -265,7 +265,7 @@
      <widget class="Line" name="line">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>30</x>
         <y>70</y>
         <width>791</width>
         <height>20</height>
@@ -278,7 +278,7 @@
      <widget class="QLabel" name="StrikePrice1YLabel">
       <property name="geometry">
        <rect>
-        <x>690</x>
+        <x>700</x>
         <y>50</y>
         <width>120</width>
         <height>31</height>
@@ -294,7 +294,7 @@
      <widget class="QLineEdit" name="Stockline">
       <property name="geometry">
        <rect>
-        <x>500</x>
+        <x>560</x>
         <y>10</y>
         <width>71</width>
         <height>31</height>
@@ -304,7 +304,7 @@
      <widget class="QPushButton" name="AddButton">
       <property name="geometry">
        <rect>
-        <x>590</x>
+        <x>650</x>
         <y>10</y>
         <width>71</width>
         <height>31</height>
@@ -312,6 +312,32 @@
       </property>
       <property name="text">
        <string>Add</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="StockCheckBox">
+      <property name="geometry">
+       <rect>
+        <x>15</x>
+        <y>50</y>
+        <width>80</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="DelButton">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Del</string>
       </property>
      </widget>
     </widget>
@@ -327,7 +353,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>908</width>
+     <width>930</width>
      <height>26</height>
     </rect>
    </property>
