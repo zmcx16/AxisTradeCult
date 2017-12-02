@@ -27,7 +27,12 @@ def AddStockInGroup(GroupName,Symbol):
     global StockGroups    
     StockGroups[GroupName].append(Symbol)
     SaveStockGroups()
-    
+
+def ResetStockInGroup(GroupName,NewStockGroups):
+    global StockGroups    
+    StockGroups = StockGroups
+    SaveStockGroups()
+
         
 if os.path.isfile(StockGroupsSettingPath) == False:
     SaveStockGroups() 

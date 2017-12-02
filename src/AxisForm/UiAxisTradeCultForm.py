@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.Qt import QDate
 
 class Ui_AxisTradeCultForm(object):
     def setupUi(self, AxisTradeCultForm):
@@ -119,7 +120,7 @@ class Ui_AxisTradeCultForm(object):
         self.actionDataManager.setObjectName("actionDataManager")
         self.menuSetting.addAction(self.actionDataManager)
         self.menuBar.addAction(self.menuSetting.menuAction())
-        
+
         self.retranslateUi(AxisTradeCultForm)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(AxisTradeCultForm)
