@@ -17,9 +17,11 @@ from AxisWeb.DownloadData import *
 
 
 def ClearAllWidgetInLayout(layout):
-    for i in reversed(range(layout.count())): 
-        layout.itemAt(i).widget().setParent(None)   
-
+    for i in reversed(range(layout.count())):  
+        widgetToRemove = layout.itemAt( i ).widget()  
+        layout.removeWidget( widgetToRemove )           # remove it from the layout list
+        widgetToRemove.setParent( None )                # remove it from the gui
+  
 class AxisTradeCultForm(QMainWindow, Ui_AxisTradeCultForm):
     def __init__(self, parent=None):
         super(AxisTradeCultForm, self).__init__(parent)
@@ -27,44 +29,37 @@ class AxisTradeCultForm(QMainWindow, Ui_AxisTradeCultForm):
         self.setupUIEvent(self)
         
     def setupUIEvent(self,AxisTradeCultForm):
+        self.OverviewStocklayout = QHBoxLayout()       
         self.UpdateButton.clicked.connect(self.DoUpdateButton)
+        self.StockGroupsComboBox.currentIndexChanged.connect(self.RefreshOverviewStock)
         self.GraphSampleButton.setVisible(False)
-        self.StockCheckBox.setVisible(False)
-        self.OverviewStocklayout = QHBoxLayout()
-        self.SetStockGroupsComboBoxItem()
-        
-        self.RefreshOverviewStock()
-        #stock_data = {'Symbol':'T','Open':'10','High':'15','Low':'8','Close':'12','Volume':'11','ChangeC':'3%','ChangeV':'10%','AvgC3M':'15','AvgV3M':'13','StrikePrice1Y':'10.5 ~ 20.4'}
-        
-        #self.OverviewStock1 = OverviewStock(self,str(1),stock_data,30) 
-        #self.OverviewStock2 = OverviewStock(self,str(2),stock_data,60) 
+        self.StockCheckBox.setVisible(False) 
+        self.SetStockGroupsComboBoxItem()        
 
     def SetStockGroupsComboBoxItem(self):
         self.StockGroupsComboBox.addItems(gv.StockGroups.keys())
 
-    def RefreshOverviewStock(self):
-        ClearAllWidgetInLayout(self.OverviewStocklayout)
+    def RefreshOverviewStock(self):         
+
+        ClearAllWidgetInLayout(self.OverviewStocklayout)        
         SelectGroupName = self.StockGroupsComboBox.currentText()
-        Stocks = gv.StockGroups[SelectGroupName]
-        
+        Stocks = gv.StockGroups[SelectGroupName]      
         OverviewStocks = ReadOverviewStockData(Stocks, gv.StockDataPoolPath)
-        FormatOverviewStockData(OverviewStocks);        
-        
+
+        if OverviewStocks is False:
+            return False
+            
+        FormatOverviewStockData(OverviewStocks);               
         objectID = 1
         for stock in OverviewStocks: 
             self.OverviewStock = OverviewStock(self,str(objectID),OverviewStocks[stock],30*(objectID)) 
             objectID+=1         
          
     def DoUpdateButton(self):
-        self.UpdateButton.setEnabled(False)
         
-                    
-        stocksSet = {symbol for key in gv.StockGroups for symbol in gv.StockGroups[key]}
-        
-        print(stocksSet)
-                  
-        self.UpdateProgressBar.setRange(0,100)
-        
+        self.UpdateButton.setEnabled(False)     
+        stocksSet = {symbol for key in gv.StockGroups for symbol in gv.StockGroups[key]}          
+        self.UpdateProgressBar.setRange(0,100)   
         self.update_stocks_thread = UpdateStocksThread(stocksSet)       
         self.update_stocks_thread.FinishUpdateStocksSignal.connect(self.FinishUpdateStocks)     
         self.update_stocks_thread.UpdateProgressBarCountSignal.connect(self.UpdateProgressBarCount)
@@ -192,7 +187,7 @@ class OverviewStock(Ui_AxisTradeCultForm):
         AvgV3MLabel.setText(_translate("AxisTradeCultForm", data["AvgV3M"]))
         StrikePrice1YLabel.setText(_translate("AxisTradeCultForm", data["StrikePrice1Y"]))
         GraphSampleButton.setText(_translate("AxisTradeCultForm", "Graph"))   
-        
+                  
         parent.OverviewStocklayout.addWidget(StockCheckBox) 
         parent.OverviewStocklayout.addWidget(OpenLabel) 
         parent.OverviewStocklayout.addWidget(HightLabel) 
@@ -205,3 +200,6 @@ class OverviewStock(Ui_AxisTradeCultForm):
         parent.OverviewStocklayout.addWidget(AvgV3MLabel) 
         parent.OverviewStocklayout.addWidget(StrikePrice1YLabel) 
         parent.OverviewStocklayout.addWidget(GraphSampleButton) 
+        
+        for i in range(parent.OverviewStocklayout.count()): 
+            parent.OverviewStocklayout.itemAt( i ).widget().show()  

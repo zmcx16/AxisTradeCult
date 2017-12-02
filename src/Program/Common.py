@@ -13,7 +13,6 @@ def CalChange(now,prev):
 
 def FormatOverviewStockData(OverviewStocks):
     
-    print(OverviewStocks)
     for stockInfo in OverviewStocks:
         OverviewStocks[stockInfo]['Open']   =  "{0:.2f}".format(OverviewStocks[stockInfo]['Open'])
         OverviewStocks[stockInfo]['High']   =  "{0:.2f}".format(OverviewStocks[stockInfo]['High'])
@@ -26,16 +25,20 @@ def FormatOverviewStockData(OverviewStocks):
         OverviewStocks[stockInfo]['AvgV3M']   = "{0:}".format(OverviewStocks[stockInfo]['AvgV3M'])
         OverviewStocks[stockInfo]['StrikePrice1Y']   = "{0:.2f}-{0:.2f}".format(OverviewStocks[stockInfo]['StrikePrice1Y'][0],OverviewStocks[stockInfo]['StrikePrice1Y'][1]) 
         
-    print(OverviewStocks)
 
 def ReadOverviewStockData(stocks, StockDataPoolPath):
     
     OverviewStocks = {}
     
     for stock in stocks:
-        StockDF = pandas.read_csv(SymbolToPath(stock,StockDataPoolPath) , parse_dates=True, index_col="Date",
-            usecols=["Date","Adj. Open", "Adj. High", "Adj. Low", "Adj. Close", "Adj. Volume"], na_values=["nan"])
-                        
+        try:
+            StockDF = pandas.read_csv(SymbolToPath(stock,StockDataPoolPath) , parse_dates=True, index_col="Date",
+                    usecols=["Date","Adj. Open", "Adj. High", "Adj. Low", "Adj. Close", "Adj. Volume"], na_values=["nan"])
+        
+        except Exception as exc:
+            print('Generated an exception: %s' % exc)
+            return False            
+                
         latestDate = pandas.to_datetime(numpy.array(StockDF.index.to_pydatetime(), dtype=numpy.datetime64)[0])      
         latestDate_back3m = latestDate - pandas.DateOffset(months=3)
         latestDate_back1y = latestDate - pandas.DateOffset(years=1)

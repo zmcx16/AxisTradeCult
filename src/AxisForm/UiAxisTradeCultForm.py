@@ -119,7 +119,7 @@ class Ui_AxisTradeCultForm(object):
         self.actionDataManager.setObjectName("actionDataManager")
         self.menuSetting.addAction(self.actionDataManager)
         self.menuBar.addAction(self.menuSetting.menuAction())
-
+        
         self.retranslateUi(AxisTradeCultForm)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(AxisTradeCultForm)
