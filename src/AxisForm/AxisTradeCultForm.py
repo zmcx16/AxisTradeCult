@@ -8,19 +8,38 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtWidgets import *
 
+
 import concurrent.futures
 import time
 
 import Program.GlobalVar as gv
 from Program.Common import *
 from AxisWeb.DownloadData import *
-
+from AxisForm.MessageInfo import *
 
 def ClearAllWidgetInLayout(layout):
     for i in reversed(range(layout.count())):  
         widgetToRemove = layout.itemAt( i ).widget()  
         layout.removeWidget( widgetToRemove )           # remove it from the layout list
         widgetToRemove.setParent( None )                # remove it from the gui
+
+def showdialog(message):
+    msg = QMessageBox()
+    msg.setIcon(QMessageBox.Information)
+    
+    msg.setText(message['setText'])
+    msg.setWindowTitle(message['setWindowTitle'])
+    
+    if message['setInformativeText'] is not 'None': 
+        msg.setInformativeText(message['setInformativeText'])
+    
+    if message['setDetailedText'] is not 'None':
+        msg.setDetailedText(message['setDetailedText'])
+        
+    msg.setStandardButtons(QMessageBox.Ok)
+        
+    return  msg.exec_()
+
   
 class AxisTradeCultForm(QMainWindow, Ui_AxisTradeCultForm):
     def __init__(self, parent=None):
@@ -31,6 +50,7 @@ class AxisTradeCultForm(QMainWindow, Ui_AxisTradeCultForm):
     def setupUIEvent(self,AxisTradeCultForm):
         self.OverviewStocklayout = QHBoxLayout()       
         self.UpdateButton.clicked.connect(self.DoUpdateButton)
+        self.AddButton.clicked.connect(self.DoAddButton)
         self.StockGroupsComboBox.currentIndexChanged.connect(self.RefreshOverviewStock)
         self.GraphSampleButton.setVisible(False)
         self.StockCheckBox.setVisible(False) 
@@ -54,6 +74,29 @@ class AxisTradeCultForm(QMainWindow, Ui_AxisTradeCultForm):
         for stock in OverviewStocks: 
             self.OverviewStock = OverviewStock(self,str(objectID),OverviewStocks[stock],30*(objectID)) 
             objectID+=1         
+
+    def DoAddButton(self):
+        self.AddButton.setEnabled(False)
+        Symbol = self.Stockline.text()
+        NowGroup = self.StockGroupsComboBox.currentText()
+        
+        if DownloadStockDataFromQuandl(Symbol,gv.StockDataPoolPath) is False:            
+            msg = AddStockDownloadFailMessage
+            
+            msg[Str_setText] = msg[Str_setText].format(Symbol)
+            showdialog(msg)
+            return False
+        
+        if Symbol in gv.StockGroups[NowGroup]:
+            msg = AddStockAlreadySymbolMessage
+            msg[Str_setText] = msg[Str_setText].format(NowGroup,Symbol)       
+            showdialog(AddStockAlreadySymbolMessage)
+            return False
+                    
+        gv.AddStockInGroup(self.StockGroupsComboBox.currentText(),Symbol)
+        self.AddButton.setEnabled(False)      
+        return True
+         
          
     def DoUpdateButton(self):
         
@@ -99,7 +142,7 @@ class UpdateStocksThread(QThread):
                 except Exception as exc:
                     print('Generated an exception: %s' % exc)
                 else:
-                    if data:
+                    if data is True:
                         previous_progress   = self.FinishNum / len(self.stocksSet) * 100
                         self.FinishNum      += 1
                         now_progress        = self.FinishNum / len(self.stocksSet) * 100

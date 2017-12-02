@@ -12,6 +12,7 @@ StockGroupsSettingPath = os.path.join(RootPath,StockGroupsSetting)
 
 StockDataPool = 'StockDataPool'
 StockDataPoolPath = os.path.join(RootPath,StockDataPool)
+
     
 def SaveStockGroups():
     with open(StockGroupsSettingPath, 'w') as f:
@@ -21,7 +22,14 @@ def ReadStockGroups():
     global StockGroups
     with open(StockGroupsSettingPath, 'r') as f:
         StockGroups = json.load(f)    
-  
+
+def AddStockInGroup(GroupName,Symbol):
+    global StockGroups    
+    StockGroups[GroupName].append(Symbol)
+    SaveStockGroups()
+    
         
 if os.path.isfile(StockGroupsSettingPath) == False:
     SaveStockGroups() 
+
+
