@@ -20,12 +20,12 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QScrollArea>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QWidget>
@@ -42,7 +42,6 @@ public:
     QDateEdit *DisplayDate;
     QComboBox *StockGroupsComboBox;
     QPushButton *UpdateButton;
-    QListView *listView;
     QProgressBar *UpdateProgressBar;
     QLabel *SymbolLabel;
     QLabel *OpenLabel;
@@ -61,6 +60,8 @@ public:
     QPushButton *AddButton;
     QCheckBox *StockCheckBox;
     QPushButton *DelButton;
+    QScrollArea *OverviewScrollArea;
+    QWidget *scrollAreaWidgetContents;
     QWidget *tab_2;
     QMenuBar *menuBar;
     QMenu *menuSetting;
@@ -70,14 +71,14 @@ public:
     {
         if (AxisTradeCultForm->objectName().isEmpty())
             AxisTradeCultForm->setObjectName(QStringLiteral("AxisTradeCultForm"));
-        AxisTradeCultForm->resize(930, 533);
+        AxisTradeCultForm->resize(968, 533);
         actionDataManager = new QAction(AxisTradeCultForm);
         actionDataManager->setObjectName(QStringLiteral("actionDataManager"));
         centralWidget = new QWidget(AxisTradeCultForm);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
-        tabWidget->setGeometry(QRect(10, 10, 911, 471));
+        tabWidget->setGeometry(QRect(10, 10, 951, 471));
         tabOverview = new QWidget();
         tabOverview->setObjectName(QStringLiteral("tabOverview"));
         DisplayDate = new QDateEdit(tabOverview);
@@ -89,9 +90,6 @@ public:
         UpdateButton = new QPushButton(tabOverview);
         UpdateButton->setObjectName(QStringLiteral("UpdateButton"));
         UpdateButton->setGeometry(QRect(800, 10, 91, 31));
-        listView = new QListView(tabOverview);
-        listView->setObjectName(QStringLiteral("listView"));
-        listView->setGeometry(QRect(5, 50, 891, 381));
         UpdateProgressBar = new QProgressBar(tabOverview);
         UpdateProgressBar->setObjectName(QStringLiteral("UpdateProgressBar"));
         UpdateProgressBar->setGeometry(QRect(360, 10, 181, 31));
@@ -139,7 +137,7 @@ public:
         GraphSampleButton = new QPushButton(tabOverview);
         GraphSampleButton->setObjectName(QStringLiteral("GraphSampleButton"));
         GraphSampleButton->setEnabled(true);
-        GraphSampleButton->setGeometry(QRect(830, 53, 51, 25));
+        GraphSampleButton->setGeometry(QRect(840, 53, 51, 25));
         line = new QFrame(tabOverview);
         line->setObjectName(QStringLiteral("line"));
         line->setGeometry(QRect(30, 70, 791, 20));
@@ -161,6 +159,15 @@ public:
         DelButton = new QPushButton(tabOverview);
         DelButton->setObjectName(QStringLiteral("DelButton"));
         DelButton->setGeometry(QRect(10, 10, 41, 31));
+        OverviewScrollArea = new QScrollArea(tabOverview);
+        OverviewScrollArea->setObjectName(QStringLiteral("OverviewScrollArea"));
+        OverviewScrollArea->setGeometry(QRect(5, 90, 931, 341));
+        OverviewScrollArea->setStyleSheet(QStringLiteral("background-color:rgb(240,240,240)"));
+        OverviewScrollArea->setWidgetResizable(true);
+        scrollAreaWidgetContents = new QWidget();
+        scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 929, 339));
+        OverviewScrollArea->setWidget(scrollAreaWidgetContents);
         tabWidget->addTab(tabOverview, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
@@ -168,7 +175,7 @@ public:
         AxisTradeCultForm->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(AxisTradeCultForm);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 930, 26));
+        menuBar->setGeometry(QRect(0, 0, 968, 26));
         menuSetting = new QMenu(menuBar);
         menuSetting->setObjectName(QStringLiteral("menuSetting"));
         AxisTradeCultForm->setMenuBar(menuBar);

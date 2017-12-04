@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>930</width>
+    <width>968</width>
     <height>533</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>911</width>
+      <width>951</width>
       <height>471</height>
      </rect>
     </property>
@@ -61,16 +61,6 @@
       </property>
       <property name="text">
        <string>Update</string>
-      </property>
-     </widget>
-     <widget class="QListView" name="listView">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>50</y>
-        <width>891</width>
-        <height>381</height>
-       </rect>
       </property>
      </widget>
      <widget class="QProgressBar" name="UpdateProgressBar">
@@ -252,7 +242,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>830</x>
+        <x>840</x>
         <y>53</y>
         <width>51</width>
         <height>25</height>
@@ -340,6 +330,32 @@
        <string>Del</string>
       </property>
      </widget>
+     <widget class="QScrollArea" name="OverviewScrollArea">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>90</y>
+        <width>931</width>
+        <height>341</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color:rgb(240,240,240)</string>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>929</width>
+         <height>339</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -353,7 +369,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>930</width>
+     <width>968</width>
      <height>26</height>
     </rect>
    </property>

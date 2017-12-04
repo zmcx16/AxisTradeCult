@@ -233,9 +233,7 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         self.OverviewStocklayout.addWidget(AvgV3MLabel) 
         self.OverviewStocklayout.addWidget(StrikePrice1YLabel) 
         self.OverviewStocklayout.addWidget(GraphSampleButton) 
-        
-        for i in range(self.OverviewStocklayout.count()): 
-            self.OverviewStocklayout.itemAt( i ).widget().show()  
+         
         
 class UpdateStocksThread(QThread):
     
