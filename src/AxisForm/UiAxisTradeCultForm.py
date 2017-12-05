@@ -98,6 +98,7 @@ class Ui_AxisTradeCultForm(object):
         self.DelButton = QtWidgets.QPushButton(self.tabOverview)
         self.DelButton.setGeometry(QtCore.QRect(10, 10, 41, 31))
         self.DelButton.setObjectName("DelButton")
+        """
         self.OverviewScrollArea = QtWidgets.QScrollArea(self.tabOverview)
         self.OverviewScrollArea.setGeometry(QtCore.QRect(5, 90, 931, 341))
         self.OverviewScrollArea.setStyleSheet("background-color:rgb(240,240,240)")
@@ -107,6 +108,7 @@ class Ui_AxisTradeCultForm(object):
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 929, 339))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.OverviewScrollArea.setWidget(self.scrollAreaWidgetContents)
+        """
         self.tabWidget.addTab(self.tabOverview, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")

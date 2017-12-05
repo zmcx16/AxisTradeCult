@@ -19,7 +19,7 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         self.setupUIEvent()
         
     def setupUIEvent(self):
-        self.OverviewStocklayout = QHBoxLayout() 
+        self.OverviewStocklayout = QVBoxLayout() 
         self.parent().DisplayDate.setCalendarPopup(True)
         self.parent().DisplayDate.setDate(QDate.currentDate())
         self.parent().DisplayDate.dateChanged.connect(self.RefreshOverviewStock)      
@@ -31,7 +31,25 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         self.parent().StockCheckBox.setVisible(False) 
         self.SetStockGroupsComboBoxItem() 
         self.RefreshOverviewStock()
+        
+        self.OverviewScrollArea = QScrollArea(self.parent().tabOverview)
+        self.OverviewScrollArea.setGeometry(QRect(5, 90, 931, 341))
+        self.OverviewScrollArea.setStyleSheet("background-color:rgb(240,240,240)")
+        self.OverviewScrollArea.setWidgetResizable(True)
+        self.OverviewScrollArea.setObjectName("OverviewScrollArea")
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 929, 339))
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.OverviewScrollArea.setWidget(self.scrollAreaWidgetContents)
+        
+        self.scrollAreaWidgetContents.setLayout(self.OverviewStocklayout)
 
+        self.OverviewScrollArea.lower()
+        
+        #self.layout = QVBoxLayout()
+        #self.layout.addWidget(self.scrollAreaWidgetContents)
+
+        
 
     def SetStockGroupsComboBoxItem(self):
         self.parent().StockGroupsComboBox.addItems(gv.StockGroups.keys())
@@ -55,9 +73,17 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         FormatOverviewStockData(OverviewStocks);               
         objectID = 1
         for stock in OverviewStocks: 
-            self.AddOverviewStockInfo(self.parent(),str(objectID),OverviewStocks[stock],30*(objectID)) 
-            objectID+=1         
+            #self.AddOverviewStockInfo(self.parent(),str(objectID),OverviewStocks[stock],30*(objectID)) 
+            stockInfo = OverviewStockInfoWidget(self.parent(),str(objectID),OverviewStocks[stock],30*(objectID))
+            #stockInfo.setGeometry(QRect(self.parent().StockCheckBox.x(),self.parent().StockCheckBox.y()+60*(objectID), 300 , 300))
+            stockInfo.setObjectName("XXX"+str(objectID))
+            #stockInfo.resize(QSize(300,300))            
+            stockInfo.setMinimumSize(900, 200)
+            stockInfo.setMaximumSize(900, 200)
 
+            self.OverviewStocklayout.addWidget(stockInfo)
+            objectID+=1         
+        
     def DoAddButton(self):
         self.parent().AddButton.setEnabled(False)
         Symbol = self.parent().Stockline.text()
@@ -124,6 +150,8 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         print ("test pyqtSlot!!")     
 
 
+    
+    """
     def AddOverviewStockInfo(self,parent,id,data,offset):
         
         global OverviewStockList
@@ -233,8 +261,133 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         self.OverviewStocklayout.addWidget(AvgV3MLabel) 
         self.OverviewStocklayout.addWidget(StrikePrice1YLabel) 
         self.OverviewStocklayout.addWidget(GraphSampleButton) 
-         
+    """ 
+
+class OverviewStockInfoWidget(QWidget):
+  
+    def __init__(self,parent,id,data,offset):      
+        super(OverviewStockInfoWidget, self).__init__()        
+        self.initUI(parent,id,data,offset)
         
+    def initUI(self,parent,id,data,offset):
+          
+        print ("start")
+           
+        font = QFont()
+        font.setPointSize(10)
+        
+        fontBold = QFont()   
+        fontBold.setPointSize(10)           
+        fontBold.setBold(True) 
+                
+        self.StockCheckBox = QCheckBox(self)
+        self.StockCheckBox.setGeometry(QRect(parent.StockCheckBox.x(),parent.StockCheckBox.y()+offset, parent.StockCheckBox.width(), parent.StockCheckBox.height()))
+        self.StockCheckBox.setObjectName(parent.StockCheckBox.objectName()+id)
+        self.StockCheckBox.setFont(font)
+        self.OpenLabel = QLabel(self)
+        self.OpenLabel.setGeometry(QRect(parent.OpenLabel.x(),parent.OpenLabel.y()+offset, parent.OpenLabel.width(), parent.OpenLabel.height()))
+        self.OpenLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.OpenLabel.setObjectName(parent.OpenLabel.objectName()+id)
+        self.OpenLabel.setFont(font)
+        self.HightLabel = QLabel(self)
+        self.HightLabel.setGeometry(QRect(parent.HightLabel.x(),parent.HightLabel.y()+offset, parent.HightLabel.width(), parent.HightLabel.height()))
+        self.HightLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.HightLabel.setObjectName(parent.HightLabel.objectName()+id)
+        self.HightLabel.setFont(font)
+        self.LowLabel = QLabel(self)
+        self.LowLabel.setGeometry(QRect(parent.LowLabel.x(),parent.LowLabel.y()+offset, parent.LowLabel.width(), parent.LowLabel.height()))
+        self.LowLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.LowLabel.setObjectName(parent.LowLabel.objectName()+id)
+        self.LowLabel.setFont(font)
+        self.CloseLabel = QLabel(self)
+        self.CloseLabel.setGeometry(QRect(parent.CloseLabel.x(),parent.CloseLabel.y()+offset, parent.CloseLabel.width(), parent.CloseLabel.height()))
+        self.CloseLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.CloseLabel.setObjectName(parent.CloseLabel.objectName()+id)
+        self.CloseLabel.setFont(font)
+        self.VolumeLabel = QLabel(self)
+        self.VolumeLabel.setGeometry(QRect(parent.VolumeLabel.x(),parent.VolumeLabel.y()+offset, parent.VolumeLabel.width(), parent.VolumeLabel.height()))
+        self.VolumeLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.VolumeLabel.setObjectName(parent.VolumeLabel.objectName()+id)
+        self.VolumeLabel.setFont(font)
+        self.ChangeCLabel = QLabel(self)
+        self.ChangeCLabel.setGeometry(QRect(parent.ChangeCLabel.x(),parent.ChangeCLabel.y()+offset, parent.ChangeCLabel.width(), parent.ChangeCLabel.height()))
+        self.ChangeCLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.ChangeCLabel.setObjectName(parent.ChangeCLabel.objectName()+id)
+        self.ChangeCLabel.setFont(fontBold)
+        self.ChangeVLabel = QLabel(self)
+        self.ChangeVLabel.setGeometry(QRect(parent.ChangeVLabel.x(),parent.ChangeVLabel.y()+offset, parent.ChangeVLabel.width(), parent.ChangeVLabel.height()))
+        self.ChangeVLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.ChangeVLabel.setObjectName(parent.ChangeVLabel.objectName()+id)
+        self.ChangeVLabel.setFont(fontBold)
+        self.AvgC3MLabel = QLabel(self)
+        self.AvgC3MLabel.setGeometry(QRect(parent.AvgC3MLabel.x(),parent.AvgC3MLabel.y()+offset, parent.AvgC3MLabel.width(), parent.AvgC3MLabel.height()))
+        self.AvgC3MLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.AvgC3MLabel.setObjectName(parent.AvgC3MLabel.objectName()+id)
+        self.AvgC3MLabel.setFont(font)
+        self.AvgV3MLabel = QLabel(self)
+        self.AvgV3MLabel.setGeometry(QRect(parent.AvgV3MLabel.x(),parent.AvgV3MLabel.y()+offset, parent.AvgV3MLabel.width(), parent.AvgV3MLabel.height()))
+        self.AvgV3MLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.AvgV3MLabel.setObjectName(parent.AvgV3MLabel.objectName()+id)
+        self.AvgV3MLabel.setFont(font)
+        self.StrikePrice1YLabel = QLabel(self)
+        self.StrikePrice1YLabel.setGeometry(QRect(parent.StrikePrice1YLabel.x(),parent.StrikePrice1YLabel.y()+offset, parent.StrikePrice1YLabel.width(), parent.StrikePrice1YLabel.height()))
+        self.StrikePrice1YLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.StrikePrice1YLabel.setObjectName(parent.StrikePrice1YLabel.objectName()+id)
+        self.StrikePrice1YLabel.setFont(font)
+        self.GraphSampleButton = QPushButton(self)
+        self.GraphSampleButton.setEnabled(True)
+        self.GraphSampleButton.setGeometry(QRect(parent.GraphSampleButton.x(),parent.GraphSampleButton.y()+offset, parent.GraphSampleButton.width(), parent.GraphSampleButton.height()))
+        self.GraphSampleButton.setObjectName(parent.GraphSampleButton.objectName()+id)
+        
+        _translate = QCoreApplication.translate
+        self.StockCheckBox.setText(_translate("AxisTradeCultForm", data["Symbol"]))        
+        self.OpenLabel.setText(_translate("AxisTradeCultForm", data["Open"]))
+        self.HightLabel.setText(_translate("AxisTradeCultForm", data["High"]))
+        self.LowLabel.setText(_translate("AxisTradeCultForm", data["Low"]))
+        self.CloseLabel.setText(_translate("AxisTradeCultForm", data["Close"]))
+        self.VolumeLabel.setText(_translate("AxisTradeCultForm", data["Volume"]))
+        self.ChangeCLabel.setText(_translate("AxisTradeCultForm", data["ChangeC"]))
+        self.ChangeVLabel.setText(_translate("AxisTradeCultForm", data["ChangeV"]))
+        self.AvgC3MLabel.setText(_translate("AxisTradeCultForm", data["AvgC3M"]))
+        self.AvgV3MLabel.setText(_translate("AxisTradeCultForm", data["AvgV3M"]))
+        self.StrikePrice1YLabel.setText(_translate("AxisTradeCultForm", data["StrikePrice1Y"]))
+        self.GraphSampleButton.setText(_translate("AxisTradeCultForm", "Graph"))   
+        
+  
+        if float(self.ChangeCLabel.text().replace(r"%", "")) > 0:
+            SetQLineEditColor(self.ChangeCLabel,r=8,g=180,b=8)
+        elif float(self.ChangeCLabel.text().replace(r"%", "")) < 0:
+            SetQLineEditColor(self.ChangeCLabel,r=238,g=4,b=4)
+
+        if float(self.ChangeVLabel.text().replace(r"%", "")) > 0:
+            SetQLineEditColor(self.ChangeVLabel,r=8,g=180,b=8)
+        elif float(self.ChangeVLabel.text().replace(r"%", "")) < 0:
+            SetQLineEditColor(self.ChangeVLabel,r=238,g=4,b=4)        
+        
+        print ("End")
+    
+    
+    def sizeHint( self ):
+        return QSize( 200, 200 )
+    
+    """
+    def paintEvent(self, ev):
+        
+        painter = QPainter(self)
+        painter.drawLine(0, 10, 10, 10)
+        QCheckBox.paintEvent(self, ev)
+
+        print("self                 " + str(self.geometry()))        
+        print("self.StockCheckBox   " + str(self.StockCheckBox.geometry()))
+        
+        painter0 = QPainter(self.StockCheckBox)
+        painter0.drawLine(0, 10, 10, 10)
+        QCheckBox.paintEvent(self.StockCheckBox, ev)        
+        
+        pass
+    """
+
+    
 class UpdateStocksThread(QThread):
     
     FinishUpdateStocksSignal = pyqtSignal(str)
