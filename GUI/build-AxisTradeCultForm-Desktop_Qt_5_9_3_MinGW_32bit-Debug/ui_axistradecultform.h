@@ -71,7 +71,7 @@ public:
     {
         if (AxisTradeCultForm->objectName().isEmpty())
             AxisTradeCultForm->setObjectName(QStringLiteral("AxisTradeCultForm"));
-        AxisTradeCultForm->resize(968, 533);
+        AxisTradeCultForm->resize(959, 533);
         actionDataManager = new QAction(AxisTradeCultForm);
         actionDataManager->setObjectName(QStringLiteral("actionDataManager"));
         centralWidget = new QWidget(AxisTradeCultForm);
@@ -132,20 +132,20 @@ public:
         AvgC3MLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         AvgV3MLabel = new QLabel(tabOverview);
         AvgV3MLabel->setObjectName(QStringLiteral("AvgV3MLabel"));
-        AvgV3MLabel->setGeometry(QRect(650, 50, 60, 31));
+        AvgV3MLabel->setGeometry(QRect(640, 50, 70, 31));
         AvgV3MLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         GraphSampleButton = new QPushButton(tabOverview);
         GraphSampleButton->setObjectName(QStringLiteral("GraphSampleButton"));
         GraphSampleButton->setEnabled(true);
-        GraphSampleButton->setGeometry(QRect(840, 53, 51, 25));
+        GraphSampleButton->setGeometry(QRect(850, 53, 51, 25));
         line = new QFrame(tabOverview);
         line->setObjectName(QStringLiteral("line"));
-        line->setGeometry(QRect(30, 70, 791, 20));
+        line->setGeometry(QRect(30, 70, 800, 20));
         line->setFrameShape(QFrame::HLine);
         line->setFrameShadow(QFrame::Sunken);
         StrikePrice1YLabel = new QLabel(tabOverview);
         StrikePrice1YLabel->setObjectName(QStringLiteral("StrikePrice1YLabel"));
-        StrikePrice1YLabel->setGeometry(QRect(700, 50, 120, 31));
+        StrikePrice1YLabel->setGeometry(QRect(710, 50, 120, 31));
         StrikePrice1YLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         Stockline = new QLineEdit(tabOverview);
         Stockline->setObjectName(QStringLiteral("Stockline"));
@@ -175,7 +175,7 @@ public:
         AxisTradeCultForm->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(AxisTradeCultForm);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 968, 26));
+        menuBar->setGeometry(QRect(0, 0, 959, 26));
         menuSetting = new QMenu(menuBar);
         menuSetting->setObjectName(QStringLiteral("menuSetting"));
         AxisTradeCultForm->setMenuBar(menuBar);
