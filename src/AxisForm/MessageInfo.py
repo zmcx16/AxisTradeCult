@@ -36,3 +36,4 @@ AddStockDownloadFailMessage = {
     Str_setWindowTitle:         'Warning!!',
     Str_setDetailedText:        'None'
 }
+

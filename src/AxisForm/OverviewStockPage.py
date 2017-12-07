@@ -12,6 +12,7 @@ from AxisWeb.DownloadData import *
 from AxisForm.MessageInfo import *
 from AxisForm.Common import *
 from _testcapi import INT_MAX
+from _overlapped import NULL
 
 class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
 
@@ -21,9 +22,7 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         
     def setupUIEvent(self):
         self.OverviewStocklayout = QVBoxLayout() 
-        self.OverviewStocklayout.setSpacing(0);
-        self.OverviewStocklayout.setContentsMargins(0, 0, 0, 0);
-        
+
         self.parent().DisplayDate.setCalendarPopup(True)
         self.parent().DisplayDate.setDate(QDate.currentDate())
         self.parent().DisplayDate.dateChanged.connect(self.RefreshOverviewStock)      
@@ -32,19 +31,12 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         self.parent().StockGroupsComboBox.currentIndexChanged.connect(self.RefreshOverviewStock)
         self.parent().DelButton.clicked.connect(self.DoDelButton)
         self.parent().GraphSampleButton.setVisible(False)
-        self.parent().StockCheckBox.setVisible(False) 
-        self.SetStockGroupsComboBoxItem() 
-
-         
+        self.parent().StockCheckBox.setVisible(False)   
         self.parent().scrollAreaWidgetContents.setLayout(self.OverviewStocklayout)
-
+        self.SetStockGroupsComboBoxItem()  
+        
         self.RefreshOverviewStock()
-    
-        
-        #self.layout = QVBoxLayout()
-        #self.layout.addWidget(self.scrollAreaWidgetContents)
 
-        
 
     def SetStockGroupsComboBoxItem(self):
         self.parent().StockGroupsComboBox.addItems(gv.StockGroups.keys())
@@ -68,30 +60,18 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         FormatOverviewStockData(OverviewStocks);               
         objectID = 1
         for stock in OverviewStocks: 
-            #self.AddOverviewStockInfo(self.parent(),str(objectID),OverviewStocks[stock],30*(objectID)) 
-            stockInfo = OverviewStockInfoWidget(self.parent(),str(objectID),OverviewStocks[stock],30*(objectID))
+            stockInfo = OverviewStockInfoWidget(self.parent(),stock,OverviewStocks[stock])
             stockInfo.setGeometry(QRect(0,0,stockInfo.widget_width,stockInfo.widget_height))
             stockInfo.setMinimumSize(stockInfo.widget_width, stockInfo.widget_height)
             
-            stockInfo.setObjectName("XXX"+str(objectID))
-            
-            #stockInfo.setFixedWidth(stockInfo.widget_width)
-            #stockInfo.setFixedWidth(stockInfo.widget_height)
-            
-            #stockInfo.resize(QSize(300,300))            
-            #stockInfo.setMinimumSize(stockInfo.widget_width, 100)
-            #stockInfo.setMaximumSize(stockInfo.widget_width, 200)
-            #stockInfo.setMinimumSize(876, 1000)
-            #stockInfo.setMinimumSize(stockInfo.widget_width, stockInfo.widget_height)            
-            #stockInfo.setMaximumSize(stockInfo.widget_width, stockInfo.widget_height)            
-            print(stockInfo.widget_width," ", stockInfo.widget_height)
-            
-            
-    
+            stockInfo.setObjectName(stock)
+                          
             self.OverviewStocklayout.addWidget(stockInfo)
             self.OverviewStocklayout.setSpacing(1)
             objectID+=1         
         
+        self.OverviewStocklayout.setSpacing(5);
+        self.OverviewStocklayout.setContentsMargins(10, 10, 0, 10);
                
     def DoAddButton(self):
         self.parent().AddButton.setEnabled(False)
@@ -122,16 +102,25 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         Stocks = gv.StockGroups[NowGroup]
                 
         StockCheckBoxObjectNames = []
-        for objectID in range(1, len(Stocks)+1): 
-            StockCheckBoxObjectNames.append(self.parent().StockCheckBox.objectName() + str(objectID))        
+        for stock in Stocks: 
+            StockCheckBoxObjectNames.append(stock)        
         
         for i in reversed(range(self.OverviewStocklayout.count())):  
             widgetToRemove = self.OverviewStocklayout.itemAt( i ).widget()
             if widgetToRemove.objectName() in StockCheckBoxObjectNames:
-                if widgetToRemove.isChecked() is True:
-                    Stocks.remove(widgetToRemove.text())
+                if widgetToRemove.StockCheckBox.isChecked() is True:
+                    Stocks.remove(widgetToRemove.objectName())
                     self.OverviewStocklayout.removeWidget( widgetToRemove )         
-                    widgetToRemove.setParent( None )           
+                    widgetToRemove.setParent( None )         
+
+        if(len(Stocks) == len(StockCheckBoxObjectNames)):
+            """
+            msg = AddStockAlreadySymbolMessage
+            msg[Str_setText] = msg[Str_setText].format(NowGroup,Symbol)       
+            showdialog(AddStockAlreadySymbolMessage)
+            self.parent().AddButton.setEnabled(True)
+            return False
+            """
         
         gv.ResetStockInGroup(self.parent().StockGroupsComboBox.currentText(),Stocks)
         self.RefreshOverviewStock()
@@ -149,26 +138,21 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         
     def FinishUpdateStocks(self):
         self.parent().UpdateButton.setEnabled(True)  
+        self.RefreshOverviewStock()
         print ("finish!!")
       
     def UpdateProgressBarCount(self,val):
         self.parent().UpdateProgressBar.setValue(val)
-        
-    @pyqtSlot()
-    def on_UpdateButton_clicked(self):
-        print ("test pyqtSlot!!")     
-    
+
 
 class OverviewStockInfoWidget(QWidget):
   
-    def __init__(self,parent,id,data,offset):      
+    def __init__(self,parent,id,data):      
         super(OverviewStockInfoWidget, self).__init__()        
-        self.initUI(parent,id,data,offset)
+        self.initUI(parent,id,data)
         
-    def initUI(self,parent,id,data,offset):
-          
-        print ("start")
-                
+    def initUI(self,parent,id,data):
+                  
         font = QFont()
         font.setPointSize(10)
         
@@ -178,66 +162,65 @@ class OverviewStockInfoWidget(QWidget):
         
         self.Layout = QFormLayout()
         
-        self.offsetX = -6
-        self.offsetY = 10
+        self.offsetX = -1*parent.StockCheckBox.x()
         
         self.StockCheckBox = QCheckBox(self)
-        self.StockCheckBox.setGeometry(QRect(parent.StockCheckBox.x()+self.offsetX, self.offsetY, parent.StockCheckBox.width(), parent.StockCheckBox.height()))
+        self.StockCheckBox.setGeometry(QRect(parent.StockCheckBox.x()+self.offsetX, 0, parent.StockCheckBox.width(), parent.StockCheckBox.height()))
         self.StockCheckBox.setObjectName(parent.StockCheckBox.objectName()+id)
         self.StockCheckBox.setFont(font)
         self.OpenLabel = QLabel(self)
-        self.OpenLabel.setGeometry(QRect(parent.OpenLabel.x()+self.offsetX, self.offsetY, parent.OpenLabel.width(), parent.OpenLabel.height()))
+        self.OpenLabel.setGeometry(QRect(parent.OpenLabel.x()+self.offsetX, 0, parent.OpenLabel.width(), parent.OpenLabel.height()))
         self.OpenLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.OpenLabel.setObjectName(parent.OpenLabel.objectName()+id)
         self.OpenLabel.setFont(font)
         self.HightLabel = QLabel(self)
-        self.HightLabel.setGeometry(QRect(parent.HightLabel.x()+self.offsetX, self.offsetY, parent.HightLabel.width(), parent.HightLabel.height()))
+        self.HightLabel.setGeometry(QRect(parent.HightLabel.x()+self.offsetX, 0, parent.HightLabel.width(), parent.HightLabel.height()))
         self.HightLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.HightLabel.setObjectName(parent.HightLabel.objectName()+id)
         self.HightLabel.setFont(font)
         self.LowLabel = QLabel(self)
-        self.LowLabel.setGeometry(QRect(parent.LowLabel.x()+self.offsetX, self.offsetY, parent.LowLabel.width(), parent.LowLabel.height()))
+        self.LowLabel.setGeometry(QRect(parent.LowLabel.x()+self.offsetX, 0, parent.LowLabel.width(), parent.LowLabel.height()))
         self.LowLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.LowLabel.setObjectName(parent.LowLabel.objectName()+id)
         self.LowLabel.setFont(font)
         self.CloseLabel = QLabel(self)
-        self.CloseLabel.setGeometry(QRect(parent.CloseLabel.x()+self.offsetX, self.offsetY, parent.CloseLabel.width(), parent.CloseLabel.height()))
+        self.CloseLabel.setGeometry(QRect(parent.CloseLabel.x()+self.offsetX, 0, parent.CloseLabel.width(), parent.CloseLabel.height()))
         self.CloseLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.CloseLabel.setObjectName(parent.CloseLabel.objectName()+id)
         self.CloseLabel.setFont(font)
         self.VolumeLabel = QLabel(self)
-        self.VolumeLabel.setGeometry(QRect(parent.VolumeLabel.x()+self.offsetX, self.offsetY, parent.VolumeLabel.width(), parent.VolumeLabel.height()))
+        self.VolumeLabel.setGeometry(QRect(parent.VolumeLabel.x()+self.offsetX, 0, parent.VolumeLabel.width(), parent.VolumeLabel.height()))
         self.VolumeLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.VolumeLabel.setObjectName(parent.VolumeLabel.objectName()+id)
         self.VolumeLabel.setFont(font)
         self.ChangeCLabel = QLabel(self)
-        self.ChangeCLabel.setGeometry(QRect(parent.ChangeCLabel.x()+self.offsetX, self.offsetY, parent.ChangeCLabel.width(), parent.ChangeCLabel.height()))
+        self.ChangeCLabel.setGeometry(QRect(parent.ChangeCLabel.x()+self.offsetX, 0, parent.ChangeCLabel.width(), parent.ChangeCLabel.height()))
         self.ChangeCLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.ChangeCLabel.setObjectName(parent.ChangeCLabel.objectName()+id)
         self.ChangeCLabel.setFont(fontBold)
         self.ChangeVLabel = QLabel(self)
-        self.ChangeVLabel.setGeometry(QRect(parent.ChangeVLabel.x()+self.offsetX, self.offsetY, parent.ChangeVLabel.width(), parent.ChangeVLabel.height()))
+        self.ChangeVLabel.setGeometry(QRect(parent.ChangeVLabel.x()+self.offsetX, 0, parent.ChangeVLabel.width(), parent.ChangeVLabel.height()))
         self.ChangeVLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.ChangeVLabel.setObjectName(parent.ChangeVLabel.objectName()+id)
         self.ChangeVLabel.setFont(fontBold)
         self.AvgC3MLabel = QLabel(self)
-        self.AvgC3MLabel.setGeometry(QRect(parent.AvgC3MLabel.x()+self.offsetX, self.offsetY, parent.AvgC3MLabel.width(), parent.AvgC3MLabel.height()))
+        self.AvgC3MLabel.setGeometry(QRect(parent.AvgC3MLabel.x()+self.offsetX, 0, parent.AvgC3MLabel.width(), parent.AvgC3MLabel.height()))
         self.AvgC3MLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.AvgC3MLabel.setObjectName(parent.AvgC3MLabel.objectName()+id)
         self.AvgC3MLabel.setFont(font)
         self.AvgV3MLabel = QLabel(self)
-        self.AvgV3MLabel.setGeometry(QRect(parent.AvgV3MLabel.x()+self.offsetX, self.offsetY, parent.AvgV3MLabel.width(), parent.AvgV3MLabel.height()))
+        self.AvgV3MLabel.setGeometry(QRect(parent.AvgV3MLabel.x()+self.offsetX, 0, parent.AvgV3MLabel.width(), parent.AvgV3MLabel.height()))
         self.AvgV3MLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.AvgV3MLabel.setObjectName(parent.AvgV3MLabel.objectName()+id)
         self.AvgV3MLabel.setFont(font)
         self.StrikePrice1YLabel = QLabel(self)
-        self.StrikePrice1YLabel.setGeometry(QRect(parent.StrikePrice1YLabel.x()+self.offsetX, self.offsetY, parent.StrikePrice1YLabel.width(), parent.StrikePrice1YLabel.height()))
+        self.StrikePrice1YLabel.setGeometry(QRect(parent.StrikePrice1YLabel.x()+self.offsetX, 0, parent.StrikePrice1YLabel.width(), parent.StrikePrice1YLabel.height()))
         self.StrikePrice1YLabel.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
         self.StrikePrice1YLabel.setObjectName(parent.StrikePrice1YLabel.objectName()+id)
         self.StrikePrice1YLabel.setFont(font)
         self.GraphSampleButton = QPushButton(self)
         self.GraphSampleButton.setEnabled(True)
-        self.GraphSampleButton.setGeometry(QRect(parent.GraphSampleButton.x()+self.offsetX, self.offsetY, parent.GraphSampleButton.width(), parent.GraphSampleButton.height()))
+        self.GraphSampleButton.setGeometry(QRect(parent.GraphSampleButton.x()+self.offsetX, 0, parent.GraphSampleButton.width(), parent.GraphSampleButton.height()))
         self.GraphSampleButton.setObjectName(parent.GraphSampleButton.objectName()+id)
         
         _translate = QCoreApplication.translate
@@ -279,8 +262,6 @@ class OverviewStockInfoWidget(QWidget):
         self.Layout.addWidget(self.GraphSampleButton)
         
         self.CalcWidgetSize()
-        
-        print ("End")
    
     def CalcWidgetSize(self):
         min_x=INT_MAX
@@ -293,7 +274,6 @@ class OverviewStockInfoWidget(QWidget):
             self.widget_height = max(self.widget_height, widget.height())
             
         self.widget_width = max_x - min_x
-        self.widget_height += self.offsetY
     
     def sizeHint( self ):
         return QSize( self.widget_width, self.widget_height )

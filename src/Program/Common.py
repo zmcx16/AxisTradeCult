@@ -22,14 +22,14 @@ def human_format(num):
 def FormatOverviewStockData(OverviewStocks):
     
     for stockInfo in OverviewStocks:
-        OverviewStocks[stockInfo]['Open']   =  "{0:.2f}".format(OverviewStocks[stockInfo]['Open'])
-        OverviewStocks[stockInfo]['High']   =  "{0:.2f}".format(OverviewStocks[stockInfo]['High'])
-        OverviewStocks[stockInfo]['Low']    =   "{0:.2f}".format(OverviewStocks[stockInfo]['Low'])
-        OverviewStocks[stockInfo]['Close']  = "{0:.2f}".format(OverviewStocks[stockInfo]['Close'])
+        OverviewStocks[stockInfo]['Open']   =  "{:.2f}".format(OverviewStocks[stockInfo]['Open'])
+        OverviewStocks[stockInfo]['High']   =  "{:.2f}".format(OverviewStocks[stockInfo]['High'])
+        OverviewStocks[stockInfo]['Low']    =   "{:.2f}".format(OverviewStocks[stockInfo]['Low'])
+        OverviewStocks[stockInfo]['Close']  = "{:.2f}".format(OverviewStocks[stockInfo]['Close'])
         OverviewStocks[stockInfo]['Volume']   = human_format(OverviewStocks[stockInfo]['Volume'])
-        OverviewStocks[stockInfo]['ChangeC']   = "{0:.2%}".format(OverviewStocks[stockInfo]['ChangeC'])
-        OverviewStocks[stockInfo]['ChangeV']   = "{0:.2%}".format(OverviewStocks[stockInfo]['ChangeV'])
-        OverviewStocks[stockInfo]['AvgC3M']   = "{0:.2f}".format(OverviewStocks[stockInfo]['AvgC3M'])
+        OverviewStocks[stockInfo]['ChangeC']   = "{:.2%}".format(OverviewStocks[stockInfo]['ChangeC'])
+        OverviewStocks[stockInfo]['ChangeV']   = "{:.1%}".format(OverviewStocks[stockInfo]['ChangeV'])
+        OverviewStocks[stockInfo]['AvgC3M']   = "{:.2f}".format(OverviewStocks[stockInfo]['AvgC3M'])
         OverviewStocks[stockInfo]['AvgV3M']   = human_format(OverviewStocks[stockInfo]['AvgV3M'])
         OverviewStocks[stockInfo]['StrikePrice1Y']   = "{0:.2f}-{1:.2f}".format(OverviewStocks[stockInfo]['StrikePrice1Y'][0],OverviewStocks[stockInfo]['StrikePrice1Y'][1]) 
         
