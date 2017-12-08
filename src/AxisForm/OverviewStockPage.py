@@ -13,6 +13,7 @@ from AxisForm.MessageInfo import *
 from AxisForm.Common import *
 from _testcapi import INT_MAX
 from _overlapped import NULL
+from numpy.ma.core import empty
 
 class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
 
@@ -39,10 +40,26 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
 
 
     def SetStockGroupsComboBoxItem(self):
+        self.parent().StockGroupsComboBox.clear()
         self.parent().StockGroupsComboBox.addItems(gv.StockGroups.keys())
+        self.parent().StockGroupsComboBox.addItem('New Group')
         
 
-    def RefreshOverviewStock(self):         
+    def RefreshOverviewStock(self):
+        if self.parent().StockGroupsComboBox.count() == 0:
+            return False
+                        
+        if self.parent().StockGroupsComboBox.currentText() == 'New Group':
+            response = QInputDialog().getText(None, "Create Group", "Please Input New Group Name:")
+
+            self.parent().StockGroupsComboBox.setCurrentIndex(0)
+            if response[1] == True and response[0] != '':
+                gv.AddGroup(response[0])
+                self.SetStockGroupsComboBoxItem()
+                self.parent().StockGroupsComboBox.setCurrentIndex(self.parent().StockGroupsComboBox.count()-2)
+                
+            return True
+              
         ClearAllWidgetInLayout(self.OverviewStocklayout)      
         SelectGroupName = self.parent().StockGroupsComboBox.currentText()
         Stocks = gv.StockGroups[SelectGroupName]      
@@ -81,14 +98,14 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         if Symbol in gv.StockGroups[NowGroup]:
             msg = AddStockAlreadySymbolMessage
             msg[Str_setText] = msg[Str_setText].format(NowGroup,Symbol)       
-            showdialog(AddStockAlreadySymbolMessage)
+            ShowInfoDialog(msg)
             self.parent().AddButton.setEnabled(True)
             return False
         
         if DownloadStockDataFromQuandl(Symbol,gv.StockDataPoolPath) is False:            
             msg = AddStockDownloadFailMessage            
             msg[Str_setText] = msg[Str_setText].format(Symbol)
-            showdialog(AddStockDownloadFailMessage)
+            ShowInfoDialog(msg)
             self.parent().AddButton.setEnabled(True)
             return False
                             
@@ -98,6 +115,9 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         return True
     
     def DoDelButton(self):
+        if self.parent().StockGroupsComboBox.count() <= 1:
+            return False
+        
         NowGroup = self.parent().StockGroupsComboBox.currentText()
         Stocks = gv.StockGroups[NowGroup]
                 
@@ -114,13 +134,17 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
                     widgetToRemove.setParent( None )         
 
         if(len(Stocks) == len(StockCheckBoxObjectNames)):
-            """
-            msg = AddStockAlreadySymbolMessage
-            msg[Str_setText] = msg[Str_setText].format(NowGroup,Symbol)       
-            showdialog(AddStockAlreadySymbolMessage)
-            self.parent().AddButton.setEnabled(True)
-            return False
-            """
+            msg = DeleteGroupWarningMessage
+            msg[Str_setText] = msg[Str_setText].format(NowGroup)     
+            msg[Str_setDetailedText] = msg[Str_setDetailedText].format(Stocks)     
+            if ShowWarningDialog(msg) == 'OK':
+                select_index = self.parent().StockGroupsComboBox.currentIndex()
+                gv.DeleteGroup(self.parent().StockGroupsComboBox.currentText())
+                self.parent().StockGroupsComboBox.setCurrentIndex(0)
+                self.parent().StockGroupsComboBox.removeItem(select_index)
+            
+            self.RefreshOverviewStock()            
+            return True  
         
         gv.ResetStockInGroup(self.parent().StockGroupsComboBox.currentText(),Stocks)
         self.RefreshOverviewStock()

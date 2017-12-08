@@ -30,9 +30,18 @@ def AddStockInGroup(GroupName,Symbol):
 
 def ResetStockInGroup(GroupName,NewStockGroups):
     global StockGroups    
-    StockGroups = StockGroups
+    StockGroups[GroupName] = NewStockGroups
     SaveStockGroups()
 
+def AddGroup(GroupName):
+    global StockGroups    
+    StockGroups[GroupName] = []
+    SaveStockGroups()
+
+def DeleteGroup(GroupName):
+    global StockGroups    
+    del StockGroups[GroupName]
+    SaveStockGroups()
         
 if os.path.isfile(StockGroupsSettingPath) == False:
     SaveStockGroups() 
