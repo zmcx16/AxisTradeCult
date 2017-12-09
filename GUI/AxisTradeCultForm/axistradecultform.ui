@@ -356,6 +356,39 @@
        </property>
       </widget>
      </widget>
+     <widget class="QComboBox" name="GraphTypeComboBox">
+      <property name="geometry">
+       <rect>
+        <x>850</x>
+        <y>53</y>
+        <width>80</width>
+        <height>25</height>
+       </rect>
+      </property>
+     </widget>
+     <zorder>GraphTypeComboBox</zorder>
+     <zorder>DisplayDate</zorder>
+     <zorder>StockGroupsComboBox</zorder>
+     <zorder>UpdateButton</zorder>
+     <zorder>UpdateProgressBar</zorder>
+     <zorder>SymbolLabel</zorder>
+     <zorder>OpenLabel</zorder>
+     <zorder>HightLabel</zorder>
+     <zorder>LowLabel</zorder>
+     <zorder>CloseLabel</zorder>
+     <zorder>VolumeLabel</zorder>
+     <zorder>ChangeCLabel</zorder>
+     <zorder>ChangeVLabel</zorder>
+     <zorder>AvgC3MLabel</zorder>
+     <zorder>AvgV3MLabel</zorder>
+     <zorder>GraphSampleButton</zorder>
+     <zorder>line</zorder>
+     <zorder>StrikePrice1YLabel</zorder>
+     <zorder>Stockline</zorder>
+     <zorder>AddButton</zorder>
+     <zorder>StockCheckBox</zorder>
+     <zorder>DelButton</zorder>
+     <zorder>OverviewScrollArea</zorder>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">

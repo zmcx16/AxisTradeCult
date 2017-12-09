@@ -1,19 +1,18 @@
+import sys
+
 from AxisForm.UiAxisTradeCultForm import Ui_AxisTradeCultForm
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 
 import concurrent.futures
-import time
 
 import Program.GlobalVar as gv
 from Program.Common import *
 from AxisWeb.DownloadData import *
 from AxisForm.MessageInfo import *
 from AxisForm.Common import *
-from _testcapi import INT_MAX
-from _overlapped import NULL
-from numpy.ma.core import empty
+from AxisPlot.Common import *
 
 class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
 
@@ -34,11 +33,17 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         self.parent().GraphSampleButton.setVisible(False)
         self.parent().StockCheckBox.setVisible(False)   
         self.parent().scrollAreaWidgetContents.setLayout(self.OverviewStocklayout)
-        self.SetStockGroupsComboBoxItem()  
+        self.SetGraphTypeComboBoxItem()
         
+        
+        self.SetStockGroupsComboBoxItem()  
         self.RefreshOverviewStock()
-
-
+    
+    def SetGraphTypeComboBoxItem(self):
+        self.parent().GraphTypeComboBox.clear()        
+        self.parent().GraphTypeComboBox.addItem('Basic')
+        self.parent().GraphTypeComboBox.addItem('BoxPlot')
+        
     def SetStockGroupsComboBoxItem(self):
         self.parent().StockGroupsComboBox.clear()
         self.parent().StockGroupsComboBox.addItems(gv.StockGroups.keys())
@@ -159,6 +164,7 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         self.update_stocks_thread.FinishUpdateStocksSignal.connect(self.FinishUpdateStocks)     
         self.update_stocks_thread.UpdateProgressBarCountSignal.connect(self.UpdateProgressBarCount)
         self.update_stocks_thread.start()     
+
         
     def FinishUpdateStocks(self):
         self.parent().UpdateButton.setEnabled(True)  
@@ -171,9 +177,13 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
 
 class OverviewStockInfoWidget(QWidget):
   
+    Symbol = ''
+    
     def __init__(self,parent,id,data):      
         super(OverviewStockInfoWidget, self).__init__()        
         self.initUI(parent,id,data)
+        
+        self.Symbol = data["Symbol"]
         
     def initUI(self,parent,id,data):
                   
@@ -247,6 +257,8 @@ class OverviewStockInfoWidget(QWidget):
         self.GraphSampleButton.setGeometry(QRect(parent.GraphSampleButton.x()+self.offsetX, 0, parent.GraphSampleButton.width(), parent.GraphSampleButton.height()))
         self.GraphSampleButton.setObjectName(parent.GraphSampleButton.objectName()+id)
         
+        self.GraphSampleButton.clicked.connect(self.DoGraphButton)      
+        
         _translate = QCoreApplication.translate
         self.StockCheckBox.setText(_translate("AxisTradeCultForm", data["Symbol"]))        
         self.OpenLabel.setText(_translate("AxisTradeCultForm", data["Open"]))
@@ -288,8 +300,8 @@ class OverviewStockInfoWidget(QWidget):
         self.CalcWidgetSize()
    
     def CalcWidgetSize(self):
-        min_x=INT_MAX
-        max_x=0
+        min_x = sys.maxsize
+        max_x = 0
         self.widget_height=0
         for i in range(self.Layout.count()):  
             widget = self.Layout.itemAt( i ).widget()            
@@ -301,6 +313,10 @@ class OverviewStockInfoWidget(QWidget):
     
     def sizeHint( self ):
         return QSize( self.widget_width, self.widget_height )
+    
+    def DoGraphButton(self):    
+        df = GetStockPriceVolumeData(self.Symbol, gv.StockDataPoolPath)
+        PlotStockPriceVolumeData(df,self.Symbol)
         
 class UpdateStocksThread(QThread):
     

@@ -73,3 +73,9 @@ def ReadOverviewStockData(stocks, ChooseDate, StockDataPoolPath):
         OverviewStocks[stock] = OverviewStock
     
     return OverviewStocks
+
+def GetStockPriceVolumeData(stock, StockDataPoolPath):
+    df = pandas.read_csv(SymbolToPath(stock,StockDataPoolPath), index_col='Date',
+            parse_dates=True, usecols=['Date', 'Adj. Close', 'Adj. Volume'], na_values=['nan'])
+
+    return df
