@@ -65,7 +65,8 @@ def ReadOverviewStockData(stocks, ChooseDate, StockDataPoolPath):
         DF3M = pandas.DataFrame.sort_index(DF3M, ascending=False)
         DF1Y = pandas.DataFrame.sort_index(DF1Y, ascending=False) 
            
-        OverviewStock = {'Symbol': stock,'Open':DF3M['Adj. Open'][0], 'High':DF3M['Adj. High'][0], 'Low':DF3M['Adj. Low'][0], 'Close':DF3M['Adj. Close'][0], 'Volume':DF3M['Adj. Volume'][0]
+        OverviewStock = { 'TargetDate':TargetDate
+                         ,'Symbol': stock,'Open':DF3M['Adj. Open'][0], 'High':DF3M['Adj. High'][0], 'Low':DF3M['Adj. Low'][0], 'Close':DF3M['Adj. Close'][0], 'Volume':DF3M['Adj. Volume'][0]
                          ,'ChangeC':CalChange(now=DF3M['Adj. Close'][0], prev=DF3M['Adj. Close'][1]), 'ChangeV':CalChange(now=DF3M['Adj. Volume'][0], prev=DF3M['Adj. Volume'][1])
                          ,'AvgC3M':DF3M['Adj. Close'].mean(), 'AvgV3M':DF3M['Adj. Volume'].mean()
                          ,'StrikePrice1Y':[DF1Y['Adj. Low'].min() , DF1Y['Adj. High'].max()]}
@@ -74,8 +75,14 @@ def ReadOverviewStockData(stocks, ChooseDate, StockDataPoolPath):
     
     return OverviewStocks
 
-def GetStockPriceVolumeData(stock, StockDataPoolPath):
+def GetStockPriceVolumeData(stock, StockDataPoolPath, target_date, back_months, back_years):
     df = pandas.read_csv(SymbolToPath(stock,StockDataPoolPath), index_col='Date',
             parse_dates=True, usecols=['Date', 'Adj. Close', 'Adj. Volume'], na_values=['nan'])
 
-    return df
+    TargetDate = pandas.to_datetime(target_date)
+    TargetDate_back = TargetDate - pandas.DateOffset(months=back_months, years = back_years)
+  
+    DatePeriod = pandas.DataFrame(index=pandas.date_range(TargetDate_back, TargetDate))    
+    DF = DatePeriod.join(df)
+    DF = DF.dropna()
+    return DF

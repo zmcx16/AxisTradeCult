@@ -178,12 +178,14 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
 class OverviewStockInfoWidget(QWidget):
   
     Symbol = ''
+    TargetDate = ''
     
     def __init__(self,parent,id,data):      
         super(OverviewStockInfoWidget, self).__init__()        
         self.initUI(parent,id,data)
         
         self.Symbol = data["Symbol"]
+        self.TargetDate = data["TargetDate"]
         
     def initUI(self,parent,id,data):
                   
@@ -315,7 +317,7 @@ class OverviewStockInfoWidget(QWidget):
         return QSize( self.widget_width, self.widget_height )
     
     def DoGraphButton(self):    
-        df = GetStockPriceVolumeData(self.Symbol, gv.StockDataPoolPath)
+        df = GetStockPriceVolumeData(self.Symbol, gv.StockDataPoolPath, self.TargetDate, back_months=0, back_years=1)
         PlotStockPriceVolumeData(df,self.Symbol)
         
 class UpdateStocksThread(QThread):
