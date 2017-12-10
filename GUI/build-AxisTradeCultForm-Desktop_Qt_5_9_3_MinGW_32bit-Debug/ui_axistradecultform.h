@@ -20,6 +20,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -63,7 +64,15 @@ public:
     QScrollArea *OverviewScrollArea;
     QWidget *scrollAreaWidgetContents;
     QComboBox *GraphTypeComboBox;
-    QWidget *tab_2;
+    QWidget *tabPortfolio;
+    QWidget *tabChart;
+    QListWidget *TechIndicatorsListWidget;
+    QComboBox *ChartGroupsComboBox;
+    QDateEdit *ChartStartDate;
+    QDateEdit *ChartEndDate;
+    QScrollArea *TechIndicatorsScrollArea;
+    QWidget *scrollAreaWidgetContents_2;
+    QPushButton *ShowButton;
     QMenuBar *menuBar;
     QMenu *menuSetting;
     QStatusBar *statusBar;
@@ -196,9 +205,36 @@ public:
         StockCheckBox->raise();
         DelButton->raise();
         OverviewScrollArea->raise();
-        tab_2 = new QWidget();
-        tab_2->setObjectName(QStringLiteral("tab_2"));
-        tabWidget->addTab(tab_2, QString());
+        tabPortfolio = new QWidget();
+        tabPortfolio->setObjectName(QStringLiteral("tabPortfolio"));
+        tabWidget->addTab(tabPortfolio, QString());
+        tabChart = new QWidget();
+        tabChart->setObjectName(QStringLiteral("tabChart"));
+        TechIndicatorsListWidget = new QListWidget(tabChart);
+        TechIndicatorsListWidget->setObjectName(QStringLiteral("TechIndicatorsListWidget"));
+        TechIndicatorsListWidget->setGeometry(QRect(510, 70, 421, 351));
+        ChartGroupsComboBox = new QComboBox(tabChart);
+        ChartGroupsComboBox->setObjectName(QStringLiteral("ChartGroupsComboBox"));
+        ChartGroupsComboBox->setGeometry(QRect(730, 20, 141, 31));
+        ChartStartDate = new QDateEdit(tabChart);
+        ChartStartDate->setObjectName(QStringLiteral("ChartStartDate"));
+        ChartStartDate->setGeometry(QRect(510, 20, 101, 31));
+        ChartEndDate = new QDateEdit(tabChart);
+        ChartEndDate->setObjectName(QStringLiteral("ChartEndDate"));
+        ChartEndDate->setGeometry(QRect(620, 20, 101, 31));
+        TechIndicatorsScrollArea = new QScrollArea(tabChart);
+        TechIndicatorsScrollArea->setObjectName(QStringLiteral("TechIndicatorsScrollArea"));
+        TechIndicatorsScrollArea->setGeometry(QRect(10, 20, 481, 401));
+        TechIndicatorsScrollArea->setWidgetResizable(true);
+        scrollAreaWidgetContents_2 = new QWidget();
+        scrollAreaWidgetContents_2->setObjectName(QStringLiteral("scrollAreaWidgetContents_2"));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 479, 399));
+        TechIndicatorsScrollArea->setWidget(scrollAreaWidgetContents_2);
+        ShowButton = new QPushButton(tabChart);
+        ShowButton->setObjectName(QStringLiteral("ShowButton"));
+        ShowButton->setEnabled(true);
+        ShowButton->setGeometry(QRect(880, 20, 51, 31));
+        tabWidget->addTab(tabChart, QString());
         AxisTradeCultForm->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(AxisTradeCultForm);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -242,7 +278,9 @@ public:
         StockCheckBox->setText(QString());
         DelButton->setText(QApplication::translate("AxisTradeCultForm", "Del", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tabOverview), QApplication::translate("AxisTradeCultForm", "Overview", Q_NULLPTR));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("AxisTradeCultForm", "Tab 2", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tabPortfolio), QApplication::translate("AxisTradeCultForm", "Portfolio", Q_NULLPTR));
+        ShowButton->setText(QApplication::translate("AxisTradeCultForm", "Show", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tabChart), QApplication::translate("AxisTradeCultForm", "Chart", Q_NULLPTR));
         menuSetting->setTitle(QApplication::translate("AxisTradeCultForm", "Setting", Q_NULLPTR));
     } // retranslateUi
 
