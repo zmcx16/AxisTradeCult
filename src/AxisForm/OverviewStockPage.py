@@ -33,6 +33,7 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
         self.parent().GraphSampleButton.setVisible(False)
         self.parent().StockCheckBox.setVisible(False)   
         self.parent().scrollAreaWidgetContents.setLayout(self.OverviewStocklayout)
+        self.parent().GraphTypeComboBox.currentIndexChanged.connect(self.RefreshOverviewStock)
         self.SetGraphTypeComboBoxItem()
         
         
@@ -42,7 +43,7 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
     def SetGraphTypeComboBoxItem(self):
         self.parent().GraphTypeComboBox.clear()        
         self.parent().GraphTypeComboBox.addItem('Basic')
-        self.parent().GraphTypeComboBox.addItem('BoxPlot')
+        self.parent().GraphTypeComboBox.addItem('Candle')
         
     def SetStockGroupsComboBoxItem(self):
         self.parent().StockGroupsComboBox.clear()
@@ -179,6 +180,7 @@ class OverviewStockInfoWidget(QWidget):
   
     Symbol = ''
     TargetDate = ''
+    GraphStyle = ''
     
     def __init__(self,parent,id,data):      
         super(OverviewStockInfoWidget, self).__init__()        
@@ -186,7 +188,8 @@ class OverviewStockInfoWidget(QWidget):
         
         self.Symbol = data["Symbol"]
         self.TargetDate = data["TargetDate"]
-        
+        self.GraphStyle = parent.GraphTypeComboBox.currentText()
+
     def initUI(self,parent,id,data):
                   
         font = QFont()
@@ -318,7 +321,11 @@ class OverviewStockInfoWidget(QWidget):
     
     def DoGraphButton(self):    
         df = GetStockPriceVolumeData(self.Symbol, gv.StockDataPoolPath, self.TargetDate, back_months=0, back_years=1)
-        PlotStockPriceVolumeData(df,self.Symbol)
+        if self.GraphStyle == 'Basic':
+            PlotStockLinePriceVolumeData(df,self.Symbol)
+        elif self.GraphStyle == 'Candle':
+            PlotStockCandlestickPriceVolumeData(df,self.Symbol)
+        
         
 class UpdateStocksThread(QThread):
     

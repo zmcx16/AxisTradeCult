@@ -77,7 +77,7 @@ def ReadOverviewStockData(stocks, ChooseDate, StockDataPoolPath):
 
 def GetStockPriceVolumeData(stock, StockDataPoolPath, target_date, back_months, back_years):
     df = pandas.read_csv(SymbolToPath(stock,StockDataPoolPath), index_col='Date',
-            parse_dates=True, usecols=['Date', 'Adj. Close', 'Adj. Volume'], na_values=['nan'])
+            parse_dates=True, usecols=['Date', 'Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume'], na_values=['nan'])
 
     TargetDate = pandas.to_datetime(target_date)
     TargetDate_back = TargetDate - pandas.DateOffset(months=back_months, years = back_years)

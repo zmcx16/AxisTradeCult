@@ -2,9 +2,11 @@ import pandas
 import numpy
 import matplotlib.pyplot as plt
 from Program.Common import *
+import matplotlib.dates as mdates
+import mpl_finance
 
 
-def PlotStockPriceVolumeData(df_data, plotTitle):
+def PlotStockLinePriceVolumeData(df_data, plotTitle):
     
     size_factor = 1.8
     
@@ -26,5 +28,27 @@ def PlotStockPriceVolumeData(df_data, plotTitle):
     
     plt.tight_layout()
     plt.show()
+
+
+def PlotStockCandlestickPriceVolumeData(df_data, plotTitle):
     
+    size_factor = 1.8
+    
+    fig = plt.figure()
+    DefaultSize = fig.get_size_inches()
+    fig.set_size_inches( (DefaultSize[0]*size_factor, DefaultSize[1]*size_factor) )
+    
+    ax1 = plt.subplot2grid((4, 1), (0, 0), rowspan=3)    
+    df_data = df_data.reset_index()
+    df_data.columns = ["Date","Open","High",'Low',"Close","Volume"]
+    df_data['Date'] = df_data['Date'].map(mdates.date2num)   
+    print(df_data) 
+    ax1.xaxis_date()
+    plt.xlabel("Date")
+    mpl_finance.candlestick_ochl(ax1,df_data.values,width=1, colorup='g', colordown='k',alpha=0.75)
+    plt.ylabel("Price")
+       
+    ax1.grid(color='grey', linestyle='--', linewidth=0.5)
+    plt.tight_layout()    
+    plt.show()
  
