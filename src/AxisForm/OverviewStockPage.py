@@ -14,6 +14,7 @@ from AxisForm.MessageInfo import *
 from AxisForm.Common import *
 from AxisPlot.Common import *
 
+
 class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
 
     def __init__(self, parent=None):   
@@ -42,8 +43,10 @@ class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
     
     def SetGraphTypeComboBoxItem(self):
         self.parent().GraphTypeComboBox.clear()        
-        self.parent().GraphTypeComboBox.addItem('Basic')
-        self.parent().GraphTypeComboBox.addItem('Candle')
+        self.parent().GraphTypeComboBox.addItem('Basic6M')
+        self.parent().GraphTypeComboBox.addItem('Candle6M')
+        self.parent().GraphTypeComboBox.addItem('BasicN')
+        self.parent().GraphTypeComboBox.addItem('CandleN')
         
     def SetStockGroupsComboBoxItem(self):
         self.parent().StockGroupsComboBox.clear()
@@ -320,12 +323,18 @@ class OverviewStockInfoWidget(QWidget):
         return QSize( self.widget_width, self.widget_height )
     
     def DoGraphButton(self):    
-        df = GetStockPriceVolumeData(self.Symbol, gv.StockDataPoolPath, self.TargetDate, back_months=0, back_years=1)
-        if self.GraphStyle == 'Basic':
+                
+        Back_N_Months=6
+        if self.GraphStyle == 'BasicN' or self.GraphStyle == 'CandleN':
+            response = QInputDialog().getText(None, "Back N Months", "Please Input Back N Months:")
+            if response[1] == True and response[0] != '':
+                Back_N_Months = int(response[0])
+                    
+        df = GetStockPriceVolumeData(self.Symbol, gv.StockDataPoolPath, self.TargetDate, back_months = Back_N_Months, back_years=0)
+        if self.GraphStyle[0:5] == 'Basic':
             PlotStockLinePriceVolumeData(df,self.Symbol)
-        elif self.GraphStyle == 'Candle':
+        elif self.GraphStyle[0:6] == 'Candle':
             PlotStockCandlestickPriceVolumeData(df,self.Symbol)
-        
         
 class UpdateStocksThread(QThread):
     

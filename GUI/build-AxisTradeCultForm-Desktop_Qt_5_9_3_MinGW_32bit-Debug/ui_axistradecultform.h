@@ -99,7 +99,7 @@ public:
         StockGroupsComboBox->setGeometry(QRect(200, 10, 141, 31));
         UpdateButton = new QPushButton(tabOverview);
         UpdateButton->setObjectName(QStringLiteral("UpdateButton"));
-        UpdateButton->setGeometry(QRect(800, 10, 91, 31));
+        UpdateButton->setGeometry(QRect(740, 10, 91, 31));
         UpdateProgressBar = new QProgressBar(tabOverview);
         UpdateProgressBar->setObjectName(QStringLiteral("UpdateProgressBar"));
         UpdateProgressBar->setGeometry(QRect(360, 10, 181, 31));
@@ -180,7 +180,7 @@ public:
         OverviewScrollArea->setWidget(scrollAreaWidgetContents);
         GraphTypeComboBox = new QComboBox(tabOverview);
         GraphTypeComboBox->setObjectName(QStringLiteral("GraphTypeComboBox"));
-        GraphTypeComboBox->setGeometry(QRect(850, 53, 80, 25));
+        GraphTypeComboBox->setGeometry(QRect(839, 53, 91, 25));
         tabWidget->addTab(tabOverview, QString());
         GraphTypeComboBox->raise();
         DisplayDate->raise();

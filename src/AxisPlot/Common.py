@@ -42,10 +42,22 @@ def PlotStockCandlestickPriceVolumeData(df_data, plotTitle):
     df_data = df_data.reset_index()
     df_data.columns = ["Date","Open","High",'Low',"Close","Volume"]
     df_data['Date'] = df_data['Date'].map(mdates.date2num)   
-    print(df_data) 
+
     ax1.xaxis_date()
+    for label in ax1.xaxis.get_ticklabels():
+        label.set_rotation(45)
+        
     plt.xlabel("Date")
-    mpl_finance.candlestick_ochl(ax1,df_data.values,width=1, colorup='g', colordown='k',alpha=0.75)
+    lines, patches = mpl_finance.candlestick_ohlc(ax1,df_data.values,width=1, colorup='r', colordown='g')
+    for line, patch in zip(lines, patches):
+        patch.set_edgecolor("k")
+        patch.set_linewidth(0.72)
+        patch.set_antialiased(False)
+        line.set_color("k")
+        line.set_zorder(0) # make lines appear behind the patches
+        line.set_visible(True) # make them invisible
+        
+    
     plt.ylabel("Price")
        
     ax1.grid(color='grey', linestyle='--', linewidth=0.5)
