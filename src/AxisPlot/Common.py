@@ -72,7 +72,8 @@ def PlotStockCandlestickPriceVolumeData(df_data, plotTitle):
         line.set_zorder(0) # make lines appear behind the patches
         line.set_visible(True) # make them invisible
     
-    ax1.xaxis.set_major_formatter(ticker.FuncFormatter(format_date))    
+
+
     #fig.autofmt_xdate()
  
     df_data['Volume'].plot(ax=ax2, kind='bar', legend=False, color='grey')
@@ -81,6 +82,15 @@ def PlotStockCandlestickPriceVolumeData(df_data, plotTitle):
     ax2.set_ylabel('Volume', color='grey')
         
     plt.ylabel("Price")
+
+    xmajorLocator   = ticker.MultipleLocator(5) 
+    xminorLocator   = ticker.MultipleLocator(1)
+    
+    ax2.xaxis.set_major_locator(xmajorLocator)
+    ax2.xaxis.set_minor_locator(xminorLocator)     
+
+    ax2.xaxis.set_major_formatter(ticker.FuncFormatter(format_date)) 
+       
        
     ax1.grid(color='grey', linestyle='--', linewidth=0.5)
     plt.tight_layout()    
