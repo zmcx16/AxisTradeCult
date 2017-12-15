@@ -332,9 +332,9 @@ class OverviewStockInfoWidget(QWidget):
                     
         df = GetStockPriceVolumeData(self.Symbol, gv.StockDataPoolPath, self.TargetDate, back_months = Back_N_Months, back_years=0)
         if self.GraphStyle[0:5] == 'Basic':
-            PlotStockLinePriceVolumeData(df,self.Symbol)
+            PlotStockLinePriceVolumeData(self.Symbol,df,self.Symbol)
         elif self.GraphStyle[0:6] == 'Candle':
-            PlotStockCandlestickPriceVolumeData(df,self.Symbol)
+            PlotStockCandlestickPriceVolumeData(self.Symbol,df,self.Symbol)
         
 class UpdateStocksThread(QThread):
     
