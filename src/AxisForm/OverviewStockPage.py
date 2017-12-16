@@ -15,7 +15,7 @@ from AxisForm.Common import *
 from AxisPlot.Common import *
 
 
-class OverviewStockPage(QMainWindow, Ui_AxisTradeCultForm):
+class OverviewStockPage(QMainWindow):
 
     def __init__(self, parent=None):   
         super(OverviewStockPage, self).__init__(parent)

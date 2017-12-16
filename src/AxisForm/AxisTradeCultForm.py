@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from AxisForm.OverviewStockPage import OverviewStockPage
+from AxisForm.ChartPage import ChartPage
 
 class AxisTradeCultForm(QMainWindow, Ui_AxisTradeCultForm):
     def __init__(self, parent=None):
@@ -19,3 +20,4 @@ class AxisTradeCultForm(QMainWindow, Ui_AxisTradeCultForm):
     
     def setupAxisWidget(self):
         self.OverviewStockPage = OverviewStockPage(self)
+        self.ChartPage = ChartPage(self)
