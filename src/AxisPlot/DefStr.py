@@ -12,6 +12,12 @@ strColor = 'Color'
 strWindow = 'Window'
 strLineWidth = 'LineWidth'
 strAlpha = 'Alpha'
+strAreaColor = 'AreaColor'
+strAreaAlpha = 'AreaAlpha'
 
-strTechIndicatorName = 'TechIndicatorName'
+strTechIndicatorKey = 'TechIndicatorKey'
+strFuncName = 'FuncName'
+strParam = 'Param'
 strMA = 'MA'
+strBollingerBands = 'BollingerBands'
+

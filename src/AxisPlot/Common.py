@@ -71,40 +71,51 @@ def PlotStockData(Symbol,df_data, PlotType,TechIndicators):
     for label in ax2.xaxis.get_ticklabels():
         label.set_rotation(45)
     
+    if len(TechIndicators)>0:  
+        for indicator in TechIndicators:
+            TechIndicatorFuncKey = indicator[strTechIndicatorKey]
+            TechIndicatorFuncDict[TechIndicatorFuncKey][strFuncName](indicator[strParam],df_data,ax1)
+
     plt.setp(ax1.get_xticklabels(), visible=False)
                
     ax1.grid(color='grey', linestyle='--', linewidth=0.5)
     ax2.grid(color='grey', linestyle='--', linewidth=0.5)
- 
-    if len(TechIndicators)>0:  
-        for indicator in TechIndicators:
-            TechIndicatorFuncName = indicator[strTechIndicatorName]
-            TechIndicatorFuncDict[TechIndicatorFuncName](indicator,df_data,ax1)
+    
     
     plt.tight_layout()    
     plt.show()
 
 def PlotMA(param, df_data, target_ax):
-    Indicator = get_rolling_mean(df_data[strClose], param[strWindow])
+    Indicator = GetRollingMean(df_data[strClose], param[strWindow])
     PlotIndicator(Indicator, target_ax = target_ax, color = param[strColor], linewidth =param[strLineWidth], alpha = param[strAlpha])    
+
+def PlotBollingerBands(param, df_data, target_ax):
+    MA_mean = GetRollingMean(df_data[strClose],param[strWindow])
+    MA_std = GetRollingStd(df_data[strClose],param[strWindow])
+    IndicatorUpper, IndicatorLower = GetBollingerBands(MA_mean,MA_std)
+    PlotIndicator(IndicatorUpper, target_ax = target_ax, color = param[strColor], linewidth =param[strLineWidth], alpha = param[strAlpha])    
+    PlotIndicator(IndicatorLower, target_ax = target_ax, color = param[strColor], linewidth =param[strLineWidth], alpha = param[strAlpha]) 
+    target_ax.fill_between(df_data[strDate],IndicatorUpper,IndicatorLower,interpolate=True,color=param[strAreaColor],alpha = param[strAreaAlpha])
+    
 
 def PlotIndicator(df_data,target_ax,color,linewidth=0.8,alpha=0.8):
     df_data.plot(ax=target_ax, color = color, linewidth=linewidth, alpha =alpha)
 
-def get_rolling_mean(values, window):
+def GetRollingMean(values, window):
     return pandas.Series.rolling(values, window=window,center=False).mean()
 
-def get_rolling_std(values, window):
+def GetRollingStd(values, window):
     return pandas.Series.rolling(values, window=window,center=False).std()
 
-def get_bollinger_bands(rm, rstd):
+def GetBollingerBands(rm, rstd):
     upper_band = rm+rstd*2
     lower_band = rm-rstd*2
     return upper_band, lower_band
 
 
+
 TechIndicatorFuncDict = {
-  strMA: PlotMA
-  
+  strMA:                {strFuncName: PlotMA,                strParam:{strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}},
+  strBollingerBands:    {strFuncName: PlotBollingerBands,    strParam:{strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8, strAreaColor: 'gold', strAreaAlpha:0.3}}
 }
  

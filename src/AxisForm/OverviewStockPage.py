@@ -339,9 +339,8 @@ class OverviewStockInfoWidget(QWidget):
             PlotType = 'Candle'
    
         TechIndicators = []
-        param = {strTechIndicatorName:strMA , strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}
-        print(param)
-        TechIndicators.append(param)
+        TechIndicators.append({strTechIndicatorKey:strMA ,             strParam:{strColor:'blue', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}})
+        TechIndicators.append({strTechIndicatorKey:strBollingerBands , strParam:{strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8, strAreaColor: 'gold', strAreaAlpha:0.3}})        
         print(TechIndicators)
         
         PlotStockData(self.Symbol,df,PlotType,TechIndicators)
