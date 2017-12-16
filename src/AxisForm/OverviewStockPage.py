@@ -338,7 +338,13 @@ class OverviewStockInfoWidget(QWidget):
         elif self.GraphStyle.find('Candle')!=-1:
             PlotType = 'Candle'
    
-        PlotStockData(self.Symbol,df,PlotType)
+        TechIndicators = []
+        param = {strTechIndicatorName:strMA , strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}
+        print(param)
+        TechIndicators.append(param)
+        print(TechIndicators)
+        
+        PlotStockData(self.Symbol,df,PlotType,TechIndicators)
         
 class UpdateStocksThread(QThread):
     

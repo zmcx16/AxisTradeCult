@@ -6,7 +6,9 @@ import matplotlib.dates as mdates
 import mpl_finance
 import matplotlib.ticker as ticker
 
-def PlotStockData(Symbol,df_data, PlotType='Candle'):
+from AxisPlot.DefStr import *
+
+def PlotStockData(Symbol,df_data, PlotType,TechIndicators):
  
     size_factor = 1.8
     
@@ -22,20 +24,20 @@ def PlotStockData(Symbol,df_data, PlotType='Candle'):
     
     #for using mpl_finance
     df_data = df_data.reset_index()
-    df_data.columns = ["Date","Open","High",'Low',"Close","Volume"]
-    df_data['Date'] = df_data['Date'].map(mdates.date2num)   
+    df_data.columns = [strDate,strOpen,strHigh,strLow,strClose,strVolume]
+    df_data[strDate] = df_data[strDate].map(mdates.date2num)   
 
-    DateSize = len(df_data['Date'])
+    DateSize = len(df_data[strDate])
     date_indices = numpy.arange(DateSize)
     
-    df_data_Date = df_data['Date']  
-    df_data['Date'] = date_indices
+    df_data_Date = df_data[strDate]  
+    df_data[strDate] = date_indices
     
     def format_date(x, pos):
         this_index = numpy.clip(int(x + 0.5), 0, DateSize - 1)        
         return mdates.num2date(df_data_Date[this_index]).strftime('%m/%d/%y') 
         
-    if PlotType == 'Candle': 
+    if PlotType == strCandle: 
         lines, patches = mpl_finance.candlestick_ohlc(ax1,df_data.values,width=1, colorup='r', colordown='g')
         for line, patch in zip(lines, patches):
             patch.set_edgecolor("k")
@@ -44,10 +46,10 @@ def PlotStockData(Symbol,df_data, PlotType='Candle'):
             line.set_color("k")
             line.set_zorder(0) # make lines appear behind the patches
             line.set_visible(True) # make them invisible
-    elif PlotType == 'Basic':
-        df_data['Close'].plot(ax=ax1,kind='line', color='g')
+    elif PlotType == strBasic:
+        df_data[strClose].plot(ax=ax1,kind='line', color='g')
               
-    mpl_finance.volume_overlay(ax2, df_data['Open'], df_data['Close'], df_data['Volume'], colorup='r', colordown='g', width=1)
+    mpl_finance.volume_overlay(ax2, df_data[strOpen], df_data[strClose], df_data[strVolume], colorup='r', colordown='g', width=1)
 
     def GetMondayList(df_data_Date):
         MondayList = []     
@@ -73,7 +75,36 @@ def PlotStockData(Symbol,df_data, PlotType='Candle'):
                
     ax1.grid(color='grey', linestyle='--', linewidth=0.5)
     ax2.grid(color='grey', linestyle='--', linewidth=0.5)
+ 
+    if len(TechIndicators)>0:  
+        for indicator in TechIndicators:
+            TechIndicatorFuncName = indicator[strTechIndicatorName]
+            TechIndicatorFuncDict[TechIndicatorFuncName](indicator,df_data,ax1)
     
     plt.tight_layout()    
     plt.show()
+
+def PlotMA(param, df_data, target_ax):
+    Indicator = get_rolling_mean(df_data[strClose], param[strWindow])
+    PlotIndicator(Indicator, target_ax = target_ax, color = param[strColor], linewidth =param[strLineWidth], alpha = param[strAlpha])    
+
+def PlotIndicator(df_data,target_ax,color,linewidth=0.8,alpha=0.8):
+    df_data.plot(ax=target_ax, color = color, linewidth=linewidth, alpha =alpha)
+
+def get_rolling_mean(values, window):
+    return pandas.Series.rolling(values, window=window,center=False).mean()
+
+def get_rolling_std(values, window):
+    return pandas.Series.rolling(values, window=window,center=False).std()
+
+def get_bollinger_bands(rm, rstd):
+    upper_band = rm+rstd*2
+    lower_band = rm-rstd*2
+    return upper_band, lower_band
+
+
+TechIndicatorFuncDict = {
+  strMA: PlotMA
+  
+}
  
