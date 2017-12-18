@@ -118,4 +118,12 @@ TechIndicatorFuncDict = {
   strMA:                {strFuncName: PlotMA,                strParam:{strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}},
   strBollingerBands:    {strFuncName: PlotBollingerBands,    strParam:{strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8, strAreaColor: 'gold', strAreaAlpha:0.3}}
 }
- 
+
+TechIndicatorQParam = {
+  strMA:                {strColor:  {strType:strComboBox,  strValue:'grey'}, strWindow: {strType:strLineEdit,  strValue:20},  strLineWidth: {strType:strLineEdit,  strValue:0.8}, strAlpha: {strType:strLineEdit,  strValue:0.8}},
+  strBollingerBands:    {strColor:  {strType:strComboBox,  strValue:'grey'}, strWindow: {strType:strLineEdit,  strValue:20},  strLineWidth: {strType:strLineEdit,  strValue:0.8}, strAlpha: {strType:strLineEdit,  strValue:0.8}, strAreaColor:  {strType:strComboBox,  strValue:'gold'}, strAreaAlpha: {strType:strLineEdit,  strValue:0.3}}
+}
+
+ColorList = ['aqua','aquamarine','azure','beige','black','blue','brown','chartreuse','chocolate','coral','crimson','cyan','darkblue','darkgreen','fuchsia','gold','goldenrod','green'
+             ,'grey','indigo','ivory','khaki','lavender','lightblue','lightgreen','lime','magenta','maroon','navy','olive','orange','orangered','orchid','pink','plum','purple','red'
+             ,'salmon','sienna','silver','tan','teal','tomato','turquoise','violet','wheat','white','yellow','yellowgreen']

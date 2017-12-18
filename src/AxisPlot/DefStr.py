@@ -21,3 +21,8 @@ strParam = 'Param'
 strMA = 'MA'
 strBollingerBands = 'BollingerBands'
 
+strType = 'Type'
+strValue = 'Value'
+
+strComboBox = 'ComboBox'
+strLineEdit = 'LineEdit'

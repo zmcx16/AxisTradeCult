@@ -34,7 +34,6 @@ class OverviewStockPage(QMainWindow):
         self.parent().GraphSampleButton.setVisible(False)
         self.parent().StockCheckBox.setVisible(False)   
         self.parent().scrollAreaWidgetContents.setLayout(self.OverviewStocklayout)
-        self.parent().GraphTypeComboBox.currentIndexChanged.connect(self.RefreshOverviewStock)
         self.SetGraphTypeComboBoxItem()
         
         
@@ -183,15 +182,15 @@ class OverviewStockInfoWidget(QWidget):
   
     Symbol = ''
     TargetDate = ''
-    GraphStyle = ''
-    
+    GraphTypeComboBox = None
+        
     def __init__(self,parent,id,data):      
         super(OverviewStockInfoWidget, self).__init__()        
         self.initUI(parent,id,data)
         
         self.Symbol = data["Symbol"]
         self.TargetDate = data["TargetDate"]
-        self.GraphStyle = parent.GraphTypeComboBox.currentText()
+        self.GraphTypeComboBox = parent.GraphTypeComboBox
 
     def initUI(self,parent,id,data):
                   
@@ -323,9 +322,11 @@ class OverviewStockInfoWidget(QWidget):
         return QSize( self.widget_width, self.widget_height )
     
     def DoGraphButton(self):    
-                
+
+        GraphType = self.GraphTypeComboBox.currentText()
+        
         Back_N_Months=6
-        if self.GraphStyle == 'BasicN' or self.GraphStyle == 'CandleN':
+        if GraphType == 'BasicN' or GraphType == 'CandleN':
             response = QInputDialog().getText(None, "Back N Months", "Please Input Back N Months:")
             if response[1] == True and response[0] != '':
                 Back_N_Months = int(response[0])
@@ -333,9 +334,9 @@ class OverviewStockInfoWidget(QWidget):
         df = GetStockPriceVolumeData(self.Symbol, gv.StockDataPoolPath, self.TargetDate, back_months = Back_N_Months, back_years=0)
         
         PlotType = ''
-        if self.GraphStyle.find('Basic')!=-1:
+        if GraphType.find('Basic')!=-1:
             PlotType = 'Basic'
-        elif self.GraphStyle.find('Candle')!=-1:
+        elif GraphType.find('Candle')!=-1:
             PlotType = 'Candle'
    
         TechIndicators = []
