@@ -39,10 +39,11 @@ class ChartPage(QMainWindow):
         self.TechIndicatorslayout.addWidget(test1)
         """
         
-        TechIndicatorsWidget_width = self.parent().scrollAreaWidgetContents_2.width() - 40
+        TechIndicatorsWidget_width = self.parent().scrollAreaWidgetContents_2.width() - 20
         
+        """
         for i in range(10): 
-            Indicator = TechIndicatorsWidget(self,TechIndicatorsWidget_width)
+            Indicator = TechIndicatorsWidget(self,[],TechIndicatorsWidget_width)
             Indicator.setGeometry(QRect(0,0,Indicator.widget_width,Indicator.widget_height))
             Indicator.setMinimumSize(Indicator.widget_width, Indicator.widget_height)
             
@@ -50,8 +51,17 @@ class ChartPage(QMainWindow):
                           
             self.TechIndicatorslayout.addWidget(Indicator)
             self.TechIndicatorslayout.setSpacing(1)     
-         
+        """
         
+        for key,value in TechIndicatorWidgetParam.items():
+            Indicator = TechIndicatorsWidget(self, key, value,TechIndicatorsWidget_width)
+            Indicator.setGeometry(QRect(0,0,Indicator.widget_width,Indicator.widget_height))
+            Indicator.setMinimumSize(Indicator.widget_width, Indicator.widget_height)            
+            Indicator.setObjectName(key)
+                          
+            self.TechIndicatorslayout.addWidget(Indicator)
+            self.TechIndicatorslayout.setSpacing(1)             
+  
         self.TechIndicatorslayout.setSpacing(5);
         self.TechIndicatorslayout.setContentsMargins(10, 10, 0, 10);        
         
@@ -66,62 +76,64 @@ class ChartPage(QMainWindow):
 
 class TechIndicatorsWidget(QWidget):
 
-
-    #TechIndicators.append({strTechIndicatorKey:strMA ,             strParam:{strColor:'blue', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}})
-    #TechIndicators.append({strTechIndicatorKey:strBollingerBands , strParam:{strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8, strAreaColor: 'gold', strAreaAlpha:0.3}}) 
-
-
     base_height = 50    
     widget_width = 0
-    widget_height = 0 
+    widget_height = base_height 
+    MaxcolumnNum = 6
+    IndicatorName = None
+    IndicatorParam = None
     
-    def __init__(self,parent,width):      
+    def __init__(self,parent,IndicatorName,IndicatorParam,width):      
         super(TechIndicatorsWidget, self).__init__(parent) 
-        self.widget_width = width    
+        self.widget_width = width
+        self.IndicatorName = IndicatorName  
+        self.IndicatorParam = IndicatorParam   
         self.initUI()
         
     def initUI(self):
         
-        self.gridGroupBox = QGroupBox(self);  
+        self.gridGroupBox = QGroupBox(self.IndicatorName,self); 
         self.gridlayout = QGridLayout(self)
-        print(self.gridGroupBox.size())
-                
-        self.ColorLabel = QLabel(self);
-        self.ColorComboBox = QComboBox(self);        
-        self.WindowLabel = QLabel(self);
-        self.WindowLineEdit = QLineEdit(self);   
-        self.LineWidthLabel = QLabel(self);
-        self.LineWidthLineEdit = QLineEdit(self);         
-        self.AlphaLabel = QLabel(self);
-        self.AlphaLineEdit = QLineEdit(self);         
-                
-        for color in ColorList:
-            self.ColorComboBox.addItem(color)
-            
-        _translate = QCoreApplication.translate
-        self.ColorLabel.setText(_translate("AxisTradeCultForm", strColor))
-        self.ColorComboBox.setCurrentIndex(random.randint(0,len(ColorList)))        
-        self.WindowLabel.setText(_translate("AxisTradeCultForm", strWindow))  
-        self.WindowLineEdit.setText(str(20))   
-        self.LineWidthLabel.setText(_translate("AxisTradeCultForm", strLineWidth))  
-        self.LineWidthLineEdit.setText(str(0.8))  
-        self.AlphaLabel.setText(_translate("AxisTradeCultForm", strAlpha))  
-        self.AlphaLineEdit.setText(str(0.8))                  
-            
-        self.widget_height += self.base_height
-        self.gridlayout.addWidget(self.ColorLabel, 1, 0);
-        self.gridlayout.addWidget(self.ColorComboBox, 1, 1);
-        self.gridlayout.addWidget(self.WindowLabel, 1, 3);
-        self.gridlayout.addWidget(self.WindowLineEdit, 1, 4);
 
-        self.gridlayout.addWidget(self.LineWidthLabel, 1, 6);
-        self.gridlayout.addWidget(self.LineWidthLineEdit, 1,7);
-        self.widget_height += self.base_height
-        self.gridlayout.addWidget(self.AlphaLabel, 2, 0);
-        self.gridlayout.addWidget(self.AlphaLineEdit, 2, 1);        
+        row_index=0
+        col_index=0
+        for key,value in self.IndicatorParam.items():            
+            if value[strType] == strComboBox:
+                Label = QLabel(self)
+                Label.setText(key)
+                ComboBox = QComboBox(self)  
+                ComboBox.setObjectName(key)
+                for item in value[strComboList]:
+                    ComboBox.addItem(item)
+                ComboBox.setCurrentIndex(random.randint(0,len(value[strComboList])))
+                self.gridlayout.addWidget(Label, row_index, col_index); 
+                col_index+=1
+                self.gridlayout.addWidget(ComboBox, row_index, col_index); 
+                col_index+=1                  
+            elif value[strType] == strLineEdit:
+                Label = QLabel(self)
+                Label.setText(key)
+                LineEdit = QLineEdit(self)
+                LineEdit.setText(str(value[strValue]))
+                LineEdit.setObjectName(key)
+                self.gridlayout.addWidget(Label, row_index, col_index); 
+                col_index+=1
+                self.gridlayout.addWidget(LineEdit, row_index, col_index); 
+                col_index+=1                        
+
+            if col_index >= self.MaxcolumnNum:
+                col_index=0
+                row_index+=1
+                self.widget_height += self.base_height
+                
+        Button = QPushButton(self)
+        Button.setText(strAdd)
+        Button.setObjectName(strButton)  
+        Button.clicked.connect(self.parent().test)        
+        self.gridlayout.addWidget(Button, row_index, self.MaxcolumnNum-1); 
         
         self.gridGroupBox.resize(self.widget_width,self.widget_height)        
-        self.gridGroupBox.setLayout(self.gridlayout);
-       
+        self.gridGroupBox.setLayout(self.gridlayout);       
+        
     def sizeHint( self ):
         return QSize(self.gridGroupBox.size())

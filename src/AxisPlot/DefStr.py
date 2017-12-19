@@ -26,3 +26,6 @@ strValue = 'Value'
 
 strComboBox = 'ComboBox'
 strLineEdit = 'LineEdit'
+strComboList = 'ComboList'
+strButton = 'Button'
+strAdd = 'Add'
