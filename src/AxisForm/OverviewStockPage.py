@@ -62,7 +62,7 @@ class OverviewStockPage(QMainWindow):
 
             self.parent().StockGroupsComboBox.setCurrentIndex(0)
             if response[1] == True and response[0] != '':
-                gv.AddGroup(response[0])
+                gv.AddStockGroup(response[0])
                 self.SetStockGroupsComboBoxItem()
                 self.parent().StockGroupsComboBox.setCurrentIndex(self.parent().StockGroupsComboBox.count()-2)
                 
@@ -147,7 +147,7 @@ class OverviewStockPage(QMainWindow):
             msg[Str_setDetailedText] = msg[Str_setDetailedText].format(Stocks)     
             if ShowWarningDialog(msg) == 'OK':
                 select_index = self.parent().StockGroupsComboBox.currentIndex()
-                gv.DeleteGroup(self.parent().StockGroupsComboBox.currentText())
+                gv.DeleteStockGroup(self.parent().StockGroupsComboBox.currentText())
                 self.parent().StockGroupsComboBox.setCurrentIndex(0)
                 self.parent().StockGroupsComboBox.removeItem(select_index)
             

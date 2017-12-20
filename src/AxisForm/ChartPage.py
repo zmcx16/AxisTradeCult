@@ -54,11 +54,12 @@ class ChartPage(QMainWindow):
         """
         
         for key,value in TechIndicatorWidgetParam.items():
-            Indicator = TechIndicatorsWidget(self, key, value,TechIndicatorsWidget_width)
+            Indicator = TechIndicatorWidget(self, key, value,TechIndicatorsWidget_width)
             Indicator.setGeometry(QRect(0,0,Indicator.widget_width,Indicator.widget_height))
             Indicator.setMinimumSize(Indicator.widget_width, Indicator.widget_height)            
             Indicator.setObjectName(key)
-                          
+            Indicator.TechIndicatorSignal.connect(self.AddIndicatorToGroup)
+            
             self.TechIndicatorslayout.addWidget(Indicator)
             self.TechIndicatorslayout.setSpacing(1)             
   
@@ -70,11 +71,14 @@ class ChartPage(QMainWindow):
         pdDate = pandas.to_datetime(pyDate)
         TargetDate = pdDate - pandas.DateOffset(months=months,days=days,years=years)
         return QDate(TargetDate.year,TargetDate.month,TargetDate.day)
+
+    def AddIndicatorToGroup(self,TechIndicatorParam):
+        print(TechIndicatorParam)
     
     def test(self):
         print('xxx')
 
-class TechIndicatorsWidget(QWidget):
+class TechIndicatorWidget(QWidget):
 
     base_height = 50    
     widget_width = 0
@@ -83,8 +87,10 @@ class TechIndicatorsWidget(QWidget):
     IndicatorName = None
     IndicatorParam = None
     
+    TechIndicatorSignal = pyqtSignal(dict)
+    
     def __init__(self,parent,IndicatorName,IndicatorParam,width):      
-        super(TechIndicatorsWidget, self).__init__(parent) 
+        super(TechIndicatorWidget, self).__init__(parent) 
         self.widget_width = width
         self.IndicatorName = IndicatorName  
         self.IndicatorParam = IndicatorParam   
@@ -94,7 +100,7 @@ class TechIndicatorsWidget(QWidget):
         
         self.gridGroupBox = QGroupBox(self.IndicatorName,self); 
         self.gridlayout = QGridLayout(self)
-
+        
         row_index=0
         col_index=0
         for key,value in self.IndicatorParam.items():            
@@ -125,11 +131,11 @@ class TechIndicatorsWidget(QWidget):
                 col_index=0
                 row_index+=1
                 self.widget_height += self.base_height
-                
+                     
         Button = QPushButton(self)
         Button.setText(strAdd)
         Button.setObjectName(strButton)  
-        Button.clicked.connect(self.parent().test)        
+        Button.clicked.connect(self.AddTechIndicator)        
         self.gridlayout.addWidget(Button, row_index, self.MaxcolumnNum-1); 
         
         self.gridGroupBox.resize(self.widget_width,self.widget_height)        
@@ -137,3 +143,12 @@ class TechIndicatorsWidget(QWidget):
         
     def sizeHint( self ):
         return QSize(self.gridGroupBox.size())
+    
+    def AddTechIndicator(self):
+        
+        TechIndicatorParam = {}
+        GetAllWidgetValInLayout(self.gridlayout)
+        
+        teee = {'key':5,'kk':6}
+        self.TechIndicatorSignal.emit(teee)
+        

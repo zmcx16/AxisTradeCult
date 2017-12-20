@@ -16,4 +16,10 @@ def ClearWidgetInLayoutByNames(layout,ObjectNames):
 def SetQLineEditColor(widget,r,g,b):
     SetColor = "color: rgb({0}, {1}, {2});".format(r,g,b)
     widget.setStyleSheet(SetColor)
-    
+
+def GetAllWidgetValInLayout(layout):
+    for i in reversed(range(layout.count())):  
+        widget = layout.itemAt( i ).widget() 
+        print(type(widget))
+        
+             
