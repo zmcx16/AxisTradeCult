@@ -73,6 +73,7 @@ public:
     QScrollArea *TechIndicatorsScrollArea;
     QWidget *scrollAreaWidgetContents_2;
     QPushButton *ShowButton;
+    QPushButton *DelChartGroupButton;
     QMenuBar *menuBar;
     QMenu *menuSetting;
     QStatusBar *statusBar;
@@ -212,16 +213,16 @@ public:
         tabChart->setObjectName(QStringLiteral("tabChart"));
         TechIndicatorsListWidget = new QListWidget(tabChart);
         TechIndicatorsListWidget->setObjectName(QStringLiteral("TechIndicatorsListWidget"));
-        TechIndicatorsListWidget->setGeometry(QRect(510, 70, 421, 351));
+        TechIndicatorsListWidget->setGeometry(QRect(510, 60, 421, 361));
         ChartGroupsComboBox = new QComboBox(tabChart);
         ChartGroupsComboBox->setObjectName(QStringLiteral("ChartGroupsComboBox"));
-        ChartGroupsComboBox->setGeometry(QRect(730, 20, 141, 31));
+        ChartGroupsComboBox->setGeometry(QRect(770, 20, 111, 31));
         ChartStartDate = new QDateEdit(tabChart);
         ChartStartDate->setObjectName(QStringLiteral("ChartStartDate"));
-        ChartStartDate->setGeometry(QRect(510, 20, 101, 31));
+        ChartStartDate->setGeometry(QRect(550, 20, 101, 31));
         ChartEndDate = new QDateEdit(tabChart);
         ChartEndDate->setObjectName(QStringLiteral("ChartEndDate"));
-        ChartEndDate->setGeometry(QRect(620, 20, 101, 31));
+        ChartEndDate->setGeometry(QRect(660, 20, 101, 31));
         TechIndicatorsScrollArea = new QScrollArea(tabChart);
         TechIndicatorsScrollArea->setObjectName(QStringLiteral("TechIndicatorsScrollArea"));
         TechIndicatorsScrollArea->setGeometry(QRect(10, 20, 481, 401));
@@ -233,7 +234,11 @@ public:
         ShowButton = new QPushButton(tabChart);
         ShowButton->setObjectName(QStringLiteral("ShowButton"));
         ShowButton->setEnabled(true);
-        ShowButton->setGeometry(QRect(880, 20, 51, 31));
+        ShowButton->setGeometry(QRect(890, 20, 41, 31));
+        DelChartGroupButton = new QPushButton(tabChart);
+        DelChartGroupButton->setObjectName(QStringLiteral("DelChartGroupButton"));
+        DelChartGroupButton->setEnabled(true);
+        DelChartGroupButton->setGeometry(QRect(510, 20, 31, 31));
         tabWidget->addTab(tabChart, QString());
         AxisTradeCultForm->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(AxisTradeCultForm);
@@ -280,6 +285,7 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(tabOverview), QApplication::translate("AxisTradeCultForm", "Overview", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tabPortfolio), QApplication::translate("AxisTradeCultForm", "Portfolio", nullptr));
         ShowButton->setText(QApplication::translate("AxisTradeCultForm", "Show", nullptr));
+        DelChartGroupButton->setText(QApplication::translate("AxisTradeCultForm", "Del", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tabChart), QApplication::translate("AxisTradeCultForm", "Chart", nullptr));
         menuSetting->setTitle(QApplication::translate("AxisTradeCultForm", "Setting", nullptr));
     } // retranslateUi

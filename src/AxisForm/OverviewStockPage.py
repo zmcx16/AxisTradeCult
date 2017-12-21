@@ -22,6 +22,8 @@ class OverviewStockPage(QMainWindow):
         self.setupUIEvent()
         
     def setupUIEvent(self):
+        gv.ReadStockGroups()
+        
         self.OverviewStocklayout = QVBoxLayout() 
 
         self.parent().DisplayDate.setCalendarPopup(True)

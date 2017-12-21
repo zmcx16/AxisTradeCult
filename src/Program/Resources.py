@@ -1,0 +1,1 @@
+imgTsubasa = 'tsubasa.png'

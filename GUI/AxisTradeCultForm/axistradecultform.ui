@@ -403,18 +403,18 @@
       <property name="geometry">
        <rect>
         <x>510</x>
-        <y>70</y>
+        <y>60</y>
         <width>421</width>
-        <height>351</height>
+        <height>361</height>
        </rect>
       </property>
      </widget>
      <widget class="QComboBox" name="ChartGroupsComboBox">
       <property name="geometry">
        <rect>
-        <x>730</x>
+        <x>770</x>
         <y>20</y>
-        <width>141</width>
+        <width>111</width>
         <height>31</height>
        </rect>
       </property>
@@ -422,7 +422,7 @@
      <widget class="QDateEdit" name="ChartStartDate">
       <property name="geometry">
        <rect>
-        <x>510</x>
+        <x>550</x>
         <y>20</y>
         <width>101</width>
         <height>31</height>
@@ -432,7 +432,7 @@
      <widget class="QDateEdit" name="ChartEndDate">
       <property name="geometry">
        <rect>
-        <x>620</x>
+        <x>660</x>
         <y>20</y>
         <width>101</width>
         <height>31</height>
@@ -468,14 +468,30 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>880</x>
+        <x>890</x>
         <y>20</y>
-        <width>51</width>
+        <width>41</width>
         <height>31</height>
        </rect>
       </property>
       <property name="text">
        <string>Show</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="DelChartGroupButton">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>510</x>
+        <y>20</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Del</string>
       </property>
      </widget>
     </widget>

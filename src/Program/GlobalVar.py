@@ -3,13 +3,18 @@ import json
 import pandas
 import numpy
 
+from Program.Resources import *
 from Program.Common import *
 from AxisPlot.Common import TechIndicatorFuncDict
+
 
 RootPath = os.getcwd()
 
 StockDataPool = 'StockDataPool'
 StockDataPoolPath = os.path.join(RootPath,StockDataPool)
+
+ImagePath = os.path.join(os.path.dirname(RootPath),'Image')
+ImgTsubasaPath = os.path.join(ImagePath,imgTsubasa)
 
 # StockGroups -------------------------------------------
 StockGroups = {}
@@ -80,6 +85,8 @@ def DeleteTechIndicatorGroup(GroupName):
     del TechIndicatorGroups[GroupName]
     SaveTechIndicatorGroups()    
 #-------------------------------------------------------
+
+
 
 if os.path.isfile(StockGroupsSettingPath) == False:
     SaveStockGroups() 

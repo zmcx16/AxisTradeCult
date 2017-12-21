@@ -11,8 +11,6 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 
 if __name__ == "__main__":
     
-    gv.ReadStockGroups()
-    
     app = QApplication(sys.argv)
     window = AxisTradeCultForm()
     window.show()

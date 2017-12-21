@@ -23,36 +23,18 @@ class ChartPage(QMainWindow):
         self.setupUIEvent()
         
     def setupUIEvent(self):
+        gv.ReadTechIndicatorGroups()
+        
         self.TechIndicatorslayout = QVBoxLayout() 
         
         self.parent().ChartStartDate.setCalendarPopup(True)     
         self.parent().ChartStartDate.setDate(self.SetBackQDate(QDate.currentDate(),months=6))
         self.parent().ChartEndDate.setCalendarPopup(True)
         self.parent().ChartEndDate.setDate(QDate.currentDate())
-        
+        self.parent().ChartGroupsComboBox.currentIndexChanged.connect(self.RefreshTechIndicatorsList)
+                
         self.parent().scrollAreaWidgetContents_2.setLayout(self.TechIndicatorslayout)
-
-        """
-        test0 = TechIndicatorsWidget(self)
-        self.TechIndicatorslayout.addWidget(test0)
-        test1 = TechIndicatorsWidget(self)
-        self.TechIndicatorslayout.addWidget(test1)
-        """
-        
-        TechIndicatorsWidget_width = self.parent().scrollAreaWidgetContents_2.width() - 20
-        
-        """
-        for i in range(10): 
-            Indicator = TechIndicatorsWidget(self,[],TechIndicatorsWidget_width)
-            Indicator.setGeometry(QRect(0,0,Indicator.widget_width,Indicator.widget_height))
-            Indicator.setMinimumSize(Indicator.widget_width, Indicator.widget_height)
-            
-            Indicator.setObjectName('Indicator'+str(i))
-                          
-            self.TechIndicatorslayout.addWidget(Indicator)
-            self.TechIndicatorslayout.setSpacing(1)     
-        """
-        
+        TechIndicatorsWidget_width = self.parent().scrollAreaWidgetContents_2.width() - 20        
         for key,value in TechIndicatorWidgetParam.items():
             Indicator = TechIndicatorWidget(self, key, value,TechIndicatorsWidget_width)
             Indicator.setGeometry(QRect(0,0,Indicator.widget_width,Indicator.widget_height))
@@ -66,14 +48,57 @@ class ChartPage(QMainWindow):
         self.TechIndicatorslayout.setSpacing(5);
         self.TechIndicatorslayout.setContentsMargins(10, 10, 0, 10);        
         
+        self.SetChartGroupsComboBoxItem()
+        
+    def SetChartGroupsComboBoxItem(self):
+        self.parent().ChartGroupsComboBox.clear()
+        self.parent().ChartGroupsComboBox.addItems(gv.TechIndicatorGroups.keys())
+        self.parent().ChartGroupsComboBox.addItem('New Group')
+    
+    def RefreshTechIndicatorsList(self):
+        if self.parent().ChartGroupsComboBox.count() == 0:
+            return False
+                        
+        if self.parent().ChartGroupsComboBox.currentText() == 'New Group':
+            response = QInputDialog().getText(None, "Create Group", "Please Input New Group Name:")
+
+            self.parent().ChartGroupsComboBox.setCurrentIndex(0)
+            if response[1] == True and response[0] != '':
+                gv.AddTechIndicatorGroup(response[0])
+                self.SetChartGroupsComboBoxItem()
+                self.parent().ChartGroupsComboBox.setCurrentIndex(self.parent().ChartGroupsComboBox.count()-2)         
+            return True
+        
+        self.parent().TechIndicatorsListWidget.clear()
+        SelectGroupName = self.parent().ChartGroupsComboBox.currentText()
+        TechIndicators = gv.TechIndicatorGroups[SelectGroupName]
+        
+        print(TechIndicators)
+        
+        for TechIndicator in TechIndicators:   
+            IndicatorContent = self.FormatIndicatorParamString(TechIndicator.copy())
+            item = QListWidgetItem(IndicatorContent);
+            item.setIcon(QIcon(gv.ImgTsubasaPath));      
+            self.parent().TechIndicatorsListWidget.addItem(item)
+                
     def SetBackQDate(self, srcDate, years=0, months=3, days=0):
         pyDate = QDate.toPyDate(srcDate)
         pdDate = pandas.to_datetime(pyDate)
         TargetDate = pdDate - pandas.DateOffset(months=months,days=days,years=years)
         return QDate(TargetDate.year,TargetDate.month,TargetDate.day)
 
+    def FormatIndicatorParamString(self, Indicator):
+        formatStr = '|<{0}>|   '.format(Indicator.pop(strName))
+        for key,value in Indicator.items():
+            formatStr+='[{0}: {1}], '.format(key,value)
+        return formatStr[:-2]
+
     def AddIndicatorToGroup(self,TechIndicatorParam):
         print(TechIndicatorParam)
+        NowGroup = self.parent().ChartGroupsComboBox.currentText()                            
+        gv.AddTechIndicatorInGroup(NowGroup,TechIndicatorParam)
+        self.RefreshTechIndicatorsList()        
+        
     
     def test(self):
         print('xxx')
@@ -144,11 +169,9 @@ class TechIndicatorWidget(QWidget):
     def sizeHint( self ):
         return QSize(self.gridGroupBox.size())
     
-    def AddTechIndicator(self):
-        
-        TechIndicatorParam = {}
-        GetAllWidgetValInLayout(self.gridlayout)
-        
-        teee = {'key':5,'kk':6}
-        self.TechIndicatorSignal.emit(teee)
+    def AddTechIndicator(self):      
+        OutputParam = {}
+        OutputParam[strName] = self.IndicatorName
+        GetAllWidgetValInLayout(self.gridlayout,OutputParam)
+        self.TechIndicatorSignal.emit(OutputParam)
         
