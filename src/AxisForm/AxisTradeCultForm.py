@@ -21,3 +21,10 @@ class AxisTradeCultForm(QMainWindow, Ui_AxisTradeCultForm):
     def setupAxisWidget(self):
         self.OverviewStockPage = OverviewStockPage(self)
         self.ChartPage = ChartPage(self)
+        self.ChartPage.setFocusPolicy(Qt.StrongFocus)
+        self.setFocusProxy(self.ChartPage)  
+ 
+    def keyPressEvent(self, event):      
+        if self.tabWidget.currentWidget() == self.tabChart:
+            self.ChartPage.keyPressEvent(event)
+    

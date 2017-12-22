@@ -62,5 +62,5 @@ DeleteGroupWarningMessage = {
     Str_setText:                'Warning!! Are you sure you want to delete "{0}" Group?',
     Str_setInformativeText:     'None',
     Str_setWindowTitle:         'Warning!!',
-    Str_setDetailedText:        'Include below Stocks:\n{0}'
+    Str_setDetailedText:        'Include below :\n{0}'
 }

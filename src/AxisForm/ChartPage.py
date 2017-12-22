@@ -32,6 +32,7 @@ class ChartPage(QMainWindow):
         self.parent().ChartEndDate.setCalendarPopup(True)
         self.parent().ChartEndDate.setDate(QDate.currentDate())
         self.parent().ChartGroupsComboBox.currentIndexChanged.connect(self.RefreshTechIndicatorsList)
+        self.parent().DelChartGroupButton.clicked.connect(self.DoDelButton)
                 
         self.parent().scrollAreaWidgetContents_2.setLayout(self.TechIndicatorslayout)
         TechIndicatorsWidget_width = self.parent().scrollAreaWidgetContents_2.width() - 20        
@@ -49,6 +50,7 @@ class ChartPage(QMainWindow):
         self.TechIndicatorslayout.setContentsMargins(10, 10, 0, 10);        
         
         self.SetChartGroupsComboBoxItem()
+        
         
     def SetChartGroupsComboBoxItem(self):
         self.parent().ChartGroupsComboBox.clear()
@@ -73,7 +75,7 @@ class ChartPage(QMainWindow):
         SelectGroupName = self.parent().ChartGroupsComboBox.currentText()
         TechIndicators = gv.TechIndicatorGroups[SelectGroupName]
         
-        print(TechIndicators)
+        #print(TechIndicators)
         
         for TechIndicator in TechIndicators:   
             IndicatorContent = self.FormatIndicatorParamString(TechIndicator.copy())
@@ -99,7 +101,39 @@ class ChartPage(QMainWindow):
         gv.AddTechIndicatorInGroup(NowGroup,TechIndicatorParam)
         self.RefreshTechIndicatorsList()        
         
-    
+    def DoDelButton(self):
+        if self.parent().ChartGroupsComboBox.count() <= 1:
+            return False
+        
+        NowGroup = self.parent().ChartGroupsComboBox.currentText()
+        
+        msg = DeleteGroupWarningMessage
+        msg[Str_setText] = msg[Str_setText].format(NowGroup)     
+        msg[Str_setDetailedText] = 'None'     
+        if ShowWarningDialog(msg) == 'OK':
+            select_index = self.parent().ChartGroupsComboBox.currentIndex()
+            gv.DeleteTechIndicatorGroup(NowGroup)
+            self.parent().ChartGroupsComboBox.setCurrentIndex(0)
+            self.parent().ChartGroupsComboBox.removeItem(select_index)
+        
+        self.RefreshTechIndicatorsList()            
+        return True  
+
+
+    def DelIndicatorInGroup(self):
+        SelectGroupName = self.parent().ChartGroupsComboBox.currentText()
+        TechIndicators = gv.TechIndicatorGroups[SelectGroupName]
+        current_ListWidget_index = self.parent().TechIndicatorsListWidget.currentRow()
+        if current_ListWidget_index >=0:
+            del TechIndicators[current_ListWidget_index]
+            self.parent().TechIndicatorsListWidget.takeItem(current_ListWidget_index) 
+            gv.ResetTechIndicatorInGroup(SelectGroupName,TechIndicators)            
+            
+            
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Delete:
+            self.DelIndicatorInGroup()
+
     def test(self):
         print('xxx')
 

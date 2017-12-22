@@ -178,7 +178,7 @@ class OverviewStockPage(QMainWindow):
       
     def UpdateProgressBarCount(self,val):
         self.parent().UpdateProgressBar.setValue(val)
-
+        
 
 class OverviewStockInfoWidget(QWidget):
   
