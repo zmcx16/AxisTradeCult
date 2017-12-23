@@ -1,5 +1,6 @@
 import sys
 import random
+import copy
 
 from AxisForm.UiAxisTradeCultForm import Ui_AxisTradeCultForm
 from PyQt5.QtWidgets import *
@@ -32,8 +33,10 @@ class ChartPage(QMainWindow):
         self.parent().ChartEndDate.setCalendarPopup(True)
         self.parent().ChartEndDate.setDate(QDate.currentDate())
         self.parent().ChartGroupsComboBox.currentIndexChanged.connect(self.RefreshTechIndicatorsList)
+        self.parent().ChartPageStockGroupsComboBox.currentIndexChanged.connect(self.RefreshStockInGroup)
         self.parent().DelChartGroupButton.clicked.connect(self.DoDelButton)
-                
+        self.parent().ShowButton.clicked.connect(self.DoShowButton)
+         
         self.parent().scrollAreaWidgetContents_2.setLayout(self.TechIndicatorslayout)
         TechIndicatorsWidget_width = self.parent().scrollAreaWidgetContents_2.width() - 20        
         for key,value in TechIndicatorWidgetParam.items():
@@ -50,7 +53,25 @@ class ChartPage(QMainWindow):
         self.TechIndicatorslayout.setContentsMargins(10, 10, 0, 10);        
         
         self.SetChartGroupsComboBoxItem()
+        self.SetStockGroupsComboBoxItem()
+        self.SetGraphTypeComboBoxItem()
         
+    def SetGraphTypeComboBoxItem(self):
+        self.parent().ChartPageGraphTypeComboBox.clear()        
+        self.parent().ChartPageGraphTypeComboBox.addItem('Basic')
+        self.parent().ChartPageGraphTypeComboBox.addItem('Candle')
+
+    def SetStockGroupsComboBoxItem(self):
+        self.parent().ChartPageStockGroupsComboBox.clear()        
+        self.parent().ChartPageStockInGroupComboBox.clear() 
+        self.parent().ChartPageStockGroupsComboBox.addItems(gv.StockGroups.keys())     
+        self.parent().ChartPageStockGroupsComboBox.setCurrentIndex(0)
+        self.parent().ChartPageStockInGroupComboBox.addItems(gv.StockGroups[self.parent().ChartPageStockGroupsComboBox.currentText()])          
+
+    def RefreshStockInGroup(self):
+        self.parent().ChartPageStockInGroupComboBox.clear()
+        self.parent().ChartPageStockInGroupComboBox.addItems(gv.StockGroups[self.parent().ChartPageStockGroupsComboBox.currentText()])          
+     
         
     def SetChartGroupsComboBoxItem(self):
         self.parent().ChartGroupsComboBox.clear()
@@ -128,7 +149,34 @@ class ChartPage(QMainWindow):
             del TechIndicators[current_ListWidget_index]
             self.parent().TechIndicatorsListWidget.takeItem(current_ListWidget_index) 
             gv.ResetTechIndicatorInGroup(SelectGroupName,TechIndicators)            
+
+    def TechIndicatorGroupToFuncDict(self, TechIndicatorGroup):
+        OutputTechIndicators = []
+        for TechIndicator in TechIndicatorGroup: 
+            IndicatorName = TechIndicator.pop(strName,None)
+            IndicatorParam = {}
+            for key,value in TechIndicator.items(): 
+                IndicatorParam[key] = value
             
+            OutputTechIndicators.append({strTechIndicatorKey:IndicatorName,strParam:IndicatorParam})
+        
+        return OutputTechIndicators
+        
+    def DoShowButton(self):    
+
+        StockSymbol = self.parent().ChartPageStockInGroupComboBox.currentText()
+        
+        StartDate = pandas.to_datetime(QDate.toPyDate(self.parent().ChartStartDate.date()))
+        EndDate = pandas.to_datetime(QDate.toPyDate(self.parent().ChartEndDate.date()))
+        df = GetStockPriceVolumeData(StockSymbol, gv.StockDataPoolPath, StartDate, EndDate)
+        
+        PlotType = self.parent().ChartPageGraphTypeComboBox.currentText()
+
+        SelectGroupName = self.parent().ChartGroupsComboBox.currentText()       
+        TechIndicators = self.TechIndicatorGroupToFuncDict(copy.deepcopy(gv.TechIndicatorGroups[SelectGroupName]))  
+        print(TechIndicators)
+       
+        PlotStockDataV2(StockSymbol,df,PlotType,TechIndicators)            
             
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Delete:

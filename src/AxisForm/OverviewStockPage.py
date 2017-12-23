@@ -332,8 +332,9 @@ class OverviewStockInfoWidget(QWidget):
             response = QInputDialog().getText(None, "Back N Months", "Please Input Back N Months:")
             if response[1] == True and response[0] != '':
                 Back_N_Months = int(response[0])
-                    
-        df = GetStockPriceVolumeData(self.Symbol, gv.StockDataPoolPath, self.TargetDate, back_months = Back_N_Months, back_years=0)
+        
+        TargetDate_back = self.TargetDate - pandas.DateOffset(months=Back_N_Months)
+        df = GetStockPriceVolumeData(self.Symbol, gv.StockDataPoolPath, TargetDate_back, self.TargetDate)
         
         PlotType = ''
         if GraphType.find('Basic')!=-1:

@@ -18,6 +18,8 @@ ImgTsubasaPath = os.path.join(ImagePath,imgTsubasa)
 
 # StockGroups -------------------------------------------
 StockGroups = {}
+# {"List1": ["T", "GOOG", "AAPL"]
+#, "List2": ["T", "DPZ", "GOOG", "AMZN", "WDC", "STX"]}
 StockGroupsSetting = 'StockGroups.setting'
 StockGroupsSettingPath = os.path.join(RootPath,StockGroupsSetting)
 
@@ -53,6 +55,8 @@ def DeleteStockGroup(GroupName):
 
 # TechIndicatorGroups ----------------------------------
 TechIndicatorGroups = {}
+# {"TechIndicator1": [{"Name": "BollingerBands", "AreaAlpha": "0.3", "AreaColor": "purple", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "lightblue"}, {"Name": "MA", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "violet"}]
+#, "TechList2": [{"Name": "MA", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "azure"}]}
 TechIndicatorGroupsSetting = 'TechIndicatorGroups.setting'
 TechIndicatorGroupsSettingPath = os.path.join(RootPath,TechIndicatorGroupsSetting)
     

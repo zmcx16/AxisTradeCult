@@ -509,7 +509,17 @@
        <rect>
         <x>650</x>
         <y>20</y>
-        <width>121</width>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="ChartPageGraphTypeComboBox">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>20</y>
+        <width>91</width>
         <height>31</height>
        </rect>
       </property>

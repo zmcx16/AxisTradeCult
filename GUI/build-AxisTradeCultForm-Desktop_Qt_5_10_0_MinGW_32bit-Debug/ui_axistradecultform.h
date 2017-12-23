@@ -76,6 +76,7 @@ public:
     QPushButton *DelChartGroupButton;
     QComboBox *ChartPageStockGroupsComboBox;
     QComboBox *ChartPageStockInGroupComboBox;
+    QComboBox *ChartPageGraphTypeComboBox;
     QMenuBar *menuBar;
     QMenu *menuSetting;
     QStatusBar *statusBar;
@@ -246,7 +247,10 @@ public:
         ChartPageStockGroupsComboBox->setGeometry(QRect(520, 20, 121, 31));
         ChartPageStockInGroupComboBox = new QComboBox(tabChart);
         ChartPageStockInGroupComboBox->setObjectName(QStringLiteral("ChartPageStockInGroupComboBox"));
-        ChartPageStockInGroupComboBox->setGeometry(QRect(650, 20, 121, 31));
+        ChartPageStockInGroupComboBox->setGeometry(QRect(650, 20, 81, 31));
+        ChartPageGraphTypeComboBox = new QComboBox(tabChart);
+        ChartPageGraphTypeComboBox->setObjectName(QStringLiteral("ChartPageGraphTypeComboBox"));
+        ChartPageGraphTypeComboBox->setGeometry(QRect(740, 20, 91, 31));
         tabWidget->addTab(tabChart, QString());
         AxisTradeCultForm->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(AxisTradeCultForm);
