@@ -1,6 +1,5 @@
 numpy>=1.13.3
 pandas>=0.21.0
 matplotlib>=2.1.0
-mpl-finance>=0.10.0
 PyQt5>=5.9.2
 urllib3>=1.22
