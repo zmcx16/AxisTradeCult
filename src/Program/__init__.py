@@ -4,7 +4,6 @@ import os
 import sys
 
 import Program.GlobalVar as gv
-from AxisWeb.DownloadData import *
 from AxisForm.AxisTradeCultForm import AxisTradeCultForm
 from PyQt5.QtWidgets import QMainWindow, QApplication
 

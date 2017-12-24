@@ -3,3 +3,4 @@ pandas>=0.21.0
 matplotlib>=2.1.0
 PyQt5>=5.9.2
 urllib3>=1.22
+assertpy>=0.12
