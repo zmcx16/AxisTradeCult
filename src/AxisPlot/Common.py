@@ -7,6 +7,8 @@ import mpl_finance
 import matplotlib.ticker as ticker
 
 from AxisPlot.DefStr import *
+from numpy import NaN
+from pandas.tests.frame.test_validate import dataframe
 
 def PlotStockDataV2(Symbol,df_data, PlotType,TechIndicators):
  
@@ -19,8 +21,9 @@ def PlotStockDataV2(Symbol,df_data, PlotType,TechIndicators):
     DefaultSize = fig.get_size_inches()
     fig.set_size_inches( (DefaultSize[0]*size_factor, DefaultSize[1]*size_factor) )
     
-    ax1 = plt.subplot2grid((4, 1), (0, 0), rowspan=3)    
-    ax2 = plt.subplot2grid((4, 1), (3, 0), sharex=ax1)    
+    ax_price = plt.subplot2grid((4, 1), (0, 0), rowspan=2)    
+    ax_volume = plt.subplot2grid((4, 1), (3, 0), sharex=ax_price)    
+    ax_TechIndicators = []
     
     #for using mpl_finance
     df_data = df_data.reset_index()
@@ -38,7 +41,7 @@ def PlotStockDataV2(Symbol,df_data, PlotType,TechIndicators):
         return mdates.num2date(df_data_Date[this_index]).strftime('%m/%d/%y') 
         
     if PlotType == strCandle: 
-        lines, patches = mpl_finance.candlestick_ohlc(ax1,df_data.values,width=1, colorup='r', colordown='g')
+        lines, patches = mpl_finance.candlestick_ohlc(ax_price,df_data.values,width=1, colorup='r', colordown='g')
         for line, patch in zip(lines, patches):
             patch.set_edgecolor("k")
             patch.set_linewidth(0.72)
@@ -47,9 +50,9 @@ def PlotStockDataV2(Symbol,df_data, PlotType,TechIndicators):
             line.set_zorder(0) # make lines appear behind the patches
             line.set_visible(True) # make them invisible
     elif PlotType == strBasic:
-        df_data[strClose].plot(ax=ax1,kind='line', color='g')
+        df_data[strClose].plot(ax=ax_price,kind='line', color='g')
               
-    mpl_finance.volume_overlay(ax2, df_data[strOpen], df_data[strClose], df_data[strVolume], colorup='r', colordown='g', width=1)
+    mpl_finance.volume_overlay(ax_volume, df_data[strOpen], df_data[strClose], df_data[strVolume], colorup='r', colordown='g', width=1)
 
     def GetMondayList(df_data_Date):
         MondayList = []     
@@ -59,27 +62,31 @@ def PlotStockDataV2(Symbol,df_data, PlotType,TechIndicators):
         
         return MondayList 
 
-    ax2.xaxis.set_major_locator(ticker.FixedLocator(GetMondayList(df_data_Date)))
-    ax2.xaxis.set_minor_locator(ticker.MultipleLocator(1))     
+    ax_volume.xaxis.set_major_locator(ticker.FixedLocator(GetMondayList(df_data_Date)))
+    ax_volume.xaxis.set_minor_locator(ticker.MultipleLocator(1))     
     
-    ax2.xaxis.set_major_formatter(ticker.FuncFormatter(format_date)) 
+    ax_volume.xaxis.set_major_formatter(ticker.FuncFormatter(format_date)) 
 
     plt.xlabel("Date")    
-    ax1.set_ylabel("Price")  
-    ax2.set_ylabel('Volume')     
+    ax_price.set_ylabel("Price")  
+    ax_volume.set_ylabel('Volume')     
     
-    for label in ax2.xaxis.get_ticklabels():
+    for label in ax_volume.xaxis.get_ticklabels():
         label.set_rotation(45)
     
     if len(TechIndicators)>0:  
         for indicator in TechIndicators:
             TechIndicatorFuncKey = indicator[strTechIndicatorKey]
-            TechIndicatorFuncDict[TechIndicatorFuncKey][strFuncName](indicator[strParam],df_data,ax1)
-
-    plt.setp(ax1.get_xticklabels(), visible=False)
+            TechIndicatorFuncDict[TechIndicatorFuncKey][strFuncName](indicator[strParam],df_data,ax_price)
+    
+    PlotKDJ(df_data, ax_price)
+    
+    GetKDJ(df_data[strClose], df_data[strHigh], df_data[strLow], 9)
+    
+    plt.setp(ax_price.get_xticklabels(), visible=False)
                
-    ax1.grid(color='grey', linestyle='--', linewidth=0.5)
-    ax2.grid(color='grey', linestyle='--', linewidth=0.5)
+    ax_price.grid(color='grey', linestyle='--', linewidth=0.5)
+    ax_volume.grid(color='grey', linestyle='--', linewidth=0.5)
     
     
     plt.tight_layout()    
@@ -167,6 +174,7 @@ def PlotMA(param, df_data, target_ax):
     Indicator = GetRollingMean(df_data[strClose], int(param[strWindow]))
     PlotIndicator(Indicator, target_ax = target_ax, color = param[strColor], linewidth = float(param[strLineWidth]), alpha = float(param[strAlpha]))    
 
+ 
 def PlotBollingerBands(param, df_data, target_ax):
     MA_mean = GetRollingMean(df_data[strClose],int(param[strWindow]))
     MA_std = GetRollingStd(df_data[strClose],int(param[strWindow]))
@@ -174,7 +182,13 @@ def PlotBollingerBands(param, df_data, target_ax):
     PlotIndicator(IndicatorUpper, target_ax = target_ax, color = param[strColor], linewidth =float(param[strLineWidth]), alpha = float(param[strAlpha]))    
     PlotIndicator(IndicatorLower, target_ax = target_ax, color = param[strColor], linewidth =float(param[strLineWidth]), alpha = float(param[strAlpha])) 
     target_ax.fill_between(df_data[strDate],IndicatorUpper,IndicatorLower,interpolate=True,color=param[strAreaColor] ,alpha = float(param[strAreaAlpha]))
-    
+
+def PlotKDJ(df_data, target_ax):
+    ax1 = plt.subplot2grid((4, 1), (2, 0), rowspan=1) 
+    k,d,j = GetKDJ(df_data[strClose], df_data[strHigh], df_data[strLow], 9)
+    PlotIndicator(k, target_ax = ax1, color = 'blue', linewidth = 1, alpha = 0.3)    
+    PlotIndicator(d, target_ax = ax1, color = 'green', linewidth = 1, alpha = 0.3)
+    PlotIndicator(j, target_ax = ax1, color = 'grey', linewidth = 1, alpha = 0.3)    
 
 def PlotIndicator(df_data,target_ax,color,linewidth=0.8,alpha=0.8):
     df_data.plot(ax=target_ax, color = color, linewidth=linewidth, alpha =alpha)
@@ -189,6 +203,40 @@ def GetBollingerBands(rm, rstd):
     upper_band = rm+rstd*2
     lower_band = rm-rstd*2
     return upper_band, lower_band
+
+def GetKDJ(close_values, high_values, low_values, period):
+    rsv = GetRSV(close_values, high_values, low_values, period)
+    print(rsv)    
+    k = pandas.Series(_calc_kd(rsv))
+    print(k)    
+    d = pandas.Series(_calc_kd(k))
+    print(d)     
+    j = 3*d-2*k
+    print(j)
+    
+    return k,d,j
+    
+    
+    
+def _calc_kd(val,weight = 1/3.0):
+    """
+    k = pandas.Series(numpy.nan,range(len(val)))
+    k[0]=50
+    for i in range(1,len(val)):     
+        if pandas.isnull(val[i]):
+            k[i] = 50
+        else:
+            k[i] = 2/3.0*k[i-1]+1/3.0*val[i]
+    
+    return k    
+    """
+    k = 50.0
+    for i in weight * val:
+        if pandas.isnull(i):
+            yield k
+        else:
+            k = (1-weight) * k + i
+            yield k
 
 
 def GetRSV(close_values, high_values, low_values, period):
