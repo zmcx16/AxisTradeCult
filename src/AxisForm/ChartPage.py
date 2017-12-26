@@ -38,7 +38,7 @@ class ChartPage(QMainWindow):
         self.parent().ShowButton.clicked.connect(self.DoShowButton)
          
         self.parent().scrollAreaWidgetContents_2.setLayout(self.TechIndicatorslayout)
-        TechIndicatorsWidget_width = self.parent().scrollAreaWidgetContents_2.width() - 20        
+        TechIndicatorsWidget_width = self.parent().scrollAreaWidgetContents_2.width() - 40        
         for key,value in TechIndicatorWidgetParam.items():
             Indicator = TechIndicatorWidget(self, key, value,TechIndicatorsWidget_width)
             Indicator.setGeometry(QRect(0,0,Indicator.widget_width,Indicator.widget_height))
@@ -158,7 +158,7 @@ class ChartPage(QMainWindow):
             for key,value in TechIndicator.items(): 
                 IndicatorParam[key] = value
             
-            OutputTechIndicators.append({strTechIndicatorKey:IndicatorName,strParam:IndicatorParam})
+            OutputTechIndicators.append({strName:IndicatorName,strParam:IndicatorParam})
         
         return OutputTechIndicators
         
@@ -176,7 +176,7 @@ class ChartPage(QMainWindow):
         TechIndicators = self.TechIndicatorGroupToFuncDict(copy.deepcopy(gv.TechIndicatorGroups[SelectGroupName]))  
         print(TechIndicators)
        
-        PlotStockDataV2(StockSymbol,df,PlotType,TechIndicators)            
+        PlotStockData(StockSymbol,df,PlotType,TechIndicators)            
             
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Delete:
@@ -218,7 +218,7 @@ class TechIndicatorWidget(QWidget):
                 ComboBox.setObjectName(key)
                 for item in value[strComboList]:
                     ComboBox.addItem(item)
-                ComboBox.setCurrentIndex(random.randint(0,len(value[strComboList])))
+                ComboBox.setCurrentIndex(random.randint(0,len(value[strComboList])-1))
                 self.gridlayout.addWidget(Label, row_index, col_index); 
                 col_index+=1
                 self.gridlayout.addWidget(ComboBox, row_index, col_index); 

@@ -15,11 +15,11 @@ strAlpha = 'Alpha'
 strAreaColor = 'AreaColor'
 strAreaAlpha = 'AreaAlpha'
 
-strTechIndicatorKey = 'TechIndicatorKey'
 strFuncName = 'FuncName'
 strParam = 'Param'
 strMA = 'MA'
 strBollingerBands = 'BollingerBands'
+strKDJ = 'KDJ'
 
 strType = 'Type'
 strValue = 'Value'
@@ -30,3 +30,10 @@ strComboList = 'ComboList'
 strButton = 'Button'
 strAdd = 'Add'
 strName = 'Name'
+
+strPlotInAxPrice = 'PlotInAxPrice'
+strYlabel = 'Ylabel'
+
+strKColor = 'KColor'
+strDColor = 'DColor'
+strJColor = 'JColor'
