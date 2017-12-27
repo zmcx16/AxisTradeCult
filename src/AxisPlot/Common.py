@@ -11,7 +11,7 @@ from numpy import NaN
 from pandas.tests.frame.test_validate import dataframe
 
 def PlotStockData(Symbol,df_data, PlotType,TechIndicators):
- 
+    
     size_factor = 1.8
     
     fig = plt.figure()
@@ -84,19 +84,15 @@ def PlotStockData(Symbol,df_data, PlotType,TechIndicators):
     for indicator in TechIndicators:
         TechIndicatorName = indicator[strName]
         TechIndicatorFuncDict[TechIndicatorName][strFuncName](indicator[strParam],df_data,ax_price,row_size,row_index)
-    
-    #PlotKDJ(df_data, ax_price)
-    
-    #GetKDJ(df_data[strClose], df_data[strHigh], df_data[strLow], 9)
-    
+ 
     plt.setp(ax_price.get_xticklabels(), visible=False)
                
     ax_price.grid(color='grey', linestyle='--', linewidth=0.5)
     ax_volume.grid(color='grey', linestyle='--', linewidth=0.5)
     
     plt.tight_layout()    
-    plt.show()
-
+    return fig
+    
 
 def PlotMA(param, df_data, target_ax, row_size, row_index):
     Indicator = GetRollingMean(df_data[strClose], int(param[strWindow]))

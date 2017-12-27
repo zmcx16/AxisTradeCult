@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import *
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
 def ClearAllWidgetInLayout(layout):
     for i in reversed(range(layout.count())):  
@@ -25,4 +27,24 @@ def GetAllWidgetValInLayout(layout,TechIndicatorParam):
             TechIndicatorParam[widget.objectName()] = widget.text()
         elif type(widget) == QComboBox:
             TechIndicatorParam[widget.objectName()] = widget.currentText()
-                     
+
+class ScrollableWindow(QMainWindow):
+    def __init__(self, fig=None, parent=None):
+        super(ScrollableWindow, self).__init__(parent)
+
+        QMainWindow.__init__(self)
+        self.widget = QWidget()
+        self.setCentralWidget(self.widget)
+        self.widget.setLayout(QVBoxLayout())
+        self.widget.layout().setContentsMargins(0,0,0,0)
+        self.widget.layout().setSpacing(0)
+
+        self.fig = fig
+        self.canvas = FigureCanvas(self.fig)
+        self.canvas.draw()
+        self.scroll = QScrollArea(self.widget)
+        self.scroll.setWidget(self.canvas)
+
+        self.nav = NavigationToolbar(self.canvas, self.widget)
+        self.widget.layout().addWidget(self.nav)
+        self.widget.layout().addWidget(self.scroll)                     

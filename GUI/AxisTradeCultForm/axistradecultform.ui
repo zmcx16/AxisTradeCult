@@ -541,6 +541,7 @@
      <string>Setting</string>
     </property>
     <addaction name="actionDataManager"/>
+    <addaction name="actionSetting"/>
    </widget>
    <addaction name="menuSetting"/>
   </widget>
@@ -548,6 +549,11 @@
   <action name="actionDataManager">
    <property name="text">
     <string>DataManager</string>
+   </property>
+  </action>
+  <action name="actionSetting">
+   <property name="text">
+    <string>Setting</string>
    </property>
   </action>
  </widget>

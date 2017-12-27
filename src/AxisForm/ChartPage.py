@@ -175,9 +175,11 @@ class ChartPage(QMainWindow):
         SelectGroupName = self.parent().ChartGroupsComboBox.currentText()       
         TechIndicators = self.TechIndicatorGroupToFuncDict(copy.deepcopy(gv.TechIndicatorGroups[SelectGroupName]))  
         print(TechIndicators)
-       
-        PlotStockData(StockSymbol,df,PlotType,TechIndicators)            
-            
+        
+        self.graph = ScrollableWindow(PlotStockData(StockSymbol,df,PlotType,TechIndicators) )
+        self.graph.show()
+        
+        
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Delete:
             self.DelIndicatorInGroup()
@@ -185,6 +187,8 @@ class ChartPage(QMainWindow):
     def test(self):
         print('xxx')
 
+
+        
 class TechIndicatorWidget(QWidget):
 
     base_height = 50    

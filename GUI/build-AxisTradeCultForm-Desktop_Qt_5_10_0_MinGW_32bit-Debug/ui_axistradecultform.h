@@ -37,6 +37,7 @@ class Ui_AxisTradeCultForm
 {
 public:
     QAction *actionDataManager;
+    QAction *actionSetting;
     QWidget *centralWidget;
     QTabWidget *tabWidget;
     QWidget *tabOverview;
@@ -88,6 +89,8 @@ public:
         AxisTradeCultForm->resize(959, 533);
         actionDataManager = new QAction(AxisTradeCultForm);
         actionDataManager->setObjectName(QStringLiteral("actionDataManager"));
+        actionSetting = new QAction(AxisTradeCultForm);
+        actionSetting->setObjectName(QStringLiteral("actionSetting"));
         centralWidget = new QWidget(AxisTradeCultForm);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         tabWidget = new QTabWidget(centralWidget);
@@ -265,6 +268,7 @@ public:
 
         menuBar->addAction(menuSetting->menuAction());
         menuSetting->addAction(actionDataManager);
+        menuSetting->addAction(actionSetting);
 
         retranslateUi(AxisTradeCultForm);
 
@@ -278,6 +282,7 @@ public:
     {
         AxisTradeCultForm->setWindowTitle(QApplication::translate("AxisTradeCultForm", "AxisTradeCultForm", nullptr));
         actionDataManager->setText(QApplication::translate("AxisTradeCultForm", "DataManager", nullptr));
+        actionSetting->setText(QApplication::translate("AxisTradeCultForm", "Setting", nullptr));
         UpdateButton->setText(QApplication::translate("AxisTradeCultForm", "Update", nullptr));
         SymbolLabel->setText(QApplication::translate("AxisTradeCultForm", "Symbol", nullptr));
         OpenLabel->setText(QApplication::translate("AxisTradeCultForm", "Open", nullptr));

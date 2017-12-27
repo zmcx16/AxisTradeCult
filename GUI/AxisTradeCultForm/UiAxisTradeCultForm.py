@@ -189,7 +189,10 @@ class Ui_AxisTradeCultForm(object):
         AxisTradeCultForm.setStatusBar(self.statusBar)
         self.actionDataManager = QtWidgets.QAction(AxisTradeCultForm)
         self.actionDataManager.setObjectName("actionDataManager")
+        self.actionSetting = QtWidgets.QAction(AxisTradeCultForm)
+        self.actionSetting.setObjectName("actionSetting")
         self.menuSetting.addAction(self.actionDataManager)
+        self.menuSetting.addAction(self.actionSetting)
         self.menuBar.addAction(self.menuSetting.menuAction())
 
         self.retranslateUi(AxisTradeCultForm)
@@ -221,4 +224,5 @@ class Ui_AxisTradeCultForm(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabChart), _translate("AxisTradeCultForm", "Chart"))
         self.menuSetting.setTitle(_translate("AxisTradeCultForm", "Setting"))
         self.actionDataManager.setText(_translate("AxisTradeCultForm", "DataManager"))
+        self.actionSetting.setText(_translate("AxisTradeCultForm", "Setting"))
 
