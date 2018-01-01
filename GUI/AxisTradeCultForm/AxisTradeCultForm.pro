@@ -31,4 +31,5 @@ HEADERS += \
         axistradecultform.h
 
 FORMS += \
-        axistradecultform.ui
+        axistradecultform.ui \
+    setting.ui

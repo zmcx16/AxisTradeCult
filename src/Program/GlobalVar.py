@@ -5,6 +5,7 @@ import numpy
 
 from Program.Resources import *
 from Program.Common import *
+from Program.DefStr import *
 from AxisPlot.Common import TechIndicatorFuncDict
 
 
@@ -90,10 +91,27 @@ def DeleteTechIndicatorGroup(GroupName):
     SaveTechIndicatorGroups()    
 #-------------------------------------------------------
 
+# GlobalSetting ----------------------------------
+SettingArgs = {StrChartSizeFactor:1.8}
+SettingArgsSetting = 'SettingArgs.setting'
+SettingArgsSettingPath = os.path.join(RootPath,SettingArgsSetting)
+    
+def SaveSettingArgs():
+    with open(SettingArgsSettingPath, 'w') as f:
+        json.dump(SettingArgs, f)   
 
+def ReadSettingArgs(): 
+    global SettingArgs
+    with open(SettingArgsSettingPath, 'r') as f:
+        SettingArgs = json.load(f)    
+
+#-------------------------------------------------------
 
 if os.path.isfile(StockGroupsSettingPath) == False:
     SaveStockGroups() 
 
 if os.path.isfile(TechIndicatorGroupsSettingPath) == False:
     SaveTechIndicatorGroups() 
+    
+if os.path.isfile(SettingArgsSettingPath) == False:
+    SaveSettingArgs() 

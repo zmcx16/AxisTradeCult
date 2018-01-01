@@ -10,10 +10,8 @@ from AxisPlot.DefStr import *
 from numpy import NaN
 from pandas.tests.frame.test_validate import dataframe
 
-def PlotStockData(Symbol,df_data, PlotType,TechIndicators):
-    
-    size_factor = 1.8
-    
+def PlotStockData(Symbol,df_data, PlotType,TechIndicators, size_factor):
+        
     fig = plt.figure()
     fig.canvas.set_window_title('Wanna join the Axis Cult?')
     fig.suptitle('Stock: {0} ({1} ~ {2})'.format(Symbol,df_data.index.min().strftime('%Y-%m-%d'),df_data.index.max().strftime('%Y-%m-%d')),y=1, fontsize=14)

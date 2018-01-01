@@ -7,6 +7,7 @@ from PyQt5.QtGui import *
 
 import concurrent.futures
 
+from Program.DefStr import *
 import Program.GlobalVar as gv
 from Program.Common import *
 from AxisWeb.DownloadData import *
@@ -25,60 +26,58 @@ class OverviewStockPage(QMainWindow):
         gv.ReadStockGroups()
         
         self.OverviewStocklayout = QVBoxLayout() 
-
-        self.parent().DisplayDate.setCalendarPopup(True)
-        self.parent().DisplayDate.setDate(QDate.currentDate())
-        self.parent().DisplayDate.dateChanged.connect(self.RefreshOverviewStock)      
-        self.parent().UpdateButton.clicked.connect(self.DoUpdateButton)
-        self.parent().AddButton.clicked.connect(self.DoAddButton)
-        self.parent().StockGroupsComboBox.currentIndexChanged.connect(self.RefreshOverviewStock)
-        self.parent().DelButton.clicked.connect(self.DoDelButton)
-        self.parent().GraphSampleButton.setVisible(False)
-        self.parent().StockCheckBox.setVisible(False)   
-        self.parent().scrollAreaWidgetContents.setLayout(self.OverviewStocklayout)
+        self.parent().ui.DisplayDate.setCalendarPopup(True)
+        self.parent().ui.DisplayDate.setDate(QDate.currentDate())
+        self.parent().ui.DisplayDate.dateChanged.connect(self.RefreshOverviewStock)      
+        self.parent().ui.UpdateButton.clicked.connect(self.DoUpdateButton)
+        self.parent().ui.AddButton.clicked.connect(self.DoAddButton)
+        self.parent().ui.StockGroupsComboBox.currentIndexChanged.connect(self.RefreshOverviewStock)
+        self.parent().ui.DelButton.clicked.connect(self.DoDelButton)
+        self.parent().ui.GraphSampleButton.setVisible(False)
+        self.parent().ui.StockCheckBox.setVisible(False)   
+        self.parent().ui.scrollAreaWidgetContents.setLayout(self.OverviewStocklayout)
         self.SetGraphTypeComboBoxItem()
-        
         
         self.SetStockGroupsComboBoxItem()  
         self.RefreshOverviewStock()
     
     def SetGraphTypeComboBoxItem(self):
-        self.parent().GraphTypeComboBox.clear()        
-        self.parent().GraphTypeComboBox.addItem('Basic6M')
-        self.parent().GraphTypeComboBox.addItem('Candle6M')
-        self.parent().GraphTypeComboBox.addItem('BasicN')
-        self.parent().GraphTypeComboBox.addItem('CandleN')
+        self.parent().ui.GraphTypeComboBox.clear()        
+        self.parent().ui.GraphTypeComboBox.addItem('Basic6M')
+        self.parent().ui.GraphTypeComboBox.addItem('Candle6M')
+        self.parent().ui.GraphTypeComboBox.addItem('BasicN')
+        self.parent().ui.GraphTypeComboBox.addItem('CandleN')
         
     def SetStockGroupsComboBoxItem(self):
-        self.parent().StockGroupsComboBox.clear()
-        self.parent().StockGroupsComboBox.addItems(gv.StockGroups.keys())
-        self.parent().StockGroupsComboBox.addItem('New Group')
+        self.parent().ui.StockGroupsComboBox.clear()
+        self.parent().ui.StockGroupsComboBox.addItems(gv.StockGroups.keys())
+        self.parent().ui.StockGroupsComboBox.addItem('New Group')
         
 
     def RefreshOverviewStock(self):
-        if self.parent().StockGroupsComboBox.count() == 0:
+        if self.parent().ui.StockGroupsComboBox.count() == 0:
             return False
                         
-        if self.parent().StockGroupsComboBox.currentText() == 'New Group':
+        if self.parent().ui.StockGroupsComboBox.currentText() == 'New Group':
             response = QInputDialog().getText(None, "Create Group", "Please Input New Group Name:")
 
-            self.parent().StockGroupsComboBox.setCurrentIndex(0)
+            self.parent().ui.StockGroupsComboBox.setCurrentIndex(0)
             if response[1] == True and response[0] != '':
                 gv.AddStockGroup(response[0])
                 self.SetStockGroupsComboBoxItem()
-                self.parent().StockGroupsComboBox.setCurrentIndex(self.parent().StockGroupsComboBox.count()-2)
+                self.parent().ui.StockGroupsComboBox.setCurrentIndex(self.parent().ui.StockGroupsComboBox.count()-2)
                 
             return True
               
         ClearAllWidgetInLayout(self.OverviewStocklayout)      
-        SelectGroupName = self.parent().StockGroupsComboBox.currentText()
+        SelectGroupName = self.parent().ui.StockGroupsComboBox.currentText()
         Stocks = gv.StockGroups[SelectGroupName]      
         
-        ChooseDateTime = self.parent().DisplayDate.date()       
-        if self.parent().DisplayDate.date() > QDate.currentDate():
+        ChooseDateTime = self.parent().ui.DisplayDate.date()       
+        if self.parent().ui.DisplayDate.date() > QDate.currentDate():
             ChooseDateTime = QDate.currentDate()
         else:
-            ChooseDateTime = self.parent().DisplayDate.date()
+            ChooseDateTime = self.parent().ui.DisplayDate.date()
          
         OverviewStocks = ReadOverviewStockData(Stocks, QDate.toPyDate(ChooseDateTime), gv.StockDataPoolPath)  
         if OverviewStocks is False:
@@ -87,7 +86,7 @@ class OverviewStockPage(QMainWindow):
         FormatOverviewStockData(OverviewStocks);               
         objectID = 1
         for stock in OverviewStocks: 
-            stockInfo = OverviewStockInfoWidget(self.parent(),stock,OverviewStocks[stock])
+            stockInfo = OverviewStockInfoWidget(self.parent().ui,stock,OverviewStocks[stock])
             stockInfo.setGeometry(QRect(0,0,stockInfo.widget_width,stockInfo.widget_height))
             stockInfo.setMinimumSize(stockInfo.widget_width, stockInfo.widget_height)
             
@@ -101,34 +100,34 @@ class OverviewStockPage(QMainWindow):
         self.OverviewStocklayout.setContentsMargins(10, 10, 0, 10);
                
     def DoAddButton(self):
-        self.parent().AddButton.setEnabled(False)
-        Symbol = self.parent().Stockline.text()
-        NowGroup = self.parent().StockGroupsComboBox.currentText()
+        self.parent().ui.AddButton.setEnabled(False)
+        Symbol = self.parent().ui.Stockline.text()
+        NowGroup = self.parent().ui.StockGroupsComboBox.currentText()
 
         if Symbol in gv.StockGroups[NowGroup]:
             msg = AddStockAlreadySymbolMessage
             msg[Str_setText] = msg[Str_setText].format(NowGroup,Symbol)       
             ShowInfoDialog(msg)
-            self.parent().AddButton.setEnabled(True)
+            self.parent().ui.AddButton.setEnabled(True)
             return False
         
         if DownloadStockDataFromQuandl(Symbol,gv.StockDataPoolPath) is False:            
             msg = AddStockDownloadFailMessage            
             msg[Str_setText] = msg[Str_setText].format(Symbol)
             ShowInfoDialog(msg)
-            self.parent().AddButton.setEnabled(True)
+            self.parent().ui.AddButton.setEnabled(True)
             return False
                             
-        gv.AddStockInGroup(self.parent().StockGroupsComboBox.currentText(),Symbol)
+        gv.AddStockInGroup(self.parent().ui.StockGroupsComboBox.currentText(),Symbol)
         self.RefreshOverviewStock()
-        self.parent().AddButton.setEnabled(True)     
+        self.parent().ui.AddButton.setEnabled(True)     
         return True
     
     def DoDelButton(self):
-        if self.parent().StockGroupsComboBox.count() <= 1:
+        if self.parent().ui.StockGroupsComboBox.count() <= 1:
             return False
         
-        NowGroup = self.parent().StockGroupsComboBox.currentText()
+        NowGroup = self.parent().ui.StockGroupsComboBox.currentText()
         Stocks = gv.StockGroups[NowGroup]
                 
         StockCheckBoxObjectNames = []
@@ -148,23 +147,23 @@ class OverviewStockPage(QMainWindow):
             msg[Str_setText] = msg[Str_setText].format(NowGroup)     
             msg[Str_setDetailedText] = msg[Str_setDetailedText].format(Stocks)     
             if ShowWarningDialog(msg) == 'OK':
-                select_index = self.parent().StockGroupsComboBox.currentIndex()
-                gv.DeleteStockGroup(self.parent().StockGroupsComboBox.currentText())
-                self.parent().StockGroupsComboBox.setCurrentIndex(0)
-                self.parent().StockGroupsComboBox.removeItem(select_index)
+                select_index = self.parent().ui.StockGroupsComboBox.currentIndex()
+                gv.DeleteStockGroup(self.parent().ui.StockGroupsComboBox.currentText())
+                self.parent().ui.StockGroupsComboBox.setCurrentIndex(0)
+                self.parent().ui.StockGroupsComboBox.removeItem(select_index)
             
             self.RefreshOverviewStock()            
             return True  
         
-        gv.ResetStockInGroup(self.parent().StockGroupsComboBox.currentText(),Stocks)
+        gv.ResetStockInGroup(self.parent().ui.StockGroupsComboBox.currentText(),Stocks)
         self.RefreshOverviewStock()
         return True   
          
     def DoUpdateButton(self):
         
-        self.parent().UpdateButton.setEnabled(False)     
+        self.parent().ui.UpdateButton.setEnabled(False)     
         stocksSet = {symbol for key in gv.StockGroups for symbol in gv.StockGroups[key]}          
-        self.parent().UpdateProgressBar.setRange(0,100)   
+        self.parent().ui.UpdateProgressBar.setRange(0,100)   
         self.update_stocks_thread = UpdateStocksThread(stocksSet)       
         self.update_stocks_thread.FinishUpdateStocksSignal.connect(self.FinishUpdateStocks)     
         self.update_stocks_thread.UpdateProgressBarCountSignal.connect(self.UpdateProgressBarCount)
@@ -172,12 +171,12 @@ class OverviewStockPage(QMainWindow):
 
         
     def FinishUpdateStocks(self):
-        self.parent().UpdateButton.setEnabled(True)  
+        self.parent().ui.UpdateButton.setEnabled(True)  
         self.RefreshOverviewStock()
         print ("finish!!")
       
     def UpdateProgressBarCount(self,val):
-        self.parent().UpdateProgressBar.setValue(val)
+        self.parent().ui.UpdateProgressBar.setValue(val)
         
 
 class OverviewStockInfoWidget(QWidget):
@@ -347,7 +346,7 @@ class OverviewStockInfoWidget(QWidget):
         TechIndicators.append({strName:strBollingerBands , strParam:{strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8, strAreaColor: 'gold', strAreaAlpha:0.3}})        
         print(TechIndicators)
            
-        self.graph = ScrollableWindow(PlotStockData(self.Symbol,df,PlotType,TechIndicators))
+        self.graph = ScrollableWindow(PlotStockData(self.Symbol,df,PlotType,TechIndicators, gv.SettingArgs[StrChartSizeFactor]))
         self.graph.show()
         
 class UpdateStocksThread(QThread):
