@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
@@ -47,4 +48,7 @@ class ScrollableWindow(QMainWindow):
 
         self.nav = NavigationToolbar(self.canvas, self.widget)
         self.widget.layout().addWidget(self.nav)
-        self.widget.layout().addWidget(self.scroll)                     
+        self.widget.layout().addWidget(self.scroll)      
+        
+        size = fig.get_size_inches()*fig.dpi 
+        self.resize(QSize(size[0]+100,size[1]+100))               
