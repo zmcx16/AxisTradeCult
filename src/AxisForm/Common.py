@@ -34,6 +34,7 @@ class ScrollableWindow(QMainWindow):
         super(ScrollableWindow, self).__init__(parent)
 
         QMainWindow.__init__(self)
+        self.setWindowTitle('Wanna join the Axis Cult?')
         self.widget = QWidget()
         self.setCentralWidget(self.widget)
         self.widget.setLayout(QVBoxLayout())
