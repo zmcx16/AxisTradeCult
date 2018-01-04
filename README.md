@@ -11,10 +11,10 @@
   *  MA
   *  bollinger bands
   *  KDJ
-     ...(TBC)
+...(TBC)
 
 
-#Requirements
+# Requirements
 numpy>=1.13.3
 pandas>=0.21.0
 matplotlib>=2.1.0
@@ -24,7 +24,7 @@ urllib3>=1.22
 requests>=2.18.4
 assertpy>=0.12
 
-#Run
+# Run
 python AxisTradeCult\src\Program\__init__.py
 
 # Demo
