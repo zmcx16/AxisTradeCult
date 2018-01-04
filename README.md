@@ -11,18 +11,18 @@
   *  MA
   *  bollinger bands
   *  KDJ
-...(TBC)
+  *  ...(TBC)
 
 
 # Requirements
-numpy>=1.13.3
-pandas>=0.21.0
-matplotlib>=2.1.0
-matplotlib/mpl_finance (github.com/matplotlib/mpl_finance)
-PyQt5>=5.9.2
-urllib3>=1.22
-requests>=2.18.4
-assertpy>=0.12
+  *  numpy>=1.13.3
+  *  pandas>=0.21.0
+  *  matplotlib>=2.1.0
+  *  matplotlib/mpl_finance (github.com/matplotlib/mpl_finance)
+  *  PyQt5>=5.9.2
+  *  urllib3>=1.22
+  *  requests>=2.18.4
+  *  assertpy>=0.12
 
 # Run
 python AxisTradeCult\src\Program\__init__.py
