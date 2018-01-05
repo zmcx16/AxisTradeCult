@@ -1,5 +1,6 @@
 # AxisTradeCult
 [![Travis Build Status](https://travis-ci.com/zmcx16/AxisTradeCult.svg?token=RTt9WUSVcz8JsqxibZnP&branch=master)](https://travis-ci.com/zmcx16/AxisTradeCult)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ec50d5cc63304932bbdc864fc29e39aa)](https://www.codacy.com/app/zmcx16/AxisTradeCult?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zmcx16/AxisTradeCult&amp;utm_campaign=Badge_Grade)
 
 # Features
 1.	Automatic download historical stock data

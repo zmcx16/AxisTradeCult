@@ -9,11 +9,11 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 
 
 if __name__ == "__main__":
-    
+
     app = QApplication(sys.argv)
     window = AxisTradeCultForm()
     window.show()
     sys.exit(app.exec_())
 
-#gv.ReadStockGroups()
-#DownloadAllStockGroupsFromQuandl(gv.StockDataPoolPath)    
+# gv.ReadStockGroups()
+# DownloadAllStockGroupsFromQuandl(gv.StockDataPoolPath)
