@@ -8,14 +8,16 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+
 class Ui_SettingDialog(object):
+
     def setupUi(self, SettingDialog):
         SettingDialog.setObjectName("SettingDialog")
         SettingDialog.resize(277, 185)
         self.buttonBox = QtWidgets.QDialogButtonBox(SettingDialog)
         self.buttonBox.setGeometry(QtCore.QRect(30, 140, 231, 32))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.ChartGroupBox = QtWidgets.QGroupBox(SettingDialog)
         self.ChartGroupBox.setGeometry(QtCore.QRect(10, 10, 251, 121))

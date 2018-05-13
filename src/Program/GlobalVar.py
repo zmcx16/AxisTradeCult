@@ -8,110 +8,126 @@ from Program.Common import *
 from Program.DefStr import *
 from AxisPlot.Common import TechIndicatorFuncDict
 
-
 RootPath = os.getcwd()
 
 StockDataPool = 'StockDataPool'
-StockDataPoolPath = os.path.join(RootPath,StockDataPool)
+StockDataPoolPath = os.path.join(RootPath, StockDataPool)
 
-ImagePath = os.path.join(os.path.dirname(RootPath),'Image')
-ImgTsubasaPath = os.path.join(ImagePath,imgTsubasa)
+ImagePath = os.path.join(os.path.dirname(RootPath), 'Image')
+ImgTsubasaPath = os.path.join(ImagePath, imgTsubasa)
 
 # StockGroups -------------------------------------------
 StockGroups = {}
 # {"List1": ["T", "GOOG", "AAPL"]
-#, "List2": ["T", "DPZ", "GOOG", "AMZN", "WDC", "STX"]}
+# , "List2": ["T", "DPZ", "GOOG", "AMZN", "WDC", "STX"]}
 StockGroupsSetting = 'StockGroups.setting'
-StockGroupsSettingPath = os.path.join(RootPath,StockGroupsSetting)
+StockGroupsSettingPath = os.path.join(RootPath, StockGroupsSetting)
+
 
 def SaveStockGroups():
     with open(StockGroupsSettingPath, 'w') as f:
-        json.dump(StockGroups, f)   
+        json.dump(StockGroups, f)
 
-def ReadStockGroups(): 
+
+def ReadStockGroups():
     global StockGroups
     with open(StockGroupsSettingPath, 'r') as f:
-        StockGroups = json.load(f)    
+        StockGroups = json.load(f)
 
-def AddStockInGroup(GroupName,Symbol):
-    global StockGroups    
+
+def AddStockInGroup(GroupName, Symbol):
+    global StockGroups
     StockGroups[GroupName].append(Symbol)
     SaveStockGroups()
 
-def ResetStockInGroup(GroupName,NewStockGroups):
-    global StockGroups    
+
+def ResetStockInGroup(GroupName, NewStockGroups):
+    global StockGroups
     StockGroups[GroupName] = NewStockGroups
     SaveStockGroups()
 
+
 def AddStockGroup(GroupName):
-    global StockGroups    
+    global StockGroups
     StockGroups[GroupName] = []
     SaveStockGroups()
 
+
 def DeleteStockGroup(GroupName):
-    global StockGroups    
+    global StockGroups
     del StockGroups[GroupName]
     SaveStockGroups()
 #-------------------------------------------------------
 
+
 # TechIndicatorGroups ----------------------------------
 TechIndicatorGroups = {}
 # {"TechIndicator1": [{"Name": "BollingerBands", "AreaAlpha": "0.3", "AreaColor": "purple", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "lightblue"}, {"Name": "MA", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "violet"}]
-#, "TechList2": [{"Name": "MA", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "azure"}]}
+# , "TechList2": [{"Name": "MA", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "azure"}]}
 TechIndicatorGroupsSetting = 'TechIndicatorGroups.setting'
-TechIndicatorGroupsSettingPath = os.path.join(RootPath,TechIndicatorGroupsSetting)
-    
+TechIndicatorGroupsSettingPath = os.path.join(RootPath, TechIndicatorGroupsSetting)
+
+
 def SaveTechIndicatorGroups():
     with open(TechIndicatorGroupsSettingPath, 'w') as f:
-        json.dump(TechIndicatorGroups, f)   
+        json.dump(TechIndicatorGroups, f)
 
-def ReadTechIndicatorGroups(): 
+
+def ReadTechIndicatorGroups():
     global TechIndicatorGroups
     with open(TechIndicatorGroupsSettingPath, 'r') as f:
-        TechIndicatorGroups = json.load(f)    
+        TechIndicatorGroups = json.load(f)
 
-def AddTechIndicatorInGroup(GroupName,Indicator):
-    global TechIndicatorGroups    
+
+def AddTechIndicatorInGroup(GroupName, Indicator):
+    global TechIndicatorGroups
     TechIndicatorGroups[GroupName].append(Indicator)
     SaveTechIndicatorGroups()
 
-def ResetTechIndicatorInGroup(GroupName,NewIndicatorGroups):
-    global TechIndicatorGroups    
+
+def ResetTechIndicatorInGroup(GroupName, NewIndicatorGroups):
+    global TechIndicatorGroups
     TechIndicatorGroups[GroupName] = NewIndicatorGroups
     SaveTechIndicatorGroups()
 
+
 def AddTechIndicatorGroup(GroupName):
-    global TechIndicatorGroups    
+    global TechIndicatorGroups
     TechIndicatorGroups[GroupName] = []
     SaveTechIndicatorGroups()
 
+
 def DeleteTechIndicatorGroup(GroupName):
-    global TechIndicatorGroups    
+    global TechIndicatorGroups
     del TechIndicatorGroups[GroupName]
-    SaveTechIndicatorGroups()    
+    SaveTechIndicatorGroups()
 #-------------------------------------------------------
+
 
 # GlobalSetting ----------------------------------
 SettingArgs = {StrChartSizeFactor:1.8}
 SettingArgsSetting = 'SettingArgs.setting'
-SettingArgsSettingPath = os.path.join(RootPath,SettingArgsSetting)
-    
+SettingArgsSettingPath = os.path.join(RootPath, SettingArgsSetting)
+
+
 def SaveSettingArgs():
     with open(SettingArgsSettingPath, 'w') as f:
-        json.dump(SettingArgs, f)   
+        json.dump(SettingArgs, f)
 
-def ReadSettingArgs(): 
+
+def ReadSettingArgs():
     global SettingArgs
     with open(SettingArgsSettingPath, 'r') as f:
-        SettingArgs = json.load(f)    
+        SettingArgs = json.load(f)
 
 #-------------------------------------------------------
 
+
 if os.path.isfile(StockGroupsSettingPath) == False:
-    SaveStockGroups() 
+    SaveStockGroups()
 
 if os.path.isfile(TechIndicatorGroupsSettingPath) == False:
-    SaveTechIndicatorGroups() 
-    
+    SaveTechIndicatorGroups()
+
 if os.path.isfile(SettingArgsSettingPath) == False:
-    SaveSettingArgs() 
+    SaveSettingArgs()

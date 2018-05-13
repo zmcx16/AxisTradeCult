@@ -1,7 +1,7 @@
 import os
 import sys
 from assertpy import assert_that
-    
+
 import Program.GlobalVar as gv
 from AxisForm.AxisTradeCultForm import AxisTradeCultForm
 from PyQt5.QtWidgets import QMainWindow, QApplication
