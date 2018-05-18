@@ -83,7 +83,7 @@ class ChartPage(QMainWindow):
             return False
 
         if self.parent().ui.ChartGroupsComboBox.currentText() == 'New Group':
-            response = QInputDialog().getText(None, "Create Group", "Please Input New Group Name:")
+            response = QInputDialog().getText(None, "Create Group", "Please Input New TechIndicatorsList Group Name:")
 
             self.parent().ui.ChartGroupsComboBox.setCurrentIndex(0)
             if response[1] == True and response[0] != '':

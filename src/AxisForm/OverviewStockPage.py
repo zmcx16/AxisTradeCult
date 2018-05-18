@@ -58,7 +58,7 @@ class OverviewStockPage(QMainWindow):
             return False
 
         if self.parent().ui.StockGroupsComboBox.currentText() == 'New Group':
-            response = QInputDialog().getText(None, "Create Group", "Please Input New Group Name:")
+            response = QInputDialog().getText(None, "Create Group", "Please Input New OverviewStock Group Name:")
 
             self.parent().ui.StockGroupsComboBox.setCurrentIndex(0)
             if response[1] == True and response[0] != '':

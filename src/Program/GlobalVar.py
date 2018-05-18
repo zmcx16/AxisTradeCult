@@ -8,22 +8,29 @@ from Program.Common import *
 from Program.DefStr import *
 from AxisPlot.Common import TechIndicatorFuncDict
 
-RootPath = os.getcwd()
-
-StockDataPool = 'StockDataPool'
-StockDataPoolPath = os.path.join(RootPath, StockDataPool)
-
-ImagePath = os.path.join(os.path.dirname(RootPath), 'Image')
-ImgTsubasaPath = os.path.join(ImagePath, imgTsubasa)
+# Common -------------------------------------------
+RootPath = ''
+StockDataPool = ''
+StockDataPoolPath = ''
+ImagePath = ''
+ImgTsubasaPath = ''
 
 # StockGroups -------------------------------------------
 StockGroups = {}
-# {"List1": ["T", "GOOG", "AAPL"]
-# , "List2": ["T", "DPZ", "GOOG", "AMZN", "WDC", "STX"]}
-StockGroupsSetting = 'StockGroups.setting'
-StockGroupsSettingPath = os.path.join(RootPath, StockGroupsSetting)
+StockGroupsSetting = ''
+StockGroupsSettingPath = ''
 
+# TechIndicatorGroups ----------------------------------
+TechIndicatorGroups = {}
+TechIndicatorGroupsSetting = ''
+TechIndicatorGroupsSettingPath = ''
 
+# GlobalSetting ----------------------------------
+SettingArgs = {}
+SettingArgsSetting = ''
+SettingArgsSettingPath = ''
+
+# StockGroups -------------------------------------------
 def SaveStockGroups():
     with open(StockGroupsSettingPath, 'w') as f:
         json.dump(StockGroups, f)
@@ -61,13 +68,6 @@ def DeleteStockGroup(GroupName):
 
 
 # TechIndicatorGroups ----------------------------------
-TechIndicatorGroups = {}
-# {"TechIndicator1": [{"Name": "BollingerBands", "AreaAlpha": "0.3", "AreaColor": "purple", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "lightblue"}, {"Name": "MA", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "violet"}]
-# , "TechList2": [{"Name": "MA", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "azure"}]}
-TechIndicatorGroupsSetting = 'TechIndicatorGroups.setting'
-TechIndicatorGroupsSettingPath = os.path.join(RootPath, TechIndicatorGroupsSetting)
-
-
 def SaveTechIndicatorGroups():
     with open(TechIndicatorGroupsSettingPath, 'w') as f:
         json.dump(TechIndicatorGroups, f)
@@ -105,11 +105,6 @@ def DeleteTechIndicatorGroup(GroupName):
 
 
 # GlobalSetting ----------------------------------
-SettingArgs = {StrChartSizeFactor:1.8}
-SettingArgsSetting = 'SettingArgs.setting'
-SettingArgsSettingPath = os.path.join(RootPath, SettingArgsSetting)
-
-
 def SaveSettingArgs():
     with open(SettingArgsSettingPath, 'w') as f:
         json.dump(SettingArgs, f)
@@ -123,11 +118,49 @@ def ReadSettingArgs():
 #-------------------------------------------------------
 
 
-if os.path.isfile(StockGroupsSettingPath) == False:
-    SaveStockGroups()
+def Init():
+    # Common -------------------------------------------
+    global RootPath, StockDataPool, StockDataPoolPath, ImagePath, ImgTsubasaPath
+    # StockGroups -------------------------------------------
+    global StockGroups, StockGroupsSetting, StockGroupsSettingPath
+    # TechIndicatorGroups ----------------------------------
+    global TechIndicatorGroups, TechIndicatorGroupsSetting, TechIndicatorGroupsSettingPath
+    # GlobalSetting ----------------------------------
+    global SettingArgs, SettingArgsSetting, SettingArgsSettingPath
+    #------------------------------------------------------
+    
+    RootPath = os.getcwd()
+    
+    StockDataPool = 'StockDataPool'
+    StockDataPoolPath = os.path.join(RootPath, StockDataPool)
+    
+    ImagePath = os.path.join(os.path.dirname(RootPath), 'Image')
+    ImgTsubasaPath = os.path.join(ImagePath, imgTsubasa)
+    
+    # StockGroups -------------------------------------------
+    StockGroups = {}
+    # {"List1": ["T", "GOOG", "AAPL"]
+    # , "List2": ["T", "DPZ", "GOOG", "AMZN", "WDC", "STX"]}
+    StockGroupsSetting = 'StockGroups.setting'
+    StockGroupsSettingPath = os.path.join(RootPath, StockGroupsSetting)
+    
+    # TechIndicatorGroups ----------------------------------
+    TechIndicatorGroups = {}
+    # {"TechIndicator1": [{"Name": "BollingerBands", "AreaAlpha": "0.3", "AreaColor": "purple", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "lightblue"}, {"Name": "MA", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "violet"}]
+    # , "TechList2": [{"Name": "MA", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "azure"}]}
+    TechIndicatorGroupsSetting = 'TechIndicatorGroups.setting'
+    TechIndicatorGroupsSettingPath = os.path.join(RootPath, TechIndicatorGroupsSetting)
 
-if os.path.isfile(TechIndicatorGroupsSettingPath) == False:
-    SaveTechIndicatorGroups()
+    # GlobalSetting ----------------------------------
+    SettingArgs = {StrChartSizeFactor:1.8}
+    SettingArgsSetting = 'SettingArgs.setting'
+    SettingArgsSettingPath = os.path.join(RootPath, SettingArgsSetting)
 
-if os.path.isfile(SettingArgsSettingPath) == False:
-    SaveSettingArgs()
+    if os.path.isfile(StockGroupsSettingPath) == False:
+        SaveStockGroups()
+    
+    if os.path.isfile(TechIndicatorGroupsSettingPath) == False:
+        SaveTechIndicatorGroups()
+    
+    if os.path.isfile(SettingArgsSettingPath) == False:
+        SaveSettingArgs()
