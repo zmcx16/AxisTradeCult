@@ -30,6 +30,7 @@ SettingArgs = {}
 SettingArgsSetting = ''
 SettingArgsSettingPath = ''
 
+
 # StockGroups -------------------------------------------
 def SaveStockGroups():
     with open(StockGroupsSettingPath, 'w') as f:
@@ -128,22 +129,22 @@ def Init():
     # GlobalSetting ----------------------------------
     global SettingArgs, SettingArgsSetting, SettingArgsSettingPath
     #------------------------------------------------------
-    
+
     RootPath = os.getcwd()
-    
+
     StockDataPool = 'StockDataPool'
     StockDataPoolPath = os.path.join(RootPath, StockDataPool)
-    
+
     ImagePath = os.path.join(os.path.dirname(RootPath), 'Image')
     ImgTsubasaPath = os.path.join(ImagePath, imgTsubasa)
-    
+
     # StockGroups -------------------------------------------
     StockGroups = {}
     # {"List1": ["T", "GOOG", "AAPL"]
     # , "List2": ["T", "DPZ", "GOOG", "AMZN", "WDC", "STX"]}
     StockGroupsSetting = 'StockGroups.setting'
     StockGroupsSettingPath = os.path.join(RootPath, StockGroupsSetting)
-    
+
     # TechIndicatorGroups ----------------------------------
     TechIndicatorGroups = {}
     # {"TechIndicator1": [{"Name": "BollingerBands", "AreaAlpha": "0.3", "AreaColor": "purple", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "lightblue"}, {"Name": "MA", "Alpha": "0.8", "LineWidth": "0.8", "Window": "20", "Color": "violet"}]
@@ -158,9 +159,9 @@ def Init():
 
     if os.path.isfile(StockGroupsSettingPath) == False:
         SaveStockGroups()
-    
+
     if os.path.isfile(TechIndicatorGroupsSettingPath) == False:
         SaveTechIndicatorGroups()
-    
+
     if os.path.isfile(SettingArgsSettingPath) == False:
         SaveSettingArgs()
