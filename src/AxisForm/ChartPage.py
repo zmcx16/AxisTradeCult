@@ -33,8 +33,6 @@ class ChartPage(QMainWindow):
         self.parent().ui.ChartStartDate.setDate(self.SetBackQDate(QDate.currentDate(), months = 6))
         self.parent().ui.ChartEndDate.setCalendarPopup(True)
         self.parent().ui.ChartEndDate.setDate(QDate.currentDate())
-        self.parent().ui.ChartGroupsComboBox.currentIndexChanged.connect(self.RefreshTechIndicatorsList)
-        self.parent().ui.ChartPageStockGroupsComboBox.currentIndexChanged.connect(self.RefreshStockInGroup)
         self.parent().ui.DelChartGroupButton.clicked.connect(self.DoDelButton)
         self.parent().ui.ShowButton.clicked.connect(self.DoShowButton)
 
@@ -63,20 +61,30 @@ class ChartPage(QMainWindow):
         self.parent().ui.ChartPageGraphTypeComboBox.addItem('Candle')
 
     def SetStockGroupsComboBoxItem(self):
+        try: self.parent().ui.ChartPageStockGroupsComboBox.currentIndexChanged.disconnect()
+        except Exception: pass
+        
         self.parent().ui.ChartPageStockGroupsComboBox.clear()
         self.parent().ui.ChartPageStockInGroupComboBox.clear()
         self.parent().ui.ChartPageStockGroupsComboBox.addItems(gv.StockGroups.keys())
         self.parent().ui.ChartPageStockGroupsComboBox.setCurrentIndex(0)
         self.parent().ui.ChartPageStockInGroupComboBox.addItems(gv.StockGroups[self.parent().ui.ChartPageStockGroupsComboBox.currentText()])
+        
+        self.parent().ui.ChartPageStockGroupsComboBox.currentIndexChanged.connect(self.RefreshStockInGroup)
 
     def RefreshStockInGroup(self):
         self.parent().ui.ChartPageStockInGroupComboBox.clear()
         self.parent().ui.ChartPageStockInGroupComboBox.addItems(gv.StockGroups[self.parent().ui.ChartPageStockGroupsComboBox.currentText()])
 
     def SetChartGroupsComboBoxItem(self):
+        try: self.parent().ui.ChartGroupsComboBox.currentIndexChanged.disconnect()
+        except Exception: pass
+                
         self.parent().ui.ChartGroupsComboBox.clear()
         self.parent().ui.ChartGroupsComboBox.addItems(gv.TechIndicatorGroups.keys())
         self.parent().ui.ChartGroupsComboBox.addItem('New Group')
+        
+        self.parent().ui.ChartGroupsComboBox.currentIndexChanged.connect(self.RefreshTechIndicatorsList)
 
     def RefreshTechIndicatorsList(self):
         if self.parent().ui.ChartGroupsComboBox.count() == 0:

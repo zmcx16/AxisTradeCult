@@ -30,9 +30,16 @@ class AxisTradeCultForm(QMainWindow):
 
         self.OverviewStockPage = OverviewStockPage(self)
         self.ChartPage = ChartPage(self)
+        self.ui.tabWidget.currentChanged.connect(self.TabOnChange) #changed!
         # self.ChartPage.setFocusPolicy(Qt.StrongFocus)
         # self.setFocusProxy(self.ChartPage)
 
     def keyPressEvent(self, event):
         if self.ui.tabWidget.currentWidget() == self.ui.tabChart:
             self.ChartPage.keyPressEvent(event)
+    
+ 
+    def TabOnChange(self,i):
+        if self.ui.tabWidget.currentWidget() == self.ui.tabChart:
+            self.ChartPage.SetChartGroupsComboBoxItem()
+            self.ChartPage.SetStockGroupsComboBoxItem()
