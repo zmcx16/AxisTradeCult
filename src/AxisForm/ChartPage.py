@@ -51,9 +51,12 @@ class ChartPage(QMainWindow):
         self.TechIndicatorslayout.setSpacing(5);
         self.TechIndicatorslayout.setContentsMargins(10, 10, 0, 10);
 
-        self.SetChartGroupsComboBoxItem()
         self.SetStockGroupsComboBoxItem()
+        self.SetChartGroupsComboBoxItem()
         self.SetGraphTypeComboBoxItem()
+        
+        self.RefreshStockInGroup()
+        self.RefreshTechIndicatorsList()
 
     def SetGraphTypeComboBoxItem(self):
         self.parent().ui.ChartPageGraphTypeComboBox.clear()
@@ -82,6 +85,7 @@ class ChartPage(QMainWindow):
                 
         self.parent().ui.ChartGroupsComboBox.clear()
         self.parent().ui.ChartGroupsComboBox.addItems(gv.TechIndicatorGroups.keys())
+        self.parent().ui.ChartGroupsComboBox.setCurrentIndex(0)
         self.parent().ui.ChartGroupsComboBox.addItem('New Group')
         
         self.parent().ui.ChartGroupsComboBox.currentIndexChanged.connect(self.RefreshTechIndicatorsList)
