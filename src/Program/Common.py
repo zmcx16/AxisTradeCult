@@ -3,6 +3,7 @@ import pandas
 import numpy
 from calendar import formatstring
 
+from CommonDef.DefStr import *
 
 def SymbolToPath(symbol, save_dir = "data"):
     """Return CSV file path given ticker symbol."""
@@ -25,11 +26,11 @@ def human_format(num):
 def FormatOverviewStockData(OverviewStocks):
 
     for stockInfo in OverviewStocks:
-        OverviewStocks[stockInfo]['Open'] = "{:.2f}".format(OverviewStocks[stockInfo]['Open'])
-        OverviewStocks[stockInfo]['High'] = "{:.2f}".format(OverviewStocks[stockInfo]['High'])
-        OverviewStocks[stockInfo]['Low'] = "{:.2f}".format(OverviewStocks[stockInfo]['Low'])
-        OverviewStocks[stockInfo]['Close'] = "{:.2f}".format(OverviewStocks[stockInfo]['Close'])
-        OverviewStocks[stockInfo]['Volume'] = human_format(OverviewStocks[stockInfo]['Volume'])
+        OverviewStocks[stockInfo][strOpen] = "{:.2f}".format(OverviewStocks[stockInfo][strOpen])
+        OverviewStocks[stockInfo][strHigh] = "{:.2f}".format(OverviewStocks[stockInfo][strHigh])
+        OverviewStocks[stockInfo][strLow] = "{:.2f}".format(OverviewStocks[stockInfo][strLow])
+        OverviewStocks[stockInfo][strClose] = "{:.2f}".format(OverviewStocks[stockInfo][strClose])
+        OverviewStocks[stockInfo][strVolume] = human_format(OverviewStocks[stockInfo][strVolume])
         OverviewStocks[stockInfo]['ChangeC'] = "{:.2%}".format(OverviewStocks[stockInfo]['ChangeC'])
         OverviewStocks[stockInfo]['ChangeV'] = "{:.1%}".format(OverviewStocks[stockInfo]['ChangeV'])
         OverviewStocks[stockInfo]['AvgC3M'] = "{:.2f}".format(OverviewStocks[stockInfo]['AvgC3M'])
@@ -43,8 +44,8 @@ def ReadOverviewStockData(stocks, ChooseDate, StockDataPoolPath):
 
     for stock in stocks:
         try:
-            StockDF = pandas.read_csv(SymbolToPath(stock, StockDataPoolPath) , parse_dates = True, index_col = "Date",
-                    usecols = ["Date", "Adj. Open", "Adj. High", "Adj. Low", "Adj. Close", "Adj. Volume"], na_values = ["nan"])
+            StockDF = pandas.read_csv(SymbolToPath(stock, StockDataPoolPath) , parse_dates = True, index_col = strDate,
+                    usecols = [strDate, strOpen, strHigh, strLow, strClose, strVolume], na_values = ["nan"])
 
         except Exception as exc:
             print('Generated an exception: %s' % exc)
@@ -68,10 +69,10 @@ def ReadOverviewStockData(stocks, ChooseDate, StockDataPoolPath):
         DF1Y = pandas.DataFrame.sort_index(DF1Y, ascending = False)
 
         OverviewStock = { 'TargetDate':TargetDate
-                         , 'Symbol': stock, 'Open':DF3M['Adj. Open'][0], 'High':DF3M['Adj. High'][0], 'Low':DF3M['Adj. Low'][0], 'Close':DF3M['Adj. Close'][0], 'Volume':DF3M['Adj. Volume'][0]
-                         , 'ChangeC':CalChange(now = DF3M['Adj. Close'][0], prev = DF3M['Adj. Close'][1]), 'ChangeV':CalChange(now = DF3M['Adj. Volume'][0], prev = DF3M['Adj. Volume'][1])
-                         , 'AvgC3M':DF3M['Adj. Close'].mean(), 'AvgV3M':DF3M['Adj. Volume'].mean()
-                         , 'StrikePrice1Y':[DF1Y['Adj. Low'].min() , DF1Y['Adj. High'].max()]}
+                         , 'Symbol': stock, strOpen:DF3M[strOpen][0], strHigh:DF3M[strHigh][0], strLow:DF3M[strLow][0], strClose:DF3M[strClose][0], strVolume:DF3M[strVolume][0]
+                         , 'ChangeC':CalChange(now = DF3M[strClose][0], prev = DF3M[strClose][1]), 'ChangeV':CalChange(now = DF3M[strVolume][0], prev = DF3M[strVolume][1])
+                         , 'AvgC3M':DF3M[strClose].mean(), 'AvgV3M':DF3M[strVolume].mean()
+                         , 'StrikePrice1Y':[DF1Y[strLow].min() , DF1Y[strHigh].max()]}
 
         OverviewStocks[stock] = OverviewStock
 
@@ -79,8 +80,8 @@ def ReadOverviewStockData(stocks, ChooseDate, StockDataPoolPath):
 
 
 def GetStockPriceVolumeData(stock, StockDataPoolPath, start_date, end_date):
-    df = pandas.read_csv(SymbolToPath(stock, StockDataPoolPath), index_col = 'Date',
-            parse_dates = True, usecols = ['Date', 'Adj. Open', 'Adj. High', 'Adj. Low', 'Adj. Close', 'Adj. Volume'], na_values = ['nan'])
+    df = pandas.read_csv(SymbolToPath(stock, StockDataPoolPath), index_col = strDate,
+            parse_dates = True, usecols = [strDate, strOpen, strHigh, strLow, strClose, strVolume], na_values = ['nan'])
 
     DatePeriod = pandas.DataFrame(index = pandas.date_range(start_date, end_date))
     DF = DatePeriod.join(df)

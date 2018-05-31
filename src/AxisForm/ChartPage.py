@@ -9,7 +9,7 @@ from PyQt5.QtGui import *
 
 import concurrent.futures
 
-from Program.DefStr import *
+from CommonDef.DefStr import *
 import Program.GlobalVar as gv
 from Program.Common import *
 from AxisWeb.DownloadData import *
@@ -195,7 +195,7 @@ class ChartPage(QMainWindow):
             self.DelIndicatorInGroup()
 
     def test(self):
-        print('xxx')
+        print('test')
 
 
 class TechIndicatorWidget(QWidget):

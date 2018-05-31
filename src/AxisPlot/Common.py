@@ -6,7 +6,7 @@ import matplotlib.dates as mdates
 import mpl_finance
 import matplotlib.ticker as ticker
 
-from AxisPlot.DefStr import *
+from CommonDef.DefStr import *
 from numpy import NaN
 from pandas.tests.frame.test_validate import dataframe
 

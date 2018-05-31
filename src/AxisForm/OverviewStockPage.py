@@ -7,14 +7,13 @@ from PyQt5.QtGui import *
 
 import concurrent.futures
 
-from Program.DefStr import *
+from CommonDef.DefStr import *
 import Program.GlobalVar as gv
 from Program.Common import *
 from AxisWeb.DownloadData import *
 from AxisForm.MessageInfo import *
 from AxisForm.Common import *
 from AxisPlot.Common import *
-
 
 class OverviewStockPage(QMainWindow):
 
@@ -110,7 +109,7 @@ class OverviewStockPage(QMainWindow):
             self.parent().ui.AddButton.setEnabled(True)
             return False
 
-        if DownloadStockDataFromQuandl(Symbol, gv.StockDataPoolPath) is False:
+        if DownloadStockDataFromAlphaVantage(Symbol, gv.StockDataPoolPath) is False:
             msg = AddStockDownloadFailMessage
             msg[Str_setText] = msg[Str_setText].format(Symbol)
             ShowInfoDialog(msg)
@@ -267,11 +266,11 @@ class OverviewStockInfoWidget(QWidget):
 
         _translate = QCoreApplication.translate
         StockCheckBox.setText(_translate("AxisTradeCultForm", data["Symbol"]))
-        OpenLabel.setText(_translate("AxisTradeCultForm", data["Open"]))
-        HightLabel.setText(_translate("AxisTradeCultForm", data["High"]))
-        LowLabel.setText(_translate("AxisTradeCultForm", data["Low"]))
-        CloseLabel.setText(_translate("AxisTradeCultForm", data["Close"]))
-        VolumeLabel.setText(_translate("AxisTradeCultForm", data["Volume"]))
+        OpenLabel.setText(_translate("AxisTradeCultForm", data[strOpen]))
+        HightLabel.setText(_translate("AxisTradeCultForm", data[strHigh]))
+        LowLabel.setText(_translate("AxisTradeCultForm", data[strLow]))
+        CloseLabel.setText(_translate("AxisTradeCultForm", data[strClose]))
+        VolumeLabel.setText(_translate("AxisTradeCultForm", data[strVolume]))
         ChangeCLabel.setText(_translate("AxisTradeCultForm", data["ChangeC"]))
         ChangeVLabel.setText(_translate("AxisTradeCultForm", data["ChangeV"]))
         AvgC3MLabel.setText(_translate("AxisTradeCultForm", data["AvgC3M"]))
@@ -363,7 +362,7 @@ class UpdateStocksThread(QThread):
 
     def run(self):
         with concurrent.futures.ThreadPoolExecutor(max_workers = 5) as executor:
-            future_to_download = {executor.submit(DownloadStockDataFromQuandl, symbol, gv.StockDataPoolPath): symbol for symbol in self.stocksSet}
+            future_to_download = {executor.submit(DownloadStockDataFromAlphaVantage, symbol, gv.StockDataPoolPath): symbol for symbol in self.stocksSet}
             for future in concurrent.futures.as_completed(future_to_download):
                 try:
                     data = future.result()

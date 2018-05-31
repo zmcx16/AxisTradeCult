@@ -5,7 +5,7 @@ import numpy
 
 from Program.Resources import *
 from Program.Common import *
-from Program.DefStr import *
+from CommonDef.DefStr import *
 from AxisPlot.Common import TechIndicatorFuncDict
 
 # Common -------------------------------------------

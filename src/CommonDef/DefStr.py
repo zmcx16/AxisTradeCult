@@ -1,12 +1,23 @@
+#---------------------------------------
+StrChartSizeFactor = 'ChartSizeFactor'
+
+strDate = 'timestamp'
+strOpen = 'open'
+strHigh = 'high'
+strLow = 'low'
+strClose = 'close'
+strVolume = 'volume'
+#---------------------------------------
+
+#---------------------------------------
+strPredCrashA = 'PredCrashA'
+
+strFuncName = 'FuncName'
+strParam = 'Param'
+#---------------------------------------
+
 strCandle = 'Candle'
 strBasic = 'Basic'
-
-strDate = 'Date'
-strOpen = 'Open'
-strHigh = 'High'
-strLow = 'Low'
-strClose = 'Close'
-strVolume = 'Volume'
 
 strColor = 'Color'
 strWindow = 'Window'
