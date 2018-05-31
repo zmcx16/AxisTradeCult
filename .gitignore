@@ -2,3 +2,12 @@
 /src/AxisPlot/__pycache__
 /src/AxisWeb/__pycache__
 /src/Program/__pycache__
+/src/Program/*.setting
+/src/Program/StockDataPool
+/src/test/*.setting
+/src/test/StockDataPool
+/src/test/__pycache__
+/src/CommonDef/__pycache__
+/src/AxisPrediction/__pycache__
+/*.setting
+/目標.txt

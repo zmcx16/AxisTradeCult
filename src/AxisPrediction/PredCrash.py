@@ -1,4 +1,4 @@
-from AxisPrediction.DefStr import *
+from CommonDef.DefStr import *
 
 def PredCrashA(param):
     pass
