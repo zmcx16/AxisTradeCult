@@ -6,7 +6,7 @@ import numpy
 from Program.Resources import *
 from Program.Common import *
 from CommonDef.DefStr import *
-from AxisPlot.Common import TechIndicatorFuncDict
+from AxisPlot.Plot import TechIndicatorFuncDict
 
 # Common -------------------------------------------
 RootPath = ''

@@ -13,7 +13,7 @@ from Program.Common import *
 from AxisWeb.DownloadData import *
 from AxisForm.MessageInfo import *
 from AxisForm.Common import *
-from AxisPlot.Common import *
+from AxisPlot.Plot import *
 
 class OverviewStockPage(QMainWindow):
 

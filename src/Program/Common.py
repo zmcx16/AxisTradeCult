@@ -4,6 +4,7 @@ import numpy
 from calendar import formatstring
 
 from CommonDef.DefStr import *
+from unittest.mock import inplace
 
 def SymbolToPath(symbol, save_dir = "data"):
     """Return CSV file path given ticker symbol."""
@@ -79,9 +80,16 @@ def ReadOverviewStockData(stocks, ChooseDate, StockDataPoolPath):
     return OverviewStocks
 
 
-def GetStockPriceVolumeData(stock, StockDataPoolPath, start_date, end_date):
+def GetStockPriceVolumeData(stock, StockDataPoolPath, start_date, end_date, IncludeAdjClose=False):
+    
+    cols = []
+    if IncludeAdjClose:
+        cols = [strDate, strOpen, strHigh, strLow, strClose, strVolume, strAdjClose]
+    else:
+        cols = [strDate, strOpen, strHigh, strLow, strClose, strVolume]
+    
     df = pandas.read_csv(SymbolToPath(stock, StockDataPoolPath), index_col = strDate,
-            parse_dates = True, usecols = [strDate, strOpen, strHigh, strLow, strClose, strVolume], na_values = ['nan'])
+            parse_dates = True, usecols = cols, na_values = ['nan'])
 
     DatePeriod = pandas.DataFrame(index = pandas.date_range(start_date, end_date))
     DF = DatePeriod.join(df)

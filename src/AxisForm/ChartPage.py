@@ -15,7 +15,7 @@ from Program.Common import *
 from AxisWeb.DownloadData import *
 from AxisForm.MessageInfo import *
 from AxisForm.Common import *
-from AxisPlot.Common import *
+from AxisPlot.Plot import *
 
 
 class ChartPage(QMainWindow):
@@ -108,7 +108,7 @@ class ChartPage(QMainWindow):
         SelectGroupName = self.parent().ui.ChartGroupsComboBox.currentText()
         TechIndicators = gv.TechIndicatorGroups[SelectGroupName]
 
-        # print(TechIndicators)
+        # print(Statistics_TechIndicators)
 
         for TechIndicator in TechIndicators:
             IndicatorContent = self.FormatIndicatorParamString(TechIndicator.copy())
