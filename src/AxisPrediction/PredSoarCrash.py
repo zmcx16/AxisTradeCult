@@ -22,7 +22,7 @@ from attr._make import validate
 def PredSoarCrashA(param):
     # CrashA param
     neighbor_size = 5
-    pred_days = 5
+    pred_days = 3
     change_rate = 5
     validateDataSize = 3
     
@@ -31,12 +31,12 @@ def PredSoarCrashA(param):
     print("Process Data...")
     df = TransToAdjOHLCbyAdjC(GetStockPriceVolumeData("DIS", gv.StockDataPoolPath, "2000-1-3", "2018-6-01", True))
     
-    #df = AddMAIndictor(df, window=5, DropNan = False)
-    #df = AddBollingerBandsIndictor(df, window=5, DropNan = False)
-    #df = AddKDJIndictor(df, window=5, DropNan = False)
+    df = AddMAIndictor(df, window=5, DropNan = False)
+    df = AddBollingerBandsIndictor(df, window=5, DropNan = False)
+    df = AddKDJIndictor(df, window=5, DropNan = False)
     #print(df)
     
-    #df = AddNeighborFeatures(df, neighbor_size, DropNan = True)
+    df = AddNeighborFeatures(df, neighbor_size, DropNan = True)
     #print(df)
     
     if IsSoar:
