@@ -24,6 +24,9 @@
   *  urllib3>=1.22
   *  requests>=2.18.4
   *  assertpy>=0.12
+  *  scikit-learn>=0.19.12
+  *  scipy>=1.1.0
+  *  imbalanced-learn>=0.3.3
 
 # Run
 python AxisTradeCult\src\Program\__init__.py
