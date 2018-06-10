@@ -8,7 +8,8 @@ from AxisForm.AxisTradeCultForm import AxisTradeCultForm
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
 from AxisPrediction.PredSoarCrash import *
+from AxisPrediction.PredTrend import *
 
 if __name__ == "__main__":
     gv.Init()
-    PredSoarCrashA("")
+    PredTrendA("")

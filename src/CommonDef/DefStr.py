@@ -21,6 +21,8 @@ strPredSoarCrashA = 'PredSoarCrashA'
 strIsSoar = 'IsSoar'
 strIsCrash = 'IsCrash'
 
+strPredTrendA = 'PredTrendA'
+
 strFuncName = 'FuncName'
 strParam = 'Param'
 #---------------------------------------
@@ -30,6 +32,8 @@ strParam = 'Param'
 strData = 'Data'
 strTarget = 'Target'
 strPredictVal = 'PredictVal'
+strPredictProbVal = 'PredictProbVal'
+strScoreVal = 'ScoreVal'
 strAnsVal = 'AnsVal'
 #---------------------------------------
 

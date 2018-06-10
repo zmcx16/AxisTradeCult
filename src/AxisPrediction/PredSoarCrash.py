@@ -68,8 +68,8 @@ def PredSoarCrashA(param):
     
     print("Process Data finished.")
     
-    OutputData = pandas.concat([ df, IsChangeN], axis=1)
-    OutputData.to_csv("D:\\PredCrashA_data.csv", sep=',');
+    #OutputData = pandas.concat([ df, IsChangeN], axis=1)
+    #OutputData.to_csv("D:\\PredSoarCrashA_data.csv", sep=',');
     
     print("split Tr, Ts Data...")
     ValidateDataList = []
@@ -109,7 +109,7 @@ def PredSoarCrashA(param):
         x_test = ValidateDataList[index+1][strData]
         y_test = ValidateDataList[index+1][strTarget]
         
-        # OverSamoling
+        # OverSampling
         #ros = RandomOverSampler(random_state=0)
         #x_train, y_train = ros.fit_sample(x_train, y_train)
         
@@ -149,6 +149,6 @@ def PredSoarCrashA(param):
     ShowSensitivitySpecificity(total_result[strAnsVal], total_result[strPredictVal])
     
  
-PredCrashFuncDict = {
+PredSoarCrashFuncDict = {
   strPredSoarCrashA:   {strFuncName: PredSoarCrashA, strParam:{}},
 }
