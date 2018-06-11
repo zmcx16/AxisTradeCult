@@ -33,17 +33,21 @@ def PredTrendA(param):
     
     df = AddNeighborFeatures(df, neighbor_size, DropNan = False)
     
+    df = AddChangeIndictor(df, strClose, DropNan = False)
+    df = AddChangeIndictor(df, strVolume, DropNan = False)
+    df = AddDiffIndictor(df, strClose, DropNan = False)
+    df = AddDiffIndictor(df, strVolume, DropNan = False)
+    df = AddLogReturnIndictor(df, strClose, DropNan = False)
+    
+    df = AddRollingMinMaxIndictor(df, strLow, window=5, Min0_Max1=0, DropNan = False)
+    df = AddRollingMinMaxIndictor(df, strHigh, window=5, Min0_Max1=1, DropNan = False)
+    df = AddRollingMeanStdIndictor(df, strClose, window=5, Mean0_Std1=0, DropNan = False)    
+    df = AddRollingMeanStdIndictor(df, strClose, window=5, Mean0_Std1=1, DropNan = False)
+            
     df = AddMAIndictor(df, window=5, DropNan = False)
     df = AddBollingerBandsIndictor(df, window=5, DropNan = False)
     df = AddKDJIndictor(df, window=5, DropNan = False)
-
-    df = AddMAIndictor(df, window=10, DropNan = False)
-    df = AddBollingerBandsIndictor(df, window=10, DropNan = False)
-    df = AddKDJIndictor(df, window=10, DropNan = False)
     
-    df = AddMAIndictor(df, window=15, DropNan = False)
-    df = AddBollingerBandsIndictor(df, window=15, DropNan = False)
-    df = AddKDJIndictor(df, window=15, DropNan = False)
     
     df = df.dropna()
     
@@ -127,11 +131,11 @@ def PredTrendA(param):
         y_train = label_binarize(y_train, classes=[-1, 0, 1])
         y_test = label_binarize(y_test, classes=[-1, 0, 1])
         
-        clf= OneVsRestClassifier(KNeighborsClassifier(n_neighbors=5))
+        #clf= OneVsRestClassifier(KNeighborsClassifier(n_neighbors=5))
         #clf = LinearSVC(random_state=0) 
         #clf = OneVsRestClassifier(GaussianNB())
         #clf = OneVsRestClassifier(MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=1))
-        #clf = OneVsRestClassifier(DecisionTreeClassifier(random_state=0))
+        clf = OneVsRestClassifier(DecisionTreeClassifier(random_state=0))
         #clf = OneVsRestClassifier(GaussianProcessClassifier(kernel=1.0 * kernels.RBF(length_scale=1.0)))
         clf.fit(x_train, y_train) 
         predict_prob = clf.predict_proba(x_test)

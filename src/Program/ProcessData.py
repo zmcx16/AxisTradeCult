@@ -88,4 +88,57 @@ def AddKDJIndictor(srcData, window, DropNan = True):
         dstData = dstData.dropna(axis=0, how='any')
     
     return dstData
+
+def AddChangeIndictor(srcData, srcName, DropNan = True):
+    #gross return
+    dstData = srcData.copy()
     
+    dstData["{0}_{1}".format(srcName,strChangeRate)] = GetChange(srcData[srcName])
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+        
+    return dstData
+
+def AddDiffIndictor(srcData, srcName, DropNan = True):
+    dstData = srcData.copy()
+    
+    dstData["{0}_{1}".format(srcName,strChangeRate)] = GetDiff(srcData[srcName])
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+        
+    return dstData
+
+def AddLogReturnIndictor(srcData, srcName, DropNan = True):
+    dstData = srcData.copy()
+    dstData["{0}_{1}".format(srcName,strLogReturn)] = GetLogReturn(srcData[srcName])
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+        
+    return dstData
+
+def AddRollingMinMaxIndictor(srcData, srcName, window, Min0_Max1, DropNan = True):
+    dstData = srcData.copy()
+    if Min0_Max1 == 0:
+        dstData["{0}_{1}_W{2}".format(srcName, strRollingMin, window)] = GetRollingMin(srcData[srcName], window)
+    else:
+        dstData["{0}_{1}_W{2}".format(srcName, strRollingMax, window)] = GetRollingMax(srcData[srcName], window)
+    
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+        
+    return dstData
+
+def AddRollingMeanStdIndictor(srcData, srcName, window, Mean0_Std1, DropNan = True):
+    dstData = srcData.copy()
+    if Mean0_Std1 == 0:
+        dstData["{0}_{1}_W{2}".format(srcName, strRollingMean, window)] = GetRollingMin(srcData[srcName], window)
+    else:
+        dstData["{0}_{1}_W{2}".format(srcName, strRollingStd, window)] = GetRollingMax(srcData[srcName], window)
+    
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+        
+    return dstData
+        
+    return dstData
+        

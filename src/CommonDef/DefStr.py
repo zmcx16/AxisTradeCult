@@ -57,6 +57,13 @@ strKDJ = 'KDJ'
 strKDJ_K = 'KDJ_K'
 strKDJ_D = 'KDJ_D'
 strKDJ_J = 'KDJ_J'
+strChangeRate = 'ChangeRate'
+strLogReturn = 'LogReturn'
+strRollingMin = 'RollingMin'
+strRollingMax = 'RollingMax'
+strRollingMean = 'RollingMean'
+strRollingStd = 'RollingStd' 
+
 
 strType = 'Type'
 strValue = 'Value'

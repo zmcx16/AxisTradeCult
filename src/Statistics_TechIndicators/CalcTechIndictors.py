@@ -5,9 +5,23 @@ import numpy
 def GetRollingMean(values, window):
     return pandas.Series.rolling(values, window = window, center = False).mean()
 
-
 def GetRollingStd(values, window):
     return pandas.Series.rolling(values, window = window, center = False).std()
+
+def GetRollingMax(values, window):
+    return pandas.Series.rolling(values, window = window, center = False).max()
+
+def GetRollingMin(values, window):
+    return pandas.Series.rolling(values, window = window, center = False).min()
+
+def GetLogReturn(values):
+    return numpy.log(values) - numpy.log(values.shift(1))
+
+def GetDiff(values):
+    return values.diff()
+
+def GetChange(values):
+    return values.pct_change() * 100
 
 
 def GetBollingerBands(rm, rstd):
