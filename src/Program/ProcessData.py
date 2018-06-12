@@ -47,11 +47,67 @@ def AddNeighborFeatures(srcData, neighbor_size, DropNan = True):
     
     return dstData
 
-def AddMAIndictor(srcData, window, DropNan = True):
+# SMA: simple moving average
+def AddSMAIndictor(srcData, window, DropNan = True):
     dstData = srcData.copy()
-    MA = GetRollingMean(srcData[strClose], window).to_frame()
-    MA.rename(columns= {strClose: strMA+'_W'+str(window)}, inplace=True)
-    dstData = dstData.join(MA)
+    SMA = GetRollingMean(srcData[strClose], window).to_frame()
+    SMA.rename(columns= {strClose: strSMA+'_W'+str(window)}, inplace=True)
+    dstData = dstData.join(SMA)
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData
+
+# EMA: exponential moving average
+def AddEMAIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    EMA = GetEWM_Mean(srcData[strClose], window).to_frame()
+    EMA.rename(columns= {strClose: strEMA+'_W'+str(window)}, inplace=True)
+    dstData = dstData.join(EMA)
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData     
+
+# MSTD: moving standard deviation
+def AddMSTDIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    MSTD = GetRollingStd(srcData[strClose], window).to_frame()
+    MSTD.rename(columns= {strClose: strMSTD+'_W'+str(window)}, inplace=True)
+    dstData = dstData.join(MSTD)
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData   
+
+# MVAR: moving variance
+def AddMVARIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    MVAR = GetRollingVar(srcData[strClose], window).to_frame()
+    MVAR.rename(columns= {strClose: strMVAR+'_W'+str(window)}, inplace=True)
+    dstData = dstData.join(MVAR)
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData
+
+# RSV: raw stochastic value
+def AddRSVIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    RSV = GetRSV(srcData[strClose], srcData[strHigh], srcData[strLow], window).to_frame()
+    RSV.rename(columns= {strClose: strRSV+'_W'+str(window)}, inplace=True)
+    dstData = dstData.join(RSV)
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData
+
+# RSI: relative strength index
+def AddRSIIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    RSI = GetRSI(srcData[strClose], window).to_frame()
+    RSI.rename(columns= {strClose: strRSI+'_W'+str(window)}, inplace=True)
+    dstData = dstData.join(RSI)
     if DropNan:
         dstData = dstData.dropna(axis=0, how='any')
     
@@ -127,18 +183,3 @@ def AddRollingMinMaxIndictor(srcData, srcName, window, Min0_Max1, DropNan = True
         dstData = dstData.dropna(axis=0, how='any')
         
     return dstData
-
-def AddRollingMeanStdIndictor(srcData, srcName, window, Mean0_Std1, DropNan = True):
-    dstData = srcData.copy()
-    if Mean0_Std1 == 0:
-        dstData["{0}_{1}_W{2}".format(srcName, strRollingMean, window)] = GetRollingMin(srcData[srcName], window)
-    else:
-        dstData["{0}_{1}_W{2}".format(srcName, strRollingStd, window)] = GetRollingMax(srcData[srcName], window)
-    
-    if DropNan:
-        dstData = dstData.dropna(axis=0, how='any')
-        
-    return dstData
-        
-    return dstData
-        

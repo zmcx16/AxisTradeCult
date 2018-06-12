@@ -14,6 +14,27 @@ def GetRollingMax(values, window):
 def GetRollingMin(values, window):
     return pandas.Series.rolling(values, window = window, center = False).min()
 
+def GetEWM_Mean(values, window):
+    return values.ewm(span=window).mean()
+
+def GetRSV(close_values, high_values, low_values, period):
+    hight_max = pandas.Series.rolling(high_values, window = period, center = False).max()
+    low_min = pandas.Series.rolling(low_values, window = period, center = False).min()
+    return (close_values - low_min) / (hight_max - low_min) * 100
+
+def GetRSI(values, window=14):
+    values_shift_1 = values.shift(1)
+    d = values - values_shift_1
+    p = (d + d.abs()) / 2
+    n = (-d + d.abs()) / 2
+    
+    RS = GetEWM_Mean(p, window = window) / GetEWM_Mean(n, window = window)
+    
+    return 100 - 100 / (1.0 + RS)
+
+def GetRollingVar(values, window):
+    return values.rolling(window = window).var()
+
 def GetLogReturn(values):
     return numpy.log(values) - numpy.log(values.shift(1))
 
@@ -59,8 +80,3 @@ def _calc_kd(val, weight = 1 / 3.0):
             k = (1 - weight) * k + i
             yield k
 
-
-def GetRSV(close_values, high_values, low_values, period):
-    hight_max = pandas.Series.rolling(high_values, window = period, center = False).max()
-    low_min = pandas.Series.rolling(low_values, window = period, center = False).min()
-    return (close_values - low_min) / (hight_max - low_min) * 100

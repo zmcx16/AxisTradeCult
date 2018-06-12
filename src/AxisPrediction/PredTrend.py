@@ -41,10 +41,13 @@ def PredTrendA(param):
     
     df = AddRollingMinMaxIndictor(df, strLow, window=5, Min0_Max1=0, DropNan = False)
     df = AddRollingMinMaxIndictor(df, strHigh, window=5, Min0_Max1=1, DropNan = False)
-    df = AddRollingMeanStdIndictor(df, strClose, window=5, Mean0_Std1=0, DropNan = False)    
-    df = AddRollingMeanStdIndictor(df, strClose, window=5, Mean0_Std1=1, DropNan = False)
-            
-    df = AddMAIndictor(df, window=5, DropNan = False)
+             
+    df = AddSMAIndictor(df, window=5, DropNan = False)
+    df = AddEMAIndictor(df, window=5, DropNan = False)
+    df = AddMSTDIndictor(df, window=5, DropNan = False)
+    df = AddMVARIndictor(df, window=5, DropNan = False)
+    df = AddRSIIndictor(df, window=14, DropNan = False)
+    
     df = AddBollingerBandsIndictor(df, window=5, DropNan = False)
     df = AddKDJIndictor(df, window=5, DropNan = False)
     
@@ -144,8 +147,8 @@ def PredTrendA(param):
         class_labels = [-1, 0, 1]
         max_prob_index_list = predict_prob.argmax(axis=1)
         temp = []
-        for index in range(len(max_prob_index_list)):
-            temp.append(class_labels[max_prob_index_list[index]])
+        for i in range(len(max_prob_index_list)):
+            temp.append(class_labels[max_prob_index_list[i]])
         predict_result = label_binarize(temp, class_labels)
         
         ValidateResult.append({strPredictVal: predict_result, strAnsVal: y_test, strPredictProbVal: predict_prob})        

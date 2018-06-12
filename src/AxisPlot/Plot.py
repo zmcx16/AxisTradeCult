@@ -95,7 +95,7 @@ def PlotStockData(Symbol, df_data, PlotType, TechIndicators, size_factor):
     return fig
 
 
-def PlotMA(param, df_data, target_ax, row_size, row_index):
+def PlotSMA(param, df_data, target_ax, row_size, row_index):
     Indicator = GetRollingMean(df_data[strClose], int(param[strWindow]))
     PlotIndicator(Indicator, target_ax = target_ax, color = param[strColor], linewidth = float(param[strLineWidth]), alpha = float(param[strAlpha]))
 
@@ -135,19 +135,19 @@ ColorList = ['aqua', 'aquamarine', 'azure', 'beige', 'black', 'blue', 'brown', '
              , 'salmon', 'sienna', 'silver', 'tan', 'teal', 'tomato', 'turquoise', 'violet', 'wheat', 'white', 'yellow', 'yellowgreen']
 
 TechIndicatorFuncDict = {
-  strMA:                {strFuncName: PlotMA, strParam:{strColor:'red', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}},
-  strBollingerBands:    {strFuncName: PlotBollingerBands, strParam:{strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8, strAreaColor: 'gold', strAreaAlpha:0.3}},
-  strKDJ:               {strFuncName: PlotKDJ, strParam:{strKColor:'red', strDColor:'black', strJColor:'gold', strWindow: 9, strLineWidth: 0.8, strAlpha: 0.8}}
+  strSMA:             {strFuncName: PlotSMA, strParam:{strColor:'red', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}},
+  strBollingerBands:  {strFuncName: PlotBollingerBands, strParam:{strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8, strAreaColor: 'gold', strAreaAlpha:0.3}},
+  strKDJ:             {strFuncName: PlotKDJ, strParam:{strKColor:'red', strDColor:'black', strJColor:'gold', strWindow: 9, strLineWidth: 0.8, strAlpha: 0.8}}
 }
 
 TechIndicatorPlotMode = {
-  strMA:                {strPlotInAxPrice: True, strYlabel:   None},
-  strBollingerBands:    {strPlotInAxPrice: True, strYlabel:   None},
-  strKDJ:               {strPlotInAxPrice: False, strYlabel:   strKDJ},
+  strSMA:             {strPlotInAxPrice: True, strYlabel:   None},
+  strBollingerBands:  {strPlotInAxPrice: True, strYlabel:   None},
+  strKDJ:             {strPlotInAxPrice: False, strYlabel:   strKDJ},
 }
 
 TechIndicatorWidgetParam = {
-  strMA:                {strColor:  {strType:strComboBox, strValue:'red', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}},
-  strBollingerBands:    {strColor:  {strType:strComboBox, strValue:'grey', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}, strAreaColor:  {strType:strComboBox, strValue:'gold', strComboList: ColorList}, strAreaAlpha: {strType:strLineEdit, strValue:0.3}},
-  strKDJ:               {strKColor: {strType:strComboBox, strValue:'red', strComboList: ColorList}, strDColor: {strType:strComboBox, strValue:'black', strComboList: ColorList}, strJColor: {strType:strComboBox, strValue:'gold', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:9}, strLineWidth: {strType:strLineEdit, strValue:1}, strAlpha: {strType:strLineEdit, strValue:1}}
+  strSMA:             {strColor:  {strType:strComboBox, strValue:'red', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}},
+  strBollingerBands:  {strColor:  {strType:strComboBox, strValue:'grey', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}, strAreaColor:  {strType:strComboBox, strValue:'gold', strComboList: ColorList}, strAreaAlpha: {strType:strLineEdit, strValue:0.3}},
+  strKDJ:             {strKColor: {strType:strComboBox, strValue:'red', strComboList: ColorList}, strDColor: {strType:strComboBox, strValue:'black', strComboList: ColorList}, strJColor: {strType:strComboBox, strValue:'gold', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:9}, strLineWidth: {strType:strLineEdit, strValue:1}, strAlpha: {strType:strLineEdit, strValue:1}}
 }
