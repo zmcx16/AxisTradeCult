@@ -17,9 +17,8 @@ def ShowSensitivitySpecificity(AnsVal, PredictVal):
     MCC = (TP*TN-FP*FN)/(math.sqrt((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN)))
     AUC = metrics.roc_auc_score(AnsVal, PredictVal)
     
-    print('TP    FP    FN    TN        TPR    FPR    PPV    ACC    Fscore    MCC    AUC\n')
-    print("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10}".format(TP, FP, FN, TN, TPR, FPR, PPV, ACC, Fscore, MCC, AUC))
-
+    print('    TP     FP     FN     TN    TPR    FPR    PPV    ACC Fscore    MCC    AUC')
+    print("{0:6d},{1:6d},{2:6d},{3:6d}, {4:.3f}, {5:.3f}, {6:.3f}, {7:.3f}, {8:.3f}, {9:.3f}, {10:.3f}\n".format(TP, FP, FN, TN, TPR, FPR, PPV, ACC, Fscore, MCC, AUC))
 
 def ShowSensitivitySpecificityForMultiLabels(AnsVal, PredictVal, PredictProbVal, LabelList):
 
@@ -80,5 +79,5 @@ def ShowSensitivitySpecificityForMultiLabels(AnsVal, PredictVal, PredictProbVal,
         roc_aucDict[label_index] = auc(fprDict[label_index], tprDict[label_index])
         
         print('Label: {0}'.format(str(LabelList[label_index]))) 
-        print('    TP     FP     FN     TN   TPR    FPR    PPV    ACC    Fscore    MCC    AUC')
+        print('    TP     FP     FN     TN    TPR    FPR    PPV    ACC Fscore    MCC    AUC')
         print("{0:6d},{1:6d},{2:6d},{3:6d}, {4:.3f}, {5:.3f}, {6:.3f}, {7:.3f}, {8:.3f}, {9:.3f}, {10:.3f}\n".format(TP, FP, FN, TN, TPR, FPR, PPV, ACC, Fscore, MCC, roc_aucDict[label_index]))

@@ -14,7 +14,7 @@ def GetRollingMax(values, window):
 def GetRollingMin(values, window):
     return pandas.Series.rolling(values, window = window, center = False).min()
 
-def GetEWM_Mean(values, window):
+def GetEMA(values, window):
     return values.ewm(span=window).mean()
 
 def GetRSV(close_values, high_values, low_values, period):
@@ -28,9 +28,21 @@ def GetRSI(values, window=14):
     p = (d + d.abs()) / 2
     n = (-d + d.abs()) / 2
     
-    RS = GetEWM_Mean(p, window = window) / GetEWM_Mean(n, window = window)
+    RS = GetEMA(p, window = window) / GetEMA(n, window = window)
     
     return 100 - 100 / (1.0 + RS)
+
+def GetMACD(values):
+    DIF = GetEMA(values, 12) - GetEMA(values, 26)
+    DEM = GetEMA(DIF, 9)
+    OSC = DIF - DEM
+    return DIF, DEM, OSC
+
+def GetWR(values, window):
+    hn = pandas.Series.rolling(values, window = window, center = False).max()
+    ln = pandas.Series.rolling(values, window = window, center = False).min()
+     
+    return (values-hn)/(hn-ln)*100
 
 def GetRollingVar(values, window):
     return values.rolling(window = window).var()

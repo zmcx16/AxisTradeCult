@@ -61,7 +61,7 @@ def AddSMAIndictor(srcData, window, DropNan = True):
 # EMA: exponential moving average
 def AddEMAIndictor(srcData, window, DropNan = True):
     dstData = srcData.copy()
-    EMA = GetEWM_Mean(srcData[strClose], window).to_frame()
+    EMA = GetEMA(srcData[strClose], window).to_frame()
     EMA.rename(columns= {strClose: strEMA+'_W'+str(window)}, inplace=True)
     dstData = dstData.join(EMA)
     if DropNan:
@@ -112,6 +112,32 @@ def AddRSIIndictor(srcData, window, DropNan = True):
         dstData = dstData.dropna(axis=0, how='any')
     
     return dstData
+
+# MACD: moving average convergence divergence
+def AddMACDIndictor(srcData, DropNan = True):
+    dstData = srcData.copy()
+    DIF, DEM, OSC = GetMACD(srcData[strClose])
+    DIF.rename(strMACD_DIF, inplace=True)
+    DEM.rename(strMACD_DEM, inplace=True)
+    OSC.rename(strMACD_OSC, inplace=True)
+    MACD = pandas.concat([DIF, DEM, OSC], axis=1)
+    
+    dstData = dstData.join(MACD)
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData
+
+def AddWRIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    WR = GetWR(srcData[strClose], window)
+    WR.rename(strWR+'_W'+str(window), inplace=True)
+
+    dstData = dstData.join(WR)
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData    
 
 def AddBollingerBandsIndictor(srcData, window, DropNan = True):
     dstData = srcData.copy()
