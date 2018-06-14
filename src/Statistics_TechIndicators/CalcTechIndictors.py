@@ -17,6 +17,9 @@ def GetRollingMin(values, window):
 def GetEMA(values, window):
     return values.ewm(span=window).mean()
 
+def GetSMMA(values, window):
+    return values.ewm(ignore_na=False, alpha=1.0 / window, min_periods=0, adjust=True).mean()
+
 def GetRSV(close_values, high_values, low_values, period):
     hight_max = pandas.Series.rolling(high_values, window = period, center = False).max()
     low_min = pandas.Series.rolling(low_values, window = period, center = False).min()
@@ -40,10 +43,25 @@ def GetMACD(values):
 
 def GetWR(values, window):
     hn = pandas.Series.rolling(values, window = window, center = False).max()
-    ln = pandas.Series.rolling(values, window = window, center = False).min()
-     
+    ln = pandas.Series.rolling(values, window = window, center = False).min()     
     return (values-hn)/(hn-ln)*100
 
+def GetCCI(close_values, high_values, low_values, window): 
+    TP = (high_values+low_values+close_values)/3
+    SMA = pandas.Series.rolling(TP, window = window, center = False).mean()
+    MD = TP.rolling(window=window, center=False).apply(lambda x: numpy.fabs(x - x.mean()).mean())
+    return  (TP - SMA) / (.015 * MD)
+
+def GetTR(close_values, high_values, low_values, window): 
+    prev_close = close_values.shift(1)
+    c1 = high_values - low_values
+    c2 = numpy.abs(high_values - prev_close)
+    c3 = numpy.abs(low_values - prev_close)
+    return numpy.max((c1, c2, c3), axis=0)
+
+def GetATR(close_values, high_values, low_values, window): 
+    return GetSMMA( pandas.Series(GetTR(close_values, high_values, low_values, window), index = close_values.index), window)
+    
 def GetRollingVar(values, window):
     return values.rolling(window = window).var()
 

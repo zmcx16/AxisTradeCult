@@ -44,12 +44,16 @@ def PredTrendA(param):
              
     df = AddSMAIndictor(df, window=5, DropNan = False)
     df = AddEMAIndictor(df, window=5, DropNan = False)
+    df = AddSMMAIndictor(df, window=5, DropNan = False)
     df = AddMSTDIndictor(df, window=5, DropNan = False)
     df = AddMVARIndictor(df, window=5, DropNan = False)
     df = AddRSIIndictor(df, window=14, DropNan = False)
     df = AddMACDIndictor(df, DropNan = False)
     df = AddWRIndictor(df, window=5, DropNan = False)
-    
+    df = AddCCIIndictor(df, window=5, DropNan = False)
+    df = AddTRIndictor(df, window=5, DropNan = False)
+    df = AddATRIndictor(df, window=5, DropNan = False)
+        
     df = AddBollingerBandsIndictor(df, window=5, DropNan = False)
     df = AddKDJIndictor(df, window=5, DropNan = False)
     

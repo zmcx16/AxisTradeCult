@@ -69,6 +69,17 @@ def AddEMAIndictor(srcData, window, DropNan = True):
     
     return dstData     
 
+# SMMA: smoothed moving average
+def AddSMMAIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    SMMA = GetSMMA(srcData[strClose], window).to_frame()
+    SMMA.rename(columns= {strClose: strSMMA+'_W'+str(window)}, inplace=True)
+    dstData = dstData.join(SMMA)
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData  
+
 # MSTD: moving standard deviation
 def AddMSTDIndictor(srcData, window, DropNan = True):
     dstData = srcData.copy()
@@ -128,6 +139,7 @@ def AddMACDIndictor(srcData, DropNan = True):
     
     return dstData
 
+# Williams Overbought/Oversold index
 def AddWRIndictor(srcData, window, DropNan = True):
     dstData = srcData.copy()
     WR = GetWR(srcData[strClose], window)
@@ -138,6 +150,38 @@ def AddWRIndictor(srcData, window, DropNan = True):
         dstData = dstData.dropna(axis=0, how='any')
     
     return dstData    
+
+# CCI: Commodity Channel Index
+def AddCCIIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    CCI = GetCCI(srcData[strClose], srcData[strHigh], srcData[strLow], window)
+    CCI.rename(strCCI+'_W'+str(window), inplace=True)
+
+    dstData = dstData.join(CCI)
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData   
+
+# TR: true range
+def AddTRIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    dstData[strTR+'_W'+str(window)] = GetTR(srcData[strClose], srcData[strHigh], srcData[strLow], window)
+
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData     
+
+# ATR: average true range
+def AddATRIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    dstData[strATR+'_W'+str(window)] = GetATR(srcData[strClose], srcData[strHigh], srcData[strLow], window)
+
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData  
 
 def AddBollingerBandsIndictor(srcData, window, DropNan = True):
     dstData = srcData.copy()
