@@ -70,11 +70,6 @@ def PlotStockData(Symbol, df_data, PlotType, TechIndicators, size_factor):
 
         return MondayList
 
-    ax_volume.xaxis.set_major_locator(ticker.FixedLocator(GetMondayList(df_data_Date)))
-    ax_volume.xaxis.set_minor_locator(ticker.MultipleLocator(1))
-
-    ax_volume.xaxis.set_major_formatter(ticker.FuncFormatter(format_date))
-
     plt.xlabel("Date")
     ax_price.set_ylabel("Price")
     ax_volume.set_ylabel('Volume')
@@ -91,6 +86,12 @@ def PlotStockData(Symbol, df_data, PlotType, TechIndicators, size_factor):
     ax_price.grid(color = 'grey', linestyle = '--', linewidth = 0.5)
     ax_volume.grid(color = 'grey', linestyle = '--', linewidth = 0.5)
 
+    ax_volume.xaxis.set_major_locator(ticker.FixedLocator(GetMondayList(df_data_Date)))
+    ax_volume.xaxis.set_minor_locator(ticker.MultipleLocator(1))
+
+    ax_volume.xaxis.set_major_formatter(ticker.FuncFormatter(format_date))
+
+
     plt.tight_layout()
     return fig
 
@@ -98,6 +99,66 @@ def PlotStockData(Symbol, df_data, PlotType, TechIndicators, size_factor):
 def PlotSMA(param, df_data, target_ax, row_size, row_index):
     Indicator = GetRollingMean(df_data[strClose], int(param[strWindow]))
     PlotIndicator(Indicator, target_ax = target_ax, color = param[strColor], linewidth = float(param[strLineWidth]), alpha = float(param[strAlpha]))
+
+def PlotEMA(param, df_data, target_ax, row_size, row_index):
+    Indicator = GetEMA(df_data[strClose], int(param[strWindow]))
+    PlotIndicator(Indicator, target_ax = target_ax, color = param[strColor], linewidth = float(param[strLineWidth]), alpha = float(param[strAlpha]))
+
+def PlotSMMA(param, df_data, target_ax, row_size, row_index):
+    Indicator = GetSMMA(df_data[strClose], int(param[strWindow]))
+    PlotIndicator(Indicator, target_ax = target_ax, color = param[strColor], linewidth = float(param[strLineWidth]), alpha = float(param[strAlpha]))
+
+def PlotDMA(param, df_data, target_ax, row_size, row_index):
+    ax = plt.subplot2grid((row_size, 1), (row_index[0], 0), sharex = target_ax)
+    row_index[0] += 1
+    dma = GetDMA(df_data[strClose], short_window=int(param[strShortWindow]), long_window=int(param[strLongWindow]))
+    PlotIndicator(dma, target_ax = ax, color = param[strColor], linewidth = float(param[strLineWidth]), alpha = float(param[strAlpha]))
+
+    plt.setp(ax.get_xticklabels(), visible = False)
+    ax.grid(color = 'grey', linestyle = '--', linewidth = 0.5)
+
+def PlotMSTD(param, df_data, target_ax, row_size, row_index):
+    ax = plt.subplot2grid((row_size, 1), (row_index[0], 0), sharex = target_ax)
+    row_index[0] += 1
+    mstd = GetRollingStd(df_data[strClose], int(param[strWindow]))
+    PlotIndicator(mstd, target_ax = ax, color = param[strColor], linewidth = float(param[strLineWidth]), alpha = float(param[strAlpha]))
+
+    plt.setp(ax.get_xticklabels(), visible = False)
+    ax.grid(color = 'grey', linestyle = '--', linewidth = 0.5)
+
+def PlotMVAR(param, df_data, target_ax, row_size, row_index):
+    ax = plt.subplot2grid((row_size, 1), (row_index[0], 0), sharex = target_ax)
+    row_index[0] += 1
+    mvar = GetRollingVar(df_data[strClose], int(param[strWindow]))
+    PlotIndicator(mvar, target_ax = ax, color = param[strColor], linewidth = float(param[strLineWidth]), alpha = float(param[strAlpha]))
+
+    plt.setp(ax.get_xticklabels(), visible = False)
+    ax.grid(color = 'grey', linestyle = '--', linewidth = 0.5)
+
+def PlotRSI(param, df_data, target_ax, row_size, row_index):
+    ax = plt.subplot2grid((row_size, 1), (row_index[0], 0), sharex = target_ax)
+    row_index[0] += 1
+    rsi = GetRSI(df_data[strClose], int(param[strWindow]))
+    print(rsi) 
+    PlotIndicator(rsi, target_ax = ax, color = param[strColor], linewidth = float(param[strLineWidth]), alpha = float(param[strAlpha]))
+
+    plt.setp(ax.get_xticklabels(), visible = False)
+    ax.grid(color = 'grey', linestyle = '--', linewidth = 0.5)
+
+def PlotMACD(param, df_data, target_ax, row_size, row_index):
+    ax = plt.subplot2grid((row_size, 1), (row_index[0], 0), sharex = target_ax)
+    row_index[0] += 1
+    DIF, DEM, OSC = GetMACD(df_data[strClose], int(param[strFastWindow]), int(param[strSlowWindow]), int(param[strSignalWindow]))  
+    PlotIndicator(DIF, target_ax = ax, color = param[strMACDColor], linewidth = float(param[strLineWidth]), alpha = float(param[strAlpha]))
+    PlotIndicator(DEM, target_ax = ax, color = param[strSignalColor], linewidth = float(param[strLineWidth]), alpha = float(param[strAlpha]))
+
+    OSC_prev = OSC.shift(1)
+    OSC_trend = OSC > OSC_prev
+    
+    OSC.plot(ax = ax, width = 0.8, alpha = float(param[strAlpha]), kind='bar', color=OSC_trend.map({True: param[strBarIncColor], False: param[strBarDecColor]}))
+    
+    plt.setp(ax.get_xticklabels(), visible = False)
+    ax.grid(color = 'grey', linestyle = '--', linewidth = 0.5)
 
 
 def PlotBollingerBands(param, df_data, target_ax, row_size, row_index):
@@ -125,8 +186,8 @@ def PlotKDJ(param, df_data, target_ax, row_size, row_index):
     ax.grid(color = 'grey', linestyle = '--', linewidth = 0.5)
 
 
-def PlotIndicator(df_data, target_ax, color, linewidth = 0.8, alpha = 0.8):
-    df_data.plot(ax = target_ax, color = color, linewidth = linewidth, alpha = alpha)
+def PlotIndicator(df_data, target_ax, color, linewidth = 0.8, alpha = 0.8, kind = 'line'):
+    df_data.plot(ax = target_ax, color = color, linewidth = linewidth, alpha = alpha, kind = kind)
 
 
 
@@ -135,19 +196,41 @@ ColorList = ['aqua', 'aquamarine', 'azure', 'beige', 'black', 'blue', 'brown', '
              , 'salmon', 'sienna', 'silver', 'tan', 'teal', 'tomato', 'turquoise', 'violet', 'wheat', 'white', 'yellow', 'yellowgreen']
 
 TechIndicatorFuncDict = {
-  strSMA:             {strFuncName: PlotSMA, strParam:{strColor:'red', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}},
-  strBollingerBands:  {strFuncName: PlotBollingerBands, strParam:{strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8, strAreaColor: 'gold', strAreaAlpha:0.3}},
-  strKDJ:             {strFuncName: PlotKDJ, strParam:{strKColor:'red', strDColor:'black', strJColor:'gold', strWindow: 9, strLineWidth: 0.8, strAlpha: 0.8}}
+    strBollingerBands:  {strFuncName: PlotBollingerBands, strParam:{strColor:'grey', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8, strAreaColor: 'gold', strAreaAlpha:0.3}},
+    strDMA:             {strFuncName: PlotDMA, strParam:{strColor:'red', strShortWindow: 10, strLongWindow: 50, strLineWidth: 0.8, strAlpha: 0.8}},
+    strEMA:             {strFuncName: PlotEMA, strParam:{strColor:'red', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}},
+    strKDJ:             {strFuncName: PlotKDJ, strParam:{strKColor:'red', strDColor:'black', strJColor:'gold', strWindow: 9, strLineWidth: 0.8, strAlpha: 0.8}},
+    strMACD:            {strFuncName: PlotMACD, strParam:{strMACDColor:'red', strSignalColor:'purple', strBarIncColor:'green', strBarDecColor:'red', strWindow: 9, strLineWidth: 0.8, strAlpha: 0.8}},
+    strMSTD:            {strFuncName: PlotMSTD, strParam:{strColor:'red', strWindow: 12, strLineWidth: 0.8, strAlpha: 0.8}},    
+    strMVAR:            {strFuncName: PlotMVAR, strParam:{strColor:'red', strWindow: 12, strLineWidth: 0.8, strAlpha: 0.8}},    
+    strRSI:             {strFuncName: PlotRSI, strParam:{strColor:'red', strWindow: 14, strLineWidth: 0.8, strAlpha: 0.8}},    
+    strSMA:             {strFuncName: PlotSMA, strParam:{strColor:'red', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}},
+    strSMMA:            {strFuncName: PlotSMMA, strParam:{strColor:'red', strWindow: 20, strLineWidth: 0.8, strAlpha: 0.8}},
 }
 
 TechIndicatorPlotMode = {
-  strSMA:             {strPlotInAxPrice: True, strYlabel:   None},
-  strBollingerBands:  {strPlotInAxPrice: True, strYlabel:   None},
-  strKDJ:             {strPlotInAxPrice: False, strYlabel:   strKDJ},
+    strBollingerBands:  {strPlotInAxPrice: True, strYlabel:   None},
+    strDMA:             {strPlotInAxPrice: False, strYlabel:   strDMA},
+    strEMA:             {strPlotInAxPrice: True, strYlabel:   None},
+    strKDJ:             {strPlotInAxPrice: False, strYlabel:   strKDJ},
+    strMACD:            {strPlotInAxPrice: False, strYlabel:   strMACD},
+    strMSTD:            {strPlotInAxPrice: False, strYlabel:   strMSTD},
+    strMVAR:            {strPlotInAxPrice: False, strYlabel:   strMVAR},
+    strRSI:             {strPlotInAxPrice: False, strYlabel:   strRSI},
+    strSMA:             {strPlotInAxPrice: True, strYlabel:   None},
+    strSMMA:            {strPlotInAxPrice: True, strYlabel:   None},
 }
 
 TechIndicatorWidgetParam = {
-  strSMA:             {strColor:  {strType:strComboBox, strValue:'red', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}},
-  strBollingerBands:  {strColor:  {strType:strComboBox, strValue:'grey', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}, strAreaColor:  {strType:strComboBox, strValue:'gold', strComboList: ColorList}, strAreaAlpha: {strType:strLineEdit, strValue:0.3}},
-  strKDJ:             {strKColor: {strType:strComboBox, strValue:'red', strComboList: ColorList}, strDColor: {strType:strComboBox, strValue:'black', strComboList: ColorList}, strJColor: {strType:strComboBox, strValue:'gold', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:9}, strLineWidth: {strType:strLineEdit, strValue:1}, strAlpha: {strType:strLineEdit, strValue:1}}
+    strBollingerBands:  {strColor:  {strType:strComboBox, strValue:'grey', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}, strAreaColor:  {strType:strComboBox, strValue:'gold', strComboList: ColorList}, strAreaAlpha: {strType:strLineEdit, strValue:0.3}},
+    strDMA:             {strColor:  {strType:strComboBox, strValue:'red', strComboList: ColorList}, strShortWindow: {strType:strLineEdit, strValue:10}, strLongWindow: {strType:strLineEdit, strValue:50}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}},
+    strEMA:             {strColor:  {strType:strComboBox, strValue:'red', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}},
+    strKDJ:             {strKColor: {strType:strComboBox, strValue:'red', strComboList: ColorList}, strDColor: {strType:strComboBox, strValue:'black', strComboList: ColorList}, strJColor: {strType:strComboBox, strValue:'gold', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:9}, strLineWidth: {strType:strLineEdit, strValue:1}, strAlpha: {strType:strLineEdit, strValue:1}},
+    strMACD:            {strMACDColor:   {strType:strComboBox, strValue:'red', strComboList: ColorList}, strSignalColor: {strType:strComboBox, strValue:'purple', strComboList: ColorList}, strBarIncColor:   {strType:strComboBox, strValue:'green', strComboList: ColorList}, strBarDecColor:   {strType:strComboBox, strValue:'red', strComboList: ColorList}, strFastWindow: {strType:strLineEdit, strValue:12}, strSlowWindow: {strType:strLineEdit, strValue:26}, strSignalWindow: {strType:strLineEdit, strValue:9}, strLineWidth: {strType:strLineEdit, strValue:1}, strAlpha: {strType:strLineEdit, strValue:1}},
+    strMSTD:            {strColor:  {strType:strComboBox, strValue:'red', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}},
+    strMVAR:            {strColor:  {strType:strComboBox, strValue:'red', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}},
+    strRSI:             {strColor:  {strType:strComboBox, strValue:'red', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}},
+    strSMA:             {strColor:  {strType:strComboBox, strValue:'red', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}},
+    strSMMA:            {strColor:  {strType:strComboBox, strValue:'red', strComboList: ColorList}, strWindow: {strType:strLineEdit, strValue:20}, strLineWidth: {strType:strLineEdit, strValue:0.8}, strAlpha: {strType:strLineEdit, strValue:0.8}},
+
 }

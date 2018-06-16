@@ -31,7 +31,7 @@ def PredSoarCrashA(param):
     print("Process Data...")
     df = TransToAdjOHLCbyAdjC(GetStockPriceVolumeData("DIS", gv.StockDataPoolPath, "2000-1-3", "2018-6-01", True))
     
-    df = AddMAIndictor(df, window=5, DropNan = False)
+    df = AddSMAIndictor(df, window=5, DropNan = False)
     df = AddBollingerBandsIndictor(df, window=5, DropNan = False)
     df = AddKDJIndictor(df, window=5, DropNan = False)
     #print(df)

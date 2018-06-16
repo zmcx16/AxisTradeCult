@@ -80,6 +80,17 @@ def AddSMMAIndictor(srcData, window, DropNan = True):
     
     return dstData  
 
+# DMA: Different of Moving Average (10, 50)
+def AddDMAIndictor(srcData, short_window, long_window, DropNan = True):
+    dstData = srcData.copy()
+    DMA = GetDMA(srcData[strClose], short_window, long_window).to_frame()
+    DMA.rename(columns= {strClose: strDMA+'_SW'+str(short_window)+'_LW'+str(long_window)}, inplace=True)
+    dstData = dstData.join(DMA)
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData  
+
 # MSTD: moving standard deviation
 def AddMSTDIndictor(srcData, window, DropNan = True):
     dstData = srcData.copy()
@@ -125,9 +136,9 @@ def AddRSIIndictor(srcData, window, DropNan = True):
     return dstData
 
 # MACD: moving average convergence divergence
-def AddMACDIndictor(srcData, DropNan = True):
+def AddMACDIndictor(srcData, fast_period, slow_period, signal_period, DropNan = True):
     dstData = srcData.copy()
-    DIF, DEM, OSC = GetMACD(srcData[strClose])
+    DIF, DEM, OSC = GetMACD(srcData[strClose], fast_period, slow_period, signal_period)
     DIF.rename(strMACD_DIF, inplace=True)
     DEM.rename(strMACD_DEM, inplace=True)
     OSC.rename(strMACD_OSC, inplace=True)
@@ -164,9 +175,9 @@ def AddCCIIndictor(srcData, window, DropNan = True):
     return dstData   
 
 # TR: true range
-def AddTRIndictor(srcData, window, DropNan = True):
+def AddTRIndictor(srcData, DropNan = True):
     dstData = srcData.copy()
-    dstData[strTR+'_W'+str(window)] = GetTR(srcData[strClose], srcData[strHigh], srcData[strLow], window)
+    dstData[strTR] = GetTR(srcData[strClose], srcData[strHigh], srcData[strLow])
 
     if DropNan:
         dstData = dstData.dropna(axis=0, how='any')
@@ -182,6 +193,44 @@ def AddATRIndictor(srcData, window, DropNan = True):
         dstData = dstData.dropna(axis=0, how='any')
     
     return dstData  
+
+# DMI: Directional Moving Index, including
+def AddDMIIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    
+    pDI, nDI, ADX, ADXR = GetDMI(srcData[strClose], srcData[strHigh], srcData[strLow], window)
+    
+    pDI.rename(strpDI+'_W'+str(window), inplace=True)
+    nDI.rename(strnDI+'_W'+str(window), inplace=True)
+    ADX.rename(strADX+'_W'+str(window), inplace=True)
+    ADXR.rename(strADXR+'_W'+str(window), inplace=True)
+    DMI = pandas.concat([pDI, nDI, ADX, ADXR], axis=1)
+    
+    dstData = dstData.join(DMI)    
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData      
+
+# TRIX: Triple Exponential Moving Average
+def AddTRIXIndictor(srcData, window, DropNan = True):
+    dstData = srcData.copy()
+    dstData[strTRIX+'_W'+str(window)] = GetTRIX(srcData[strClose], window)
+
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData
+
+# VR: Volatility Volume Ratio
+def AddVRIndictor(srcData, window=26, DropNan = True):
+    dstData = srcData.copy()
+    dstData[strVR+'_W'+str(window)] = GetVR(srcData[strClose], srcData[strVolume], window)
+
+    if DropNan:
+        dstData = dstData.dropna(axis=0, how='any')
+    
+    return dstData
 
 def AddBollingerBandsIndictor(srcData, window, DropNan = True):
     dstData = srcData.copy()

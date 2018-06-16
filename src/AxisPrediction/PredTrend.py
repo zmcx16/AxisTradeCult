@@ -23,7 +23,7 @@ from attr._make import validate
 
 def PredTrendA(param):
     
-    neighbor_size = 5
+    neighbor_size = 10
     pred_days = 5
     change_rate = 5
     validateDataSize = 3
@@ -39,24 +39,26 @@ def PredTrendA(param):
     df = AddDiffIndictor(df, strVolume, DropNan = False)
     df = AddLogReturnIndictor(df, strClose, DropNan = False)
     
-    df = AddRollingMinMaxIndictor(df, strLow, window=5, Min0_Max1=0, DropNan = False)
-    df = AddRollingMinMaxIndictor(df, strHigh, window=5, Min0_Max1=1, DropNan = False)
-             
-    df = AddSMAIndictor(df, window=5, DropNan = False)
-    df = AddEMAIndictor(df, window=5, DropNan = False)
-    df = AddSMMAIndictor(df, window=5, DropNan = False)
-    df = AddMSTDIndictor(df, window=5, DropNan = False)
-    df = AddMVARIndictor(df, window=5, DropNan = False)
-    df = AddRSIIndictor(df, window=14, DropNan = False)
-    df = AddMACDIndictor(df, DropNan = False)
-    df = AddWRIndictor(df, window=5, DropNan = False)
-    df = AddCCIIndictor(df, window=5, DropNan = False)
-    df = AddTRIndictor(df, window=5, DropNan = False)
-    df = AddATRIndictor(df, window=5, DropNan = False)
-        
-    df = AddBollingerBandsIndictor(df, window=5, DropNan = False)
-    df = AddKDJIndictor(df, window=5, DropNan = False)
+    df = AddRollingMinMaxIndictor(df, strLow, window=20, Min0_Max1=0, DropNan = False)
+    df = AddRollingMinMaxIndictor(df, strHigh, window=20, Min0_Max1=1, DropNan = False)
     
+    df = AddSMAIndictor(df, window=20, DropNan = False)
+    df = AddEMAIndictor(df, window=20, DropNan = False)
+    df = AddSMMAIndictor(df, window=20, DropNan = False)
+    df = AddDMAIndictor(df, 10, 50, DropNan = False)
+    df = AddMSTDIndictor(df, window=12, DropNan = False)
+    df = AddMVARIndictor(df, window=20, DropNan = False)   
+    df = AddRSIIndictor(df, window=14, DropNan = False)
+    df = AddMACDIndictor(df, fast_period=12, slow_period=26, signal_period=9, DropNan = False)
+    df = AddWRIndictor(df, window=20, DropNan = False)
+    df = AddCCIIndictor(df, window=20, DropNan = False)
+    df = AddATRIndictor(df, window=20, DropNan = False)
+    df = AddDMIIndictor(df, window=14, DropNan = False)
+    df = AddTRIXIndictor(df, window=9, DropNan = False)
+    df = AddVRIndictor(df, window=26, DropNan = False)
+    
+    df = AddBollingerBandsIndictor(df, window=20, DropNan = False)
+    df = AddKDJIndictor(df, window=20, DropNan = True)  
     
     df = df.dropna()
     
@@ -92,7 +94,7 @@ def PredTrendA(param):
     print("Process Data finished.")
     
     OutputData = pandas.concat([ df, ChangeN], axis=1)
-    OutputData.to_csv("D:\\PredTrendA_data.csv", sep=',');
+    OutputData.to_csv("C:\\zmcx16\\PredTrendA_data.csv", sep=',');
     
     print("split Tr, Ts Data...")
     ValidateDataList = []
