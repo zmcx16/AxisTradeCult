@@ -44,10 +44,10 @@ def GetMACD(values, fast_period, slow_period, signal_period):
     OSC = DIF - DEM
     return DIF, DEM, OSC
 
-def GetWR(values, window):
-    hn = pandas.Series.rolling(values, window = window, center = False).max()
-    ln = pandas.Series.rolling(values, window = window, center = False).min()     
-    return (values-hn)/(hn-ln)*100
+def GetWR(close_values, high_values, low_values, window):
+    hn = pandas.Series.rolling(high_values, window = window, center = False).max()
+    ln = pandas.Series.rolling(low_values, window = window, center = False).min()     
+    return (close_values-hn)/(hn-ln)*100
 
 def GetCCI(close_values, high_values, low_values, window): 
     TP = (high_values+low_values+close_values)/3
@@ -57,16 +57,15 @@ def GetCCI(close_values, high_values, low_values, window):
 
 def GetTR(close_values, high_values, low_values): 
     prev_close = close_values.shift(1)
-    prev_close.fillna(value=0, inplace=True)
+    prev_close.fillna(method='bfill', inplace=True)
     c1 = high_values - low_values
     c2 = numpy.abs(high_values - prev_close)
     c3 = numpy.abs(low_values - prev_close)
-    return numpy.max((c1, c2, c3), axis=0)
+    return pandas.Series(numpy.max((c1, c2, c3), axis=0), index = close_values.index)
 
 def GetATR(close_values, high_values, low_values, window): 
     TR = GetTR(close_values, high_values, low_values)
-    TR_series = pandas.Series(TR, index = close_values.index)
-    return GetSMMA(TR_series, window)
+    return GetSMMA(TR, window)
 
 def GetDMI(close_values, high_values, low_values, window=14):
     UpMove = high_values - high_values.shift(1)
@@ -94,14 +93,16 @@ def GetDMI(close_values, high_values, low_values, window=14):
     
     return pDI, nDI, ADX, ADXR
 
-def GetTRIX(values, window):
-    triple = GetEMA(GetEMA(GetEMA(values, window), window), window)
-    prev_triple = triple.shift(1)
-    return (triple-prev_triple) * 100 / prev_triple
+def GetTEMA(values, window):
+    single = GetEMA(values, window)
+    double = GetEMA(single, window)
+    triple = GetEMA(double, window)
+    return 3*single - 3*double + triple
 
 def GetVR(close_values, volume_values, window):
    
     prev_close = close_values.shift(1)
+    prev_close.fillna(method='bfill', inplace=True)
     
     av = pandas.Series(numpy.where(close_values-prev_close>0, volume_values, 0), index=close_values.index)
     avs = pandas.Series.rolling(av, window = window, center = False).sum()

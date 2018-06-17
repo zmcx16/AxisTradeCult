@@ -5,13 +5,27 @@
 # Features
 1.	Automatic download historical stock data
 2.	Technical Indicators & Charts
-3.	Using ML algorithm to Predictive (TBC)
+3.	Using ML algorithm to Predictive (Progressing...)
 4.	Support back testing (TBC)
 
 # Support Technical Indicators
-  *  MA
-  *  bollinger bands
-  *  KDJ
+  *  ATR (Average True Range)
+  *  Bollinger Bands
+  *  CCI (Commodity Channel Index)
+  *  DMA (Different of Moving Average)
+  *  DMI (Directional Moving Index)
+  *  EMA (Exponential Moving Average)
+  *  KDJ (Stochastic Oscillator)
+  *  MACD (Moving Average Convergence Divergence)
+  *  MSTD (Moving Standard Deviation)
+  *  MVAR (Moving Variance)
+  *  RSI (Relative Strength Index)
+  *  SMA (Simple Moving Average)
+  *  SMMA (Smoothed Moving Average)
+  *  TEMA (Triple Exponential Moving Average)
+  *  TR (True Range)
+  *  VR (Volatility Volume Ratio)
+  *  WR (Williams Overbought/Oversold Index)
   *  ...(TBC)
 
 
@@ -41,6 +55,8 @@ python AxisTradeCult\src\Program\__init__.py
 
 ![image](https://github.com/zmcx16/AxisTradeCult/blob/master/DevLogDemo/demo4.png)
 
+# Reference:
+1. jealous/stockstats - (https://github.com/jealous/stockstats) -  BSD 3-Clause
 
 # License
 This project is licensed under the terms of the GPL-3.0 license.

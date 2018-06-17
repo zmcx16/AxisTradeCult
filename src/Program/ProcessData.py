@@ -153,7 +153,7 @@ def AddMACDIndictor(srcData, fast_period, slow_period, signal_period, DropNan = 
 # Williams Overbought/Oversold index
 def AddWRIndictor(srcData, window, DropNan = True):
     dstData = srcData.copy()
-    WR = GetWR(srcData[strClose], window)
+    WR = GetWR(srcData[strClose], srcData[strHigh], srcData[strLow], window)
     WR.rename(strWR+'_W'+str(window), inplace=True)
 
     dstData = dstData.join(WR)
@@ -194,7 +194,7 @@ def AddATRIndictor(srcData, window, DropNan = True):
     
     return dstData  
 
-# DMI: Directional Moving Index, including
+# DMI: Directional Moving Index
 def AddDMIIndictor(srcData, window, DropNan = True):
     dstData = srcData.copy()
     
@@ -212,10 +212,10 @@ def AddDMIIndictor(srcData, window, DropNan = True):
     
     return dstData      
 
-# TRIX: Triple Exponential Moving Average
-def AddTRIXIndictor(srcData, window, DropNan = True):
+# TEMA: Triple Exponential Moving Average
+def AddTEMAIndictor(srcData, window, DropNan = True):
     dstData = srcData.copy()
-    dstData[strTRIX+'_W'+str(window)] = GetTRIX(srcData[strClose], window)
+    dstData[strTEMA+'_W'+str(window)] = GetTEMA(srcData[strClose], window)
 
     if DropNan:
         dstData = dstData.dropna(axis=0, how='any')
