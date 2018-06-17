@@ -55,7 +55,7 @@ python AxisTradeCult\src\Program\__init__.py
 
 ![image](https://github.com/zmcx16/AxisTradeCult/blob/master/DevLogDemo/demo4.png)
 
-# Reference:
+# Reference
 1. jealous/stockstats - (https://github.com/jealous/stockstats) -  BSD 3-Clause
 
 # License
