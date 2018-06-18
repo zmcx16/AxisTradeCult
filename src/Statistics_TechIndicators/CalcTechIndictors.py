@@ -52,7 +52,7 @@ def GetWR(close_values, high_values, low_values, window):
 def GetCCI(close_values, high_values, low_values, window): 
     TP = (high_values+low_values+close_values)/3
     SMA = pandas.Series.rolling(TP, window = window, center = False).mean()
-    MD = TP.rolling(window=window, center=False).apply(lambda x: numpy.fabs(x - x.mean()).mean(), raw=True)
+    MD = TP.rolling(window=window, center=False).apply(lambda x: numpy.fabs(x - x.mean()).mean())
     return  (TP - SMA) / (.015 * MD)
 
 def GetTR(close_values, high_values, low_values): 
