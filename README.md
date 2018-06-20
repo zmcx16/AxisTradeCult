@@ -6,7 +6,7 @@
 1.	Automatic download historical stock data
 2.	Technical Indicators & Charts
 3.	Using ML algorithm to Predictive (Progressing...)
-4.	Support back testing (TBC)
+4.	Support Backtesting
 
 # Support Technical Indicators
   *  ATR (Average True Range)
