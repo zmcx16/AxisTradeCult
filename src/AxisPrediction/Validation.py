@@ -1,6 +1,7 @@
 from builtins import int
 from enum import Enum
 from numpy import NaN
+import random
 
 from sklearn import datasets
 from sklearn import preprocessing
@@ -23,8 +24,17 @@ from CommonDef.DefStr import *
 from Program.Common import *
 from Program.ProcessData import *
 from Statistics_TechIndicators.CalcStatistics import *
+from AxisPrediction.Backtest import *
 
 def ForwardingBlocksValidation(Data, Target, BlockCount):
+    
+    OriginalCash = 50000
+    perShareSize = 100
+    backtestParam = {BacktestParam.strStrategyParams: 
+                     {BacktestParam.strBuyStrategy: BacktestParam.BuyFixed
+                      , BacktestParam.strSellStrategy: BacktestParam.SellAll
+                      , BacktestParam.perShareSize: perShareSize}}
+    backtest = Backtest(OriginalCash, False, backtestParam)
      
     print("split Tr, Ts Data...")
     ValidateDataList = []
@@ -66,10 +76,10 @@ def ForwardingBlocksValidation(Data, Target, BlockCount):
         y_test = label_binarize(y_test, classes=[-1, 0, 1])
         
         #clf= OneVsRestClassifier(KNeighborsClassifier(n_neighbors=5))
-        clf = OneVsRestClassifier(LinearSVC(random_state=0))
+        #clf = OneVsRestClassifier(LinearSVC(random_state=0))
         #clf = OneVsRestClassifier(GaussianNB())
         #clf = OneVsRestClassifier(MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=1))
-        #clf = OneVsRestClassifier(DecisionTreeClassifier(random_state=0))
+        clf = OneVsRestClassifier(DecisionTreeClassifier(random_state=0))
         #clf = OneVsRestClassifier(GaussianProcessClassifier(kernel=1.0 * kernels.RBF(length_scale=1.0)))
         clf.fit(x_train, y_train)
         
@@ -90,12 +100,33 @@ def ForwardingBlocksValidation(Data, Target, BlockCount):
             temp.append(class_labels[max_prob_index_list[i]])
         predict_result = label_binarize(temp, class_labels)
         
+        #print("predict_result:")
+        for i in range(len(predict_result)):
+            date = ValidateDataList[index+1][strData].iloc[i].name
+            close = ValidateDataList[index+1][strData].iloc[i][strClose]
+            high = ValidateDataList[index+1][strData].iloc[i][strHigh]
+            low = ValidateDataList[index+1][strData].iloc[i][strLow]
+            params = {strDate: date, strClose: close, strHigh: high, strLow: low}
+            #print("{0}: {1}".format(date, predict_result[i]))
+                        
+            if predict_result[i][0] == 1:
+                backtest.RunStrategy(BacktestParam.BuySignal, BacktestParam.EasyStrategy, params)
+            elif predict_result[i][2] == 1:     
+                backtest.RunStrategy(BacktestParam.SellSignal, BacktestParam.EasyStrategy, params)
+           
+        backtest.RunStrategy(BacktestParam.SellSignal, BacktestParam.EasyStrategy, params)    
+        print("----------------")
+        
         ValidateResult.append({strPredictVal: predict_result, strAnsVal: y_test, strPredictProbVal: predict_prob})        
         
         print("Training & Testing Model{0} finished".format(index))
     
     print("Training & Testing finished.")
     
+    FinalCash = backtest.Cash
+    Profit = FinalCash - OriginalCash
+    print("Profit: {0}".format(Profit)) 
+    print("ROI: {:.2%}".format(Profit/OriginalCash))     
     #print(ValidateResult)
     
     total_result = {strPredictVal:ValidateResult[0][strPredictVal], strPredictProbVal:ValidateResult[0][strPredictProbVal], strAnsVal:ValidateResult[0][strAnsVal]}

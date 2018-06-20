@@ -29,7 +29,7 @@ def PredTrendA(param):
     change_rate = 5
     
     print("Process Data...")
-    df = TransToAdjOHLCbyAdjC(GetStockPriceVolumeData("DIS", gv.StockDataPoolPath, "2000-1-3", "2018-6-01", True))
+    df = TransToAdjOHLCbyAdjC(GetStockPriceVolumeData("T", gv.StockDataPoolPath, "2000-1-3", "2018-6-01", True))
     
     df = AddNeighborFeatures(df, neighbor_size, DropNan = False)
       
