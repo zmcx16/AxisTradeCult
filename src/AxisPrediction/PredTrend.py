@@ -25,11 +25,13 @@ from attr._make import validate
 def PredTrendA(param):
     
     neighbor_size = 10
-    pred_days = 5
+    pred_days = 10
     change_rate = 5
     
+    ClassLabel = 'Change'+str(change_rate)+'%'
+    
     print("Process Data...")
-    df = TransToAdjOHLCbyAdjC(GetStockPriceVolumeData("T", gv.StockDataPoolPath, "2000-1-3", "2018-6-01", True))
+    df = TransToAdjOHLCbyAdjC(GetStockPriceVolumeData("PG", gv.StockDataPoolPath, "2000-1-3", "2018-6-01", True))
     
     df = AddNeighborFeatures(df, neighbor_size, DropNan = False)
       
@@ -67,7 +69,7 @@ def PredTrendA(param):
     RollingVal = pandas.Series.rolling(df[strClose], window = pred_days, center = False).mean()
 
     ChangeN = pandas.Series(numpy.zeros(shape=(df[strClose].count()),dtype=int), index=df.index)
-    ChangeN.rename('Change'+str(change_rate)+'%', inplace=True)
+    ChangeN.rename(ClassLabel, inplace=True)
 
     tmp_index = 0
     for i,v in ChangeN.items():
@@ -89,6 +91,7 @@ def PredTrendA(param):
     print(df)     
     print(ChangeN)
     
+    print(ChangeN.value_counts())
     print('DataSize: {0}'.format(len(ChangeN)))
     
     print("Process Data finished.")
@@ -96,8 +99,11 @@ def PredTrendA(param):
     OutputData = pandas.concat([ df, ChangeN], axis=1)
     OutputData.to_csv("C:\\zmcx16\\PredTrendA_data.csv", sep=',');
     
-    vParam = {ValidationType.BlockCount: 3}
-    RunValidation(df, ChangeN, ValidationType.ForwardingBlocks, vParam)
+    #vParam = {ValidationType.BlockCount: 3}
+    #RunValidation(df, ChangeN, ValidationType.ForwardingBlocks, vParam)
+
+    vParam = {ValidationType.TrDataSize: 1000}
+    RunValidation(df, ChangeN, ValidationType.ForwardingLeaveOneOut, vParam)
 
 def PredTrendB(param):
     
