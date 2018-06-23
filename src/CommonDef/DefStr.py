@@ -14,6 +14,7 @@ strAdjLow = 'adjusted_low'
 strAdjClose = 'adjusted_close'
 
 strNeighbor = 'neighbor'
+strShare = 'Share'
 #---------------------------------------
 
 #---------------------------------------
@@ -90,6 +91,7 @@ strRollingMax = 'RollingMax'
 
 strType = 'Type'
 strValue = 'Value'
+strPrice = 'Price'
 
 strComboBox = 'ComboBox'
 strLineEdit = 'LineEdit'
