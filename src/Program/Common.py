@@ -68,13 +68,27 @@ def ReadOverviewStockData(stocks, ChooseDate, StockDataPoolPath):
 
         DF3M = pandas.DataFrame.sort_index(DF3M, ascending = False)
         DF1Y = pandas.DataFrame.sort_index(DF1Y, ascending = False)
-
+        
         OverviewStock = { 'TargetDate':TargetDate
-                         , 'Symbol': stock, strOpen:DF3M[strOpen][0], strHigh:DF3M[strHigh][0], strLow:DF3M[strLow][0], strClose:DF3M[strClose][0], strVolume:DF3M[strVolume][0]
-                         , 'ChangeC':CalChange(now = DF3M[strClose][0], prev = DF3M[strClose][1]), 'ChangeV':CalChange(now = DF3M[strVolume][0], prev = DF3M[strVolume][1])
-                         , 'AvgC3M':DF3M[strClose].mean(), 'AvgV3M':DF3M[strVolume].mean()
-                         , 'StrikePrice1Y':[DF1Y[strLow].min() , DF1Y[strHigh].max()]}
-
+                         , 'Symbol': stock, strOpen:0, strHigh:0, strLow:0, strClose:0, strVolume:0
+                         , 'ChangeC':0, 'ChangeV':0
+                         , 'AvgC3M':0, 'AvgV3M':0
+                         , 'StrikePrice1Y':[0 , 0]}
+        
+        if not DF3M.empty:
+            OverviewStock[strOpen] = DF3M[strOpen][0]
+            OverviewStock[strHigh] = DF3M[strHigh][0]
+            OverviewStock[strLow] = DF3M[strLow][0]
+            OverviewStock[strClose] = DF3M[strClose][0]
+            OverviewStock[strVolume] = DF3M[strVolume][0]
+            OverviewStock['ChangeC'] = CalChange(now = DF3M[strClose][0], prev = DF3M[strClose][1])
+            OverviewStock['ChangeV'] = CalChange(now = DF3M[strVolume][0], prev = DF3M[strVolume][1])
+            OverviewStock['AvgC3M'] = DF3M[strClose].mean()
+            OverviewStock['AvgV3M'] = DF3M[strVolume].mean()
+        
+        if not DF1Y.empty:
+            OverviewStock['StrikePrice1Y'] = [DF1Y[strLow].min() , DF1Y[strHigh].max()]
+    
         OverviewStocks[stock] = OverviewStock
 
     return OverviewStocks
