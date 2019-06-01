@@ -64,7 +64,7 @@
 ![image](https://github.com/zmcx16/AxisTradeCult/blob/master/DevLogDemo/demo7.png)
 
 # Reference
-1. jealous/Click-n-drag list rearranging - (https://github.com/jealous/stockstats) -  BSD 3-Clause
+1. jealous/stockstats - (https://github.com/jealous/stockstats) -  BSD 3-Clause
 
 # License
 This project is licensed under the terms of the GPL-3.0 license.
