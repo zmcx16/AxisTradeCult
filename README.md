@@ -45,7 +45,7 @@
 # Run
 1. cd to src path
 2. SET PYTHONPATH=.
-3. run python Program\__init__.py
+3. run python Program/__init__.py
 
 # Demo
 
