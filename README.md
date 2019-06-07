@@ -67,4 +67,4 @@
 1. jealous/stockstats - (https://github.com/jealous/stockstats) -  BSD 3-Clause
 
 # License
-This project is licensed under the terms of the GPL-3.0 license.
+This project is licensed under the terms of the MIT license.
