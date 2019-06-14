@@ -135,7 +135,7 @@ class OverviewStockPage(QMainWindow):
         for i in reversed(range(self.OverviewStocklayout.count())):
             widgetToRemove = self.OverviewStocklayout.itemAt(i).widget()
             if widgetToRemove.objectName() in StockCheckBoxObjectNames:
-                if widgetToRemove.StockCheckBox.isChecked() is True:
+                if widgetToRemove.GetStockCheckBox().isChecked() is True:
                     Stocks.remove(widgetToRemove.objectName())
                     self.OverviewStocklayout.removeWidget(widgetToRemove)
                     widgetToRemove.setParent(None)
@@ -205,7 +205,8 @@ class OverviewStockInfoWidget(QWidget):
 
         StockCheckBox = QCheckBox(self)
         StockCheckBox.setGeometry(QRect(parent.StockCheckBox.x() + self.offsetX, 0, parent.StockCheckBox.width(), parent.StockCheckBox.height()))
-        StockCheckBox.setObjectName(parent.StockCheckBox.objectName() + id)
+        self.StockCheckBoxName = parent.StockCheckBox.objectName() + id
+        StockCheckBox.setObjectName(self.StockCheckBoxName)
         StockCheckBox.setFont(font)
         OpenLabel = QLabel(self)
         OpenLabel.setGeometry(QRect(parent.OpenLabel.x() + self.offsetX, 0, parent.OpenLabel.width(), parent.OpenLabel.height()))
@@ -314,6 +315,12 @@ class OverviewStockInfoWidget(QWidget):
             self.widget_height = max(self.widget_height, widget.height())
 
         self.widget_width = max_x - min_x
+
+    def GetStockCheckBox(self):
+        for i in range(self.Layout.count()):
+            widget = self.Layout.itemAt(i).widget()
+            if widget.objectName() == self.StockCheckBoxName:
+                return widget
 
     def sizeHint(self):
         return QSize(self.widget_width, self.widget_height)
