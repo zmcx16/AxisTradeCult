@@ -42,10 +42,15 @@
   *  scipy>=1.1.0
   *  imbalanced-learn>=0.3.3
 
-# Run
+# How To Run in windows
 1. cd to src path
 2. SET PYTHONPATH=.
 3. run python Program\\\_\_init\_\_.py
+
+# How To Run in Linux / Mac
+1. cd to src path
+2. export PYTHONPATH=.
+3. run python Program/\_\_init\_\_.py
 
 # Demo
 
